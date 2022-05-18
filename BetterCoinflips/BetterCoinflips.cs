@@ -1,6 +1,5 @@
 ﻿using Exiled.API.Features;
 using System;
-using Exiled.Events.EventArgs;
 using Player = Exiled.Events.Handlers.Player;
 
 
