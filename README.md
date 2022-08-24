@@ -6,7 +6,7 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
 ### **Features:**
 
 - Whenever someone flips a coin and it lands on heads one of the following will happen:  
-1. A Containment Engineer/Facility Manager(75%/15%, configurable) keycard will spawn at their feet.  
+1. A Containment Engineer/Facility Manager(85%/15%, configurable) keycard will spawn at their feet.  
 2. A 'medical kit' will spawn at their feet consisting of a medkit and painkillers.  
 3. They will be teleported to the doors leading straight to the escape zone.  
 4. They will be healed by 25 health.  
