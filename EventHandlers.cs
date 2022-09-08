@@ -27,6 +27,8 @@ namespace BetterCoinflips
             int TailsEvent = rd.Next(1, 13);
             if (!ev.IsTails)
             {   
+                
+                if(KeycardEventChance < rd.Next(1, 100))
                 switch (HeadsEvent)
                 {
                     case 1:
