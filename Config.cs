@@ -54,5 +54,16 @@ namespace BetterCoinflips
 
         [Description("The % chance of receiving a Facility Manager keycard instead of a Containment Engineer keycard when that effect is chosen. Default: 15")]
         public int RedCardChance { get; set; } = 15;
+        [Description("The % chance for each of the below good effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.")]
+        public int KeycardEffectChance { get; set; } = 20;
+        public int MedicalKitEffectChance { get; set; } = 35;
+        public int EscapeEffectChance { get; set; } = 5;
+        public int HealEffectChance { get; set; } = 10;
+        public int MoreHPEffectChance { get; set; } = 10;
+        public int HatEffectChance { get; set; } = 10;
+        public int RandomGoodEffectChance { get; set; } = 30;
+        public int LightbulbEffectChance { get; set; } = 15;
+        [Description("The % chance for each of the below bad effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.")]
+           
     }
 }

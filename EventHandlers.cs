@@ -1,9 +1,9 @@
-using UnityEngine;
-using System.Linq;
-using Exiled.Events.EventArgs;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
+using Exiled.Events.EventArgs;
+using System.Linq;
+using UnityEngine;
 
 namespace BetterCoinflips
 {
@@ -23,12 +23,19 @@ namespace BetterCoinflips
 
         public void OnCoinFlip(FlippingCoinEventArgs ev)
         {
-            int HeadsEvent = rd.Next(1, 9);
-            int TailsEvent = rd.Next(1, 13);
+            int HeadsEvent = 0;
+            int TailsEvent = 0;
             if (!ev.IsTails)
-            {   
-                
-                if(KeycardEventChance < rd.Next(1, 100))
+            {
+                if (KeycardEffectChance < rd.Next(1, 100)) HeadsEvent = 1;
+                else if (MedicalKitEffectChance < rd.Next(1, 100)) HeadsEvent = 2;
+                else if (EscapeEffectChance < rd.Next(1, 100)) HeadsEvent = 3;
+                else if (HealEffectChance < rd.Next(1, 100)) HeadsEvent = 4;
+                else if (MoreHPEffectChance < rd.Next(1, 100)) HeadsEvent = 5;
+                else if (HatEffectChance < rd.Next(1, 100)) HeadsEvent = 6;
+                else if (RandomGoodEffectChance < rd.Next(1, 100)) HeadsEvent = 7;
+                else if (LightbulbEffectChance < rd.Next(1, 100)) HeadsEvent = 8; // doesn't have to exist for now, it is here if I want to expand the effects
+
                 switch (HeadsEvent)
                 {
                     case 1:
@@ -70,6 +77,7 @@ namespace BetterCoinflips
                         SendBroadcast(ev.Player, "You got a random effect.");
                         break;
                     case 8:
+                    default:
                         Item.Create(ItemType.SCP2176).Spawn(ev.Player.Position);
                         SendBroadcast(ev.Player, "You got a shiny lightbulb!");
                         break;
@@ -83,7 +91,15 @@ namespace BetterCoinflips
             }
             if (ev.IsTails)
             {
-                
+                if (HpReductionEffectChance < rd.Next(1, 100)) HeadsEvent = 1;
+                else if (TPToClassDCellsEffectChance < rd.Next(1, 100)) HeadsEvent = 2;
+                else if (RandomBadEffectChance < rd.Next(1, 100)) HeadsEvent = 3;
+                else if (WarheadEffectChance < rd.Next(1, 100)) HeadsEvent = 4;
+                else if (LightsOutEffectChance < rd.Next(1, 100)) HeadsEvent = 5;
+                else if (OneAmmoLogicerEffectChance < rd.Next(1, 100)) HeadsEvent = 6;
+                else if ( < rd.Next(1, 100)) HeadsEvent = 7;
+                else if (LightbulbEffectChance < rd.Next(1, 100)) HeadsEvent = 8; // doesn't have to exist for now, it is here if I want to expand the effects
+
                 switch (TailsEvent)
                 {
                     case 1:
