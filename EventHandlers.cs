@@ -35,6 +35,8 @@ namespace BetterCoinflips
                 else if (HatEffectChance < rd.Next(1, 100)) HeadsEvent = 6;
                 else if (RandomGoodEffectChance < rd.Next(1, 100)) HeadsEvent = 7;
                 else if (LightbulbEffectChance < rd.Next(1, 100)) HeadsEvent = 8; // doesn't have to exist for now, it is here if I want to expand the effects
+                else if (OneAmmoLogicerEffectChance < rd.Next(1, 100)) HeadsEvent = 9;
+
 
                 switch (HeadsEvent)
                 {
@@ -77,16 +79,23 @@ namespace BetterCoinflips
                         SendBroadcast(ev.Player, "You got a random effect.");
                         break;
                     case 8:
-                    default:
                         Item.Create(ItemType.SCP2176).Spawn(ev.Player.Position);
                         SendBroadcast(ev.Player, "You got a shiny lightbulb!");
                         break;
-                    /*case 9:
-                        Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
-                        candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
-                        candy.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink, false, false, true, InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
-                        SendBroadcast(ev.Player, "test");
-                        break;*/
+                    default:
+                    case 9:
+                        Item gun = Item.Create(ItemType.GunLogicer);
+                        Firearm f = gun as Firearm;
+                        f.Ammo = 1;
+                        f.Spawn(ev.Player.Position);
+                        SendBroadcast(ev.Player, "You got gun.");
+                        break;
+                        /*case 9:
+                            Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
+                            candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
+                            candy.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink, false, false, true, InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
+                            SendBroadcast(ev.Player, "test");
+                            break;*/
                 }
             }
             if (ev.IsTails)
@@ -96,9 +105,12 @@ namespace BetterCoinflips
                 else if (RandomBadEffectChance < rd.Next(1, 100)) HeadsEvent = 3;
                 else if (WarheadEffectChance < rd.Next(1, 100)) HeadsEvent = 4;
                 else if (LightsOutEffectChance < rd.Next(1, 100)) HeadsEvent = 5;
-                else if (OneAmmoLogicerEffectChance < rd.Next(1, 100)) HeadsEvent = 6;
-                else if ( < rd.Next(1, 100)) HeadsEvent = 7;
-                else if (LightbulbEffectChance < rd.Next(1, 100)) HeadsEvent = 8; // doesn't have to exist for now, it is here if I want to expand the effects
+                else if (LiveHEEffectChance < rd.Next(1, 100)) HeadsEvent = 6;
+                else if (TrollGunEffectChance < rd.Next(1, 100)) HeadsEvent = 7;
+                else if (LiveFlasEffectChance < rd.Next(1, 100)) HeadsEvent = 8;
+                else if (SCPTpEffectChance < rd.Next(1, 100)) HeadsEvent = 9;
+                else if (OneHPLeftEffectChance < rd.Next(1, 100)) HeadsEvent = 10;
+                else if (FakeCassieEffectChance < rd.Next(1, 100)) HeadsEvent = 11;  // doesn't have to exist for now, it is here if I want to expand the effects
 
                 switch (TailsEvent)
                 {
@@ -140,12 +152,7 @@ namespace BetterCoinflips
                         SendBroadcast(ev.Player, "Lights out.");
                         break;
                     case 6:
-                        Item gun = Item.Create(ItemType.GunLogicer);
-                        Firearm f = gun as Firearm;
-                        f.Ammo = 1;
-                        f.Spawn(ev.Player.Position);
-                        SendBroadcast(ev.Player, "You got gun.");
-                        break;
+                    
                     case 7:
                         ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
                         grenade.FuseTime = 3.25f;
@@ -180,9 +187,10 @@ namespace BetterCoinflips
                         }
                         break;
                     case 11:
-                        ev.Player.Hurt(ev.Player.MaxHealth - 1);
+                        ev.Player.Hurt(ev.Player.Health - 1);
                         SendBroadcast(ev.Player, "You've lost a lot of hp");
                         break;
+                    default:
                     case 12:
                         Cassie.MessageTranslated("scp 1 7 3 successfully terminated by automatic security system", "SCP-173 successfully terminated by Automatic Security System.");
                         break;

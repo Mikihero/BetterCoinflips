@@ -63,7 +63,18 @@ namespace BetterCoinflips
         public int HatEffectChance { get; set; } = 10;
         public int RandomGoodEffectChance { get; set; } = 30;
         public int LightbulbEffectChance { get; set; } = 15;
+        public int OneAmmoLogicerEffectChance { get; set; } = 10;
         [Description("The % chance for each of the below bad effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.")]
-           
+        public int HpReductionEffectChance { get; set; } = 20;
+        public int TPToClassDCellsEffectChance { get; set; } = 10;
+        public int RandomBadEffectChance { get; set; } = 30;
+        public int WarheadEffectChance { get; set; } = 25;
+        public int LightsOutEffectChance { get; set; } = 15;
+        public int LiveHEEffectChance { get; set; } = 50;
+        public int TrollGunEffectChance { get; set; } = 50;
+        public int LiveFlasEffectChance { get; set; } = 50;
+        public int SCPTpEffectChance { get; set; } = 35;
+        public int OneHPLeftEffectChance { get; set; } = 20;
+        public int FakeCassieEffectChance { get; set; } = 45;
     }
 }
