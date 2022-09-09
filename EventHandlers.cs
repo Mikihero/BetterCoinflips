@@ -34,9 +34,8 @@ namespace BetterCoinflips
                 else if (MoreHPEffectChance < rd.Next(1, 100)) HeadsEvent = 5;
                 else if (HatEffectChance < rd.Next(1, 100)) HeadsEvent = 6;
                 else if (RandomGoodEffectChance < rd.Next(1, 100)) HeadsEvent = 7;
-                else if (LightbulbEffectChance < rd.Next(1, 100)) HeadsEvent = 8; // doesn't have to exist for now, it is here if I want to expand the effects
-                else if (OneAmmoLogicerEffectChance < rd.Next(1, 100)) HeadsEvent = 9;
-
+                else if (LightbulbEffectChance < rd.Next(1, 100)) HeadsEvent = 8;
+                else if (OneAmmoLogicerEffectChance < rd.Next(1, 100)) HeadsEvent = 9; // doesn't have to exist for now, it is here if I want to expand the effects
 
                 switch (HeadsEvent)
                 {
