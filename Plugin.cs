@@ -9,7 +9,7 @@ namespace BetterCoinflips
     {
         public static Plugin Instance;
         public override Version RequiredExiledVersion => new Version(5, 3, 0);
-        public override Version Version => new Version(1, 0, 0);
+        public override Version Version => new Version(1, 1, 0);
         public override string Author => "Miki_hero";
         private EventHandlers EventHandler;
 
@@ -17,7 +17,7 @@ namespace BetterCoinflips
         {
             Instance = this;
             try { RegisterEvents(); }
-            catch(Exception ex) { Log.Error($"Failed to load \"BetterCoinflips\": {ex}");}
+            catch (Exception ex) { Log.Error($"Failed to load \"BetterCoinflips\": {ex}"); }
             base.OnEnabled();
         }
 

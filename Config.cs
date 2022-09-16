@@ -13,8 +13,8 @@ namespace BetterCoinflips
         [Description("Whether or not the default coins should spawn (eg. in lockers). Default: false")]
         public bool SpawnDefaultCoins { get; set; } = false;
 
-        [Description("The duration of the broadcast informing you about your 'reward'. Default: 5")]
-        public ushort BroadcastTime { get; set; } = 5;
+        [Description("The duration of the broadcast informing you about your 'reward'. Default: 3")]
+        public ushort BroadcastTime { get; set; } = 3;
 
         [Description("The duration of the map blackout. Default: 10")]
         public float MapBlackoutTime { get; set; } = 10;
@@ -54,19 +54,21 @@ namespace BetterCoinflips
 
         [Description("The % chance of receiving a Facility Manager keycard instead of a Containment Engineer keycard when that effect is chosen. Default: 15")]
         public int RedCardChance { get; set; } = 15;
+
         [Description("The % chance for each of the below good effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.")]
         public int KeycardEffectChance { get; set; } = 20;
         public int MedicalKitEffectChance { get; set; } = 35;
-        public int EscapeEffectChance { get; set; } = 5;
+        public int TPToEscapeEffectChance { get; set; } = 5;
         public int HealEffectChance { get; set; } = 10;
         public int MoreHPEffectChance { get; set; } = 10;
         public int HatEffectChance { get; set; } = 10;
         public int RandomGoodEffectChance { get; set; } = 30;
+        public int OneAmmoLogicerEffectChance { get; set; } = 5;
         public int LightbulbEffectChance { get; set; } = 15;
-        public int OneAmmoLogicerEffectChance { get; set; } = 10;
+
         [Description("The % chance for each of the below bad effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.")]
         public int HpReductionEffectChance { get; set; } = 20;
-        public int TPToClassDCellsEffectChance { get; set; } = 10;
+        public int TPToClassDCellsEffectChance { get; set; } = 5;
         public int RandomBadEffectChance { get; set; } = 30;
         public int WarheadEffectChance { get; set; } = 25;
         public int LightsOutEffectChance { get; set; } = 15;
