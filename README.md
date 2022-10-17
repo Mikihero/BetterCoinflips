@@ -36,14 +36,20 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
 
 ```yaml
 better_coinflips:
-  # Whether or not the plugin should be enabled.
+# Whether or not the plugin should be enabled.
   is_enabled: true
   # Whether or not the default coins should spawn (eg. in lockers). Default: false
   spawn_default_coins: false
+  # Whether or not the plugin should replace SCP-1853 instances in their pedestals. Default: true. This config is temporary and will be removed in a future update.
+  replace1853: true
+  # Whether or not the coin should be removed from a players inventory after it's thrown. Default: false.
+  remove_coin_on_throw: false
   # The duration of the broadcast informing you about your 'reward'. Default: 3
   broadcast_time: 3
   # The duration of the map blackout. Default: 10
   map_blackout_time: 10
+  # The fuse time of the grenade falling on your head. Default: 3.25
+  live_grenade_fuse_time: 3.25
   # List of bad effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html
   bad_effects:
   - Amnesia
@@ -76,7 +82,7 @@ better_coinflips:
   # The % chance for each of the below good effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.
   keycard_effect_chance: 20
   medical_kit_effect_chance: 35
-  escape_effect_chance: 5
+  t_p_to_escape_effect_chance: 5
   heal_effect_chance: 10
   more_h_p_effect_chance: 10
   hat_effect_chance: 10
@@ -85,16 +91,62 @@ better_coinflips:
   lightbulb_effect_chance: 15
   # The % chance for each of the below bad effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.
   hp_reduction_effect_chance: 20
-  t_p_to_class_d_cells_effect_chance: 10
+  t_p_to_class_d_cells_effect_chance: 5
   random_bad_effect_chance: 30
   warhead_effect_chance: 25
   lights_out_effect_chance: 15
   live_h_e_effect_chance: 50
   troll_gun_effect_chance: 50
-  live_flas_effect_chance: 50
+  troll_flash_effect_chance: 50
   s_c_p_tp_effect_chance: 35
   one_h_p_left_effect_chance: 20
   fake_cassie_effect_chance: 45
+  # The message broadcast to a player when they receive a facility manager keycard (the red one) from the coin.
+  red_card_message: You acquired a Facility Manager keycard!
+  # The message broadcast to a player when they receive a containment engineer keycard (the useless one) from the coin.
+  containment_enginner_card_message: You acquired a Containment Engineer keycard!
+  # The message broadcast to a player when they receive a medi-kit from the coin.
+  medi_kit_message: You received a Medical Kit!
+  # The message broadcast to a player when they get teleported to the escape area by the coin.
+  tp_to_escape_message: You can now escape! That's what you wanted right?
+  # The message broadcast to a player when they get magically healed by the coin.
+  magic_heal_message: You've been magically healed!
+  # The message broadcast to a player when they get their hp increased by 10% by the coin.
+  health_increase_message: You received 10% more hp!
+  # The message broadcast to a player when they receive an SCP-268 from the coin.
+  neat_hat_message: You got a neat hat!
+  # The message broadcast to a player when they receive a random good effect from the coin.
+  random_good_effect_message: You got a random effect.
+  # The message broadcast to a player when they receive a logicer with 1 ammo from the coin.
+  one_ammo_logicer_message: You got gun.
+  # The message broadcast to a player when they receive an SCP-2176 from the coin.
+  lightbulb_message: You got a shiny lightbulb!
+  # The message broadcast to a player when they get their hp reduced by 30% by the coin.
+  h_p_reduction_message: Your hp got reduced by 30%.
+  # The message broadcast to a player when they get teleported to Class D cells by the coin.
+  t_p_to_class_d_cells_message: You got teleported to Class D cells.
+  # The message broadcast to a player when they receive a random bad effect from the coin.
+  random_bad_effect_message: You got a random effect.
+  # The message broadcast to a player when the warhead has been stopped by the coin.
+  warhead_stop_message: The warhead has been stopped.
+  # The message broadcast to a player when the warhead has been started by the coin.
+  warhead_start_message: The warhead has been started.
+  # The message broadcast to a player when the lights have been turned off by the coin.
+  lights_out_message: Lights out.
+  # The message broadcast to a player when a grenade has been dropped on their head by the coin.
+  live_grenade_message: Watch your head!
+  # The message broadcast to a player when they receive a troll particle disruptor from the coin.
+  troll_gun_message: YOU GOT A WHAT!?
+  # The message broadcast to a player when a flash that can't blind them is dropped on their head by the coin.
+  troll_flash_message: You heard something?
+  # The message broadcast to a player when they are teleported to a random SCP by the coin.
+  t_p_to_random_s_c_p_message: You were teleported to an SCP.
+  # The message broadcast to a player when they are dealth 15 damage by the coin.
+  small_damage_message: You've lost 15hp.
+  # The message broadcast to a player when they are left on 1 hp by the coin.
+  huge_damage_message: You've lost a lot of hp
+  # The message broadcast to a player when the coin fakes a cassie of an SCP dying.
+  fake_s_c_p_kill_message: Did you just kill an SCP?!
 ```
 
 **THESE PERCENTAGES ARE NOT AT ALL BALANCED, THEY'RE JUST SOMETHING I PUT IN PLACE FOR NOW, IF YOU FEEL LIKE EVERYONE WOULD BENEFIT FROM CHANGING ONE OF THE DEFAULT VALUES FEEL FREE TO OPEN A PR/ISSUE ON GITHUB.**
