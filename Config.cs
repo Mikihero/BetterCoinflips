@@ -19,6 +19,9 @@ namespace BetterCoinflips
         [Description("The duration of the map blackout. Default: 10")]
         public float MapBlackoutTime { get; set; } = 10;
 
+        [Description("The fuse time of the grenade falling on your head.")]
+        public float LiveGrenadeFuseTime { get; set; } = 3.25f;
+
         [Description("List of bad effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]
         public HashSet<EffectType> BadEffects { get; set; } = new HashSet<EffectType>
         {
@@ -78,5 +81,8 @@ namespace BetterCoinflips
         public int SCPTpEffectChance { get; set; } = 35;
         public int OneHPLeftEffectChance { get; set; } = 20;
         public int FakeCassieEffectChance { get; set; } = 45;
+
+        [Description("Whether or not the coin should be removed from a players inventory after it's thrown.")]
+        public bool RemoveCoinOnThrow { get; set; } = false;
     }
 }

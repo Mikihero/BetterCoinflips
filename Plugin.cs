@@ -8,9 +8,8 @@ namespace BetterCoinflips
     public class Plugin : Plugin<Config>
     {
         public static Plugin Instance;
-        public override Version RequiredExiledVersion => new Version(5, 3, 0);
-        public override Version Version => new Version(1, 1, 0);
-        public override string Author => "Miki_hero";
+        public override Version RequiredExiledVersion => new Version(5, 3, 0, 0);
+        public override Version Version => new Version(1, 2, 0);
         private EventHandlers EventHandler;
 
         public override void OnEnabled()

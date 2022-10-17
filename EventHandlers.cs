@@ -42,13 +42,13 @@ namespace BetterCoinflips
                     case 1:
                         if(RedCardChance > rd.Next(1, 101))
                         {
-                            Item.Create(ItemType.KeycardContainmentEngineer).Spawn(ev.Player.Position);
-                            SendBroadcast(ev.Player, "You acquired a Containment Engineer keycard!");
+                            Item.Create(ItemType.KeycardFacilityManager).Spawn(ev.Player.Position);
+                            SendBroadcast(ev.Player, "You acquired a Facility Manager keycard!");
                         } 
                         else
                         {
-                            Item.Create(ItemType.KeycardFacilityManager).Spawn(ev.Player.Position);
-                            SendBroadcast(ev.Player, "You acquired a Facility Manager keycard!");
+                            Item.Create(ItemType.KeycardContainmentEngineer).Spawn(ev.Player.Position);
+                            SendBroadcast(ev.Player, "You acquired a Containment Engineer keycard!");
                         }
                         
                         break;
@@ -154,7 +154,7 @@ namespace BetterCoinflips
                     
                     case 7:
                         ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-                        grenade.FuseTime = 3.25f;
+                        grenade.FuseTime = Plugin.Instance.Config.LiveGrenadeFuseTime;
                         grenade.SpawnActive(ev.Player.Position + Vector3.up);
                         SendBroadcast(ev.Player, "Watch your head!");
                         break;
@@ -199,6 +199,10 @@ namespace BetterCoinflips
                         vase.Spawn(ev.Player.Position);
                         break;*/
                 }
+            }
+            if(Plugin.Instance.Config.RemoveCoinOnThrow)
+            {
+                ev.Player.RemoveHeldItem(true);
             }
         }
 
