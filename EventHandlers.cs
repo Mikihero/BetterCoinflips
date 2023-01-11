@@ -29,6 +29,7 @@ namespace BetterCoinflips
         {
             int headsEvent = 0;
             int tailsEvent = 0;
+            Log.Debug($"Is tails: {ev.IsTails}");
             if (!ev.IsTails)
             {
                 if (KeycardEffectChance > rd.Next(1, 100)) headsEvent = 1;
@@ -40,6 +41,7 @@ namespace BetterCoinflips
                 else if (RandomGoodEffectChance > rd.Next(1, 100)) headsEvent = 7;
                 else if (OneAmmoLogicerEffectChance > rd.Next(1, 100)) headsEvent = 8; 
                 else if (LightbulbEffectChance > rd.Next(1, 100)) headsEvent = 9; // doesn't have to exist for now, it is here if I want to expand the effects
+                Log.Debug($"headsEvent = {headsEvent}");
 
                 switch (headsEvent)
                 {
@@ -89,7 +91,7 @@ namespace BetterCoinflips
                         SendBroadcast(ev.Player, OneAmmoLogicerMessage);
                         break;
                     default:
-                        Pickup.CreateAndSpawn(ItemType.SCP2176, ev.Player.Position, new Quaternion(0,0,0,0));
+                        Pickup.CreateAndSpawn(ItemType.SCP2176, ev.Player.Position, new Quaternion(0,0,0,0)); //generates an error for some reason
                         SendBroadcast(ev.Player, LightbulbMessage);
                         break;
                         /*case 9:
@@ -113,7 +115,8 @@ namespace BetterCoinflips
                 else if (SCPTpEffectChance > rd.Next(1, 100)) tailsEvent = 9;
                 else if (OneHPLeftEffectChance > rd.Next(1, 100)) tailsEvent = 10;
                 else if (FakeCassieEffectChance > rd.Next(1, 100)) tailsEvent = 11;  // doesn't have to exist for now, it is here if I want to expand the effects
-
+                Log.Debug($"tailsEvent = {tailsEvent}");
+                
                 switch (tailsEvent)
                 {
                     case 1:
