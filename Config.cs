@@ -7,8 +7,11 @@ namespace BetterCoinflips
 {
     public class Config : IConfig
     {
-        [Description("Whether or not the plugin should be enabled.")]
+        [Description("Whether or not the plugin should be enabled. Default: true")]
         public bool IsEnabled { get; set; } = true;
+
+        [Description("Whether or not debug logs should be shown. Default: false")]
+        public bool Debug { get; set; } = false;
 
         [Description("Whether or not the default coins should spawn (eg. in lockers). Default: false")]
         public bool SpawnDefaultCoins { get; set; } = false;
@@ -31,7 +34,8 @@ namespace BetterCoinflips
         [Description("List of bad effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]
         public HashSet<EffectType> BadEffects { get; set; } = new HashSet<EffectType>
         {
-            EffectType.Amnesia,
+            EffectType.AmnesiaVision,
+            EffectType.AmnesiaItems,
             EffectType.Asphyxiated,
             EffectType.Blinded,
             EffectType.Burned,
@@ -45,7 +49,7 @@ namespace BetterCoinflips
             EffectType.SeveredHands,
             EffectType.SinkHole,
             EffectType.Stained,
-            EffectType.Visual173Blink,
+            EffectType.Visuals173Blink,
         };
 
         [Description("List of good effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]
@@ -92,7 +96,7 @@ namespace BetterCoinflips
         public string RedCardMessage { get; set; } = "You acquired a Facility Manager keycard!";
 
         [Description("The message broadcast to a player when they receive a containment engineer keycard (the useless one) from the coin.")]
-        public string ContainmentEnginnerCardMessage { get; set; } = "You acquired a Containment Engineer keycard!";
+        public string ContainmentEngineerCardMessage { get; set; } = "You acquired a Containment Engineer keycard!";
 
         [Description("The message broadcast to a player when they receive a medi-kit from the coin.")]
         public string MediKitMessage { get; set; } = "You received a Medical Kit!";

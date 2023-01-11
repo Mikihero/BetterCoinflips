@@ -1,0 +1,5 @@
+Properties/
+bin/
+obj/
+packages.config
+.idea/
