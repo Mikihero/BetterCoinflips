@@ -1,5 +1,7 @@
 ﻿using Exiled.API.Features;
 using System;
+using HarmonyLib;
+using UnityEngine;
 using Player = Exiled.Events.Handlers.Player;
 using Map = Exiled.Events.Handlers.Map;
 using Server = Exiled.Events.Handlers.Server;
@@ -14,18 +16,23 @@ namespace BetterCoinflips
         public override string Author => "Miki_hero";
 
         private EventHandlers _eventHandler;
+        private Harmony _harmony;
         
         public override void OnEnabled()
         {
             Instance = this;
+            RegisterEvents();
             try
             {
-                RegisterEvents();
+                _harmony = new Harmony("bettercoinflips.patch");
+                _harmony.PatchAll();
             }
             catch (Exception ex)
             {
-                Log.Error($"Failed to load \"BetterCoinflips\": {ex}");
+                Log.Error($"Failed to patch: {ex}");
+                _harmony.UnpatchAll();
             }
+
             base.OnEnabled();
         }
 
@@ -40,15 +47,11 @@ namespace BetterCoinflips
         {
             _eventHandler = new EventHandlers();
             Player.FlippingCoin += _eventHandler.OnCoinFlip;
-            Map.SpawningItem += _eventHandler.OnSpawningItem;
-            // Server.RoundStarted += _eventHandler.OnRoundStart;
         }
 
         private void UnRegisterEvents()
         {
             Player.FlippingCoin -= _eventHandler.OnCoinFlip;
-            // Server.RoundStarted -= _eventHandler.OnRoundStart;
-            Map.SpawningItem -= _eventHandler.OnSpawningItem;
             _eventHandler = null;
         }
     }
