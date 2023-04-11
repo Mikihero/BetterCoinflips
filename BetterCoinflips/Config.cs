@@ -29,13 +29,11 @@ namespace BetterCoinflips
         public float MapBlackoutTime { get; set; } = 10;
 
         [Description("The fuse time of the grenade falling on your head. Default: 3.25")]
-        public float LiveGrenadeFuseTime { get; set; } = 3.25f;
+        public double LiveGrenadeFuseTime { get; set; } = 3.25;
 
         [Description("List of bad effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]
         public HashSet<EffectType> BadEffects { get; set; } = new HashSet<EffectType>
         {
-            EffectType.AmnesiaVision,
-            EffectType.AmnesiaItems,
             EffectType.Asphyxiated,
             EffectType.Blinded,
             EffectType.Burned,
@@ -49,7 +47,6 @@ namespace BetterCoinflips
             EffectType.SeveredHands,
             EffectType.SinkHole,
             EffectType.Stained,
-            EffectType.Visuals173Blink,
         };
 
         [Description("List of good effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]
@@ -89,7 +86,7 @@ namespace BetterCoinflips
         public int TrollGunEffectChance { get; set; } = 50;
         public int TrollFlashEffectChance { get; set; } = 50;
         public int SCPTpEffectChance { get; set; } = 35;
-        public int OneHPLeftEffectChance { get; set; } = 20;
+        public int OneHPLeftEffectChance { get; set; } = 21;
         public int FakeCassieEffectChance { get; set; } = 45;
 
         [Description("The message broadcast to a player when they receive a facility manager keycard (the red one) from the coin.")]

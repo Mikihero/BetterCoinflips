@@ -2,6 +2,7 @@
 using System;
 using Player = Exiled.Events.Handlers.Player;
 using Map = Exiled.Events.Handlers.Map;
+using Server = Exiled.Events.Handlers.Server;
 
 namespace BetterCoinflips
 {
@@ -35,16 +36,18 @@ namespace BetterCoinflips
             base.OnDisabled();
         }
 
-        public void RegisterEvents()
+        private void RegisterEvents()
         {
             _eventHandler = new EventHandlers();
             Player.FlippingCoin += _eventHandler.OnCoinFlip;
             Map.SpawningItem += _eventHandler.OnSpawningItem;
-
+            // Server.RoundStarted += _eventHandler.OnRoundStart;
         }
-        public void UnRegisterEvents()
+
+        private void UnRegisterEvents()
         {
             Player.FlippingCoin -= _eventHandler.OnCoinFlip;
+            // Server.RoundStarted -= _eventHandler.OnRoundStart;
             Map.SpawningItem -= _eventHandler.OnSpawningItem;
             _eventHandler = null;
         }
