@@ -14,7 +14,8 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
 6. An SCP-268 will spawn at their feet.
 7. They will receive a random good effect (configurable) for 5 seconds.
 8. They will get a Logicer with 1 ammo.  
-9. An SCP-2176 will spawn at their feet.  
+9. An SCP-2176 will spawn at their feet. 
+10. A pink candy will spawn at their feet. 
 
 - Whenever someone flips a coin and it lands on tails one of the following will happen:  
 1. Their current hp will be set to 70%.  
@@ -27,21 +28,26 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
 8. A flash grenade will spawn on their head and explode after 1 second.
 9. They are teleported to an SCP if there are any alive, otherwise they lose 15 hp.
 10. They lose all but 1 hp.
-11. A fake CASSIE is send saying that SCP-173 was killed by a Tesla gate.
+11. A primed SCP-244 is spawned on their head.
+12. An SCP-173 tantrum is placed at their feet.
+13. A fake CASSIE is send saying that SCP-173 was killed by a Tesla gate.
 
-- If the config option for it is set to true, the plugin will prevent the spawns of any coins in lockers etc.
-- The plugin will replace every default SCP-1853 with a coin in the SCP pedestals.
+- The plugin will prevent the spawns of any coins in lockers etc.
+- The plugin will replace every chosen item (by default SCP-1853) with a coin in the SCP pedestals.
+- The plugin will remove a thrown coin from a players inventory
 
 ### Default config
 
 ```yaml
 better_coinflips:
-# Whether or not the plugin should be enabled.
+  # Whether or not the plugin should be enabled. Default: true
   is_enabled: true
+  # Whether or not debug logs should be shown. Default: false
+  debug: false
   # Whether or not the default coins should spawn (eg. in lockers). Default: false
   spawn_default_coins: false
-  # Whether or not the plugin should replace SCP-1853 instances in their pedestals. Default: true. This config is temporary and will be removed in a future update.
-  replace1853: true
+  # The ItemType of the item to be replaced with a coin, the item is supposed to be something found in SCP pedestals.
+  item_to_replace: SCP1853
   # Whether or not the coin should be removed from a players inventory after it's thrown. Default: false.
   remove_coin_on_throw: false
   # The duration of the broadcast informing you about your 'reward'. Default: 3
@@ -52,7 +58,6 @@ better_coinflips:
   live_grenade_fuse_time: 3.25
   # List of bad effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html
   bad_effects:
-  - Amnesia
   - Asphyxiated
   - Blinded
   - Burned
@@ -66,7 +71,6 @@ better_coinflips:
   - SeveredHands
   - SinkHole
   - Stained
-  - Visual173Blink
   # List of good effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html
   good_effects:
   - BodyshotReduction
@@ -79,7 +83,7 @@ better_coinflips:
   - Vitality
   # The % chance of receiving a Facility Manager keycard instead of a Containment Engineer keycard when that effect is chosen. Default: 15
   red_card_chance: 15
-  # The % chance for each of the below good effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.
+  # The chance of these effects happening. It's a proportional chance not a % chance.
   keycard_effect_chance: 20
   medical_kit_effect_chance: 35
   t_p_to_escape_effect_chance: 5
@@ -87,24 +91,27 @@ better_coinflips:
   more_h_p_effect_chance: 10
   hat_effect_chance: 10
   random_good_effect_chance: 30
-  one_ammo_logicer_effect_chance: 5
+  one_ammo_logicer_effect_chance: 1
   lightbulb_effect_chance: 15
-  # The % chance for each of the below bad effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.
+  pink_candy_effect_chance: 10
+  # The chance of these effects happening. It's a proportional chance not a % chance.
   hp_reduction_effect_chance: 20
   t_p_to_class_d_cells_effect_chance: 5
-  random_bad_effect_chance: 30
-  warhead_effect_chance: 25
-  lights_out_effect_chance: 15
-  live_h_e_effect_chance: 50
+  random_bad_effect_chance: 20
+  warhead_effect_chance: 10
+  lights_out_effect_chance: 20
+  live_h_e_effect_chance: 30
   troll_gun_effect_chance: 50
   troll_flash_effect_chance: 50
-  s_c_p_tp_effect_chance: 35
-  one_h_p_left_effect_chance: 20
-  fake_cassie_effect_chance: 45
+  s_c_p_tp_effect_chance: 20
+  one_h_p_left_effect_chance: 15
+  primed_vase_effect_chance: 20
+  shit_pants_effect_chance: 40
+  fake_cassie_effect_chance: 50
   # The message broadcast to a player when they receive a facility manager keycard (the red one) from the coin.
   red_card_message: You acquired a Facility Manager keycard!
   # The message broadcast to a player when they receive a containment engineer keycard (the useless one) from the coin.
-  containment_enginner_card_message: You acquired a Containment Engineer keycard!
+  containment_engineer_card_message: You acquired a Containment Engineer keycard!
   # The message broadcast to a player when they receive a medi-kit from the coin.
   medi_kit_message: You received a Medical Kit!
   # The message broadcast to a player when they get teleported to the escape area by the coin.
@@ -121,6 +128,8 @@ better_coinflips:
   one_ammo_logicer_message: You got gun.
   # The message broadcast to a player when they receive an SCP-2176 from the coin.
   lightbulb_message: You got a shiny lightbulb!
+  # The message broadcast to a player when they receive a pink candy from the coin.
+  pink_candy_message: You got a pretty candy!
   # The message broadcast to a player when they get their hp reduced by 30% by the coin.
   h_p_reduction_message: Your hp got reduced by 30%.
   # The message broadcast to a player when they get teleported to Class D cells by the coin.
@@ -145,8 +154,10 @@ better_coinflips:
   small_damage_message: You've lost 15hp.
   # The message broadcast to a player when they are left on 1 hp by the coin.
   huge_damage_message: You've lost a lot of hp
+  # The message broadcast to a player when they a primed vase is spawned on their head.
+  primed_vase_message: Your grandma payed you a visit!
+  # The message broadcast to a player when an SCP-173 tantrum is spawned beneath their feet.
+  shit_pants_message: You just shit your pants.
   # The message broadcast to a player when the coin fakes a cassie of an SCP dying.
   fake_s_c_p_kill_message: Did you just kill an SCP?!
 ```
-
-**THESE PERCENTAGES ARE NOT AT ALL BALANCED, THEY'RE JUST SOMETHING I PUT IN PLACE FOR NOW, IF YOU FEEL LIKE EVERYONE WOULD BENEFIT FROM CHANGING ONE OF THE DEFAULT VALUES FEEL FREE TO OPEN A PR/ISSUE ON GITHUB.**
