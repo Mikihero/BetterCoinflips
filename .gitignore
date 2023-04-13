@@ -5,3 +5,4 @@ packages.config
 .idea/
 .vs/
 BetterCoinflips.sln.DotSettings.user
+TestCommand.cs

@@ -16,9 +16,9 @@ namespace BetterCoinflips
         [Description("Whether or not the default coins should spawn (eg. in lockers). Default: false")]
         public bool SpawnDefaultCoins { get; set; } = false;
 
-        [Description("Whether or not the plugin should replace SCP-1853 instances in their pedestals. Default: true. This config is temporary and will be removed in a future update.")]
-        public bool Replace1853 { get; set; } = true;
-
+        [Description("The ItemType of the item to be replaced with a coin, the item is supposed to be something found in SCP pedestals.")]
+        public ItemType ItemToReplace { get; set; } = ItemType.SCP1853;
+        
         [Description("Whether or not the coin should be removed from a players inventory after it's thrown. Default: false.")]
         public bool RemoveCoinOnThrow { get; set; } = false;
 
@@ -65,7 +65,7 @@ namespace BetterCoinflips
         [Description("The % chance of receiving a Facility Manager keycard instead of a Containment Engineer keycard when that effect is chosen. Default: 15")]
         public int RedCardChance { get; set; } = 15;
 
-        [Description("The % chance for each of the below good effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.")]
+        [Description("The chance of these effects happening. It's a proportional chance not a % chance.")]
         public int KeycardEffectChance { get; set; } = 20;
         public int MedicalKitEffectChance { get; set; } = 35;
         public int TPToEscapeEffectChance { get; set; } = 5;
@@ -73,21 +73,24 @@ namespace BetterCoinflips
         public int MoreHPEffectChance { get; set; } = 10;
         public int HatEffectChance { get; set; } = 10;
         public int RandomGoodEffectChance { get; set; } = 30;
-        public int OneAmmoLogicerEffectChance { get; set; } = 5;
+        public int OneAmmoLogicerEffectChance { get; set; } = 1;
         public int LightbulbEffectChance { get; set; } = 15;
+        public int PinkCandyEffectChance { get; set; } = 10;
 
-        [Description("The % chance for each of the below bad effects to happen, they are checked separately and thus don't have to add up to 100%. If none of those are chosen then the last effect happens.")]
+        [Description("The chance of these effects happening. It's a proportional chance not a % chance.")]
         public int HpReductionEffectChance { get; set; } = 20;
         public int TPToClassDCellsEffectChance { get; set; } = 5;
-        public int RandomBadEffectChance { get; set; } = 30;
-        public int WarheadEffectChance { get; set; } = 25;
-        public int LightsOutEffectChance { get; set; } = 15;
-        public int LiveHEEffectChance { get; set; } = 50;
+        public int RandomBadEffectChance { get; set; } = 20;
+        public int WarheadEffectChance { get; set; } = 10;
+        public int LightsOutEffectChance { get; set; } = 20;
+        public int LiveHEEffectChance { get; set; } = 30;
         public int TrollGunEffectChance { get; set; } = 50;
         public int TrollFlashEffectChance { get; set; } = 50;
-        public int SCPTpEffectChance { get; set; } = 35;
-        public int OneHPLeftEffectChance { get; set; } = 21;
-        public int FakeCassieEffectChance { get; set; } = 45;
+        public int SCPTpEffectChance { get; set; } = 20;
+        public int OneHPLeftEffectChance { get; set; } = 15;
+        public int PrimedVaseEffectChance { get; set; } = 20;
+        public int ShitPantsEffectChance { get; set; } = 40;
+        public int FakeCassieEffectChance { get; set; } = 50;
 
         [Description("The message broadcast to a player when they receive a facility manager keycard (the red one) from the coin.")]
         public string RedCardMessage { get; set; } = "You acquired a Facility Manager keycard!";
@@ -118,6 +121,11 @@ namespace BetterCoinflips
 
         [Description("The message broadcast to a player when they receive an SCP-2176 from the coin.")]
         public string LightbulbMessage { get; set; } = "You got a shiny lightbulb!";
+
+        [Description("The message broadcast to a player when they receive a pink candy from the coin.")]
+        public string PinkCandyMessage { get; set; } = "You got a pretty candy!";
+
+
 
         [Description("The message broadcast to a player when they get their hp reduced by 30% by the coin.")]
         public string HPReductionMessage { get; set; } = "Your hp got reduced by 30%.";
@@ -155,6 +163,12 @@ namespace BetterCoinflips
         [Description("The message broadcast to a player when they are left on 1 hp by the coin.")]
         public string HugeDamageMessage { get; set; } = "You've lost a lot of hp";
 
+        [Description("The message broadcast to a player when they a primed vase is spawned on their head.")]
+        public string PrimedVaseMessage { get; set; } = "Your grandma payed you a visit!";
+
+        [Description("The message broadcast to a player when an SCP-173 tantrum is spawned beneath their feet.")]
+        public string ShitPantsMessage { get; set; } = "You just shit your pants.";
+        
         [Description("The message broadcast to a player when the coin fakes a cassie of an SCP dying.")]
         public string FakeSCPKillMessage { get; set; } = "Did you just kill an SCP?!";
     }

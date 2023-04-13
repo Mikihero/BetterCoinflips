@@ -3,11 +3,9 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using System.Linq;
-using Exiled.API.Extensions;
 using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
-using InventorySystem.Items;
 using PlayerRoles;
 using UnityEngine;
 
@@ -17,13 +15,8 @@ namespace BetterCoinflips
     public class EventHandlers
     {
         private readonly Config _cfg = Plugin.Instance.Config;
-        System.Random rd = new System.Random();
+        private System.Random rd = new();
         private int test = 0;
-
-        private void SpawnCoin(Vector3 pos)
-        {
-            Pickup.CreateAndSpawn(ItemType.Coin, pos, new Quaternion(0, 0, 0, 0));
-        }
 
         private void SendBroadcast(Player pl, string message)
         {
@@ -45,11 +38,12 @@ namespace BetterCoinflips
                     { 6, _cfg.HatEffectChance },
                     { 7, _cfg.RandomGoodEffectChance },
                     { 8, _cfg.OneAmmoLogicerEffectChance },
-                    { 9, _cfg.LightbulbEffectChance }
+                    { 9, _cfg.LightbulbEffectChance },
+                    { 10, _cfg.PinkCandyEffectChance}
                 };
                 int totalChance = effectChances.Values.Sum();
                 int randomNum = rd.Next(1, totalChance + 1);
-                int headsEvent = 1; // Set a default value for headsEvent
+                int headsEvent = 2; // Set a default value for headsEvent
 
                 foreach (KeyValuePair<int, int> kvp in effectChances)
                 {
@@ -69,14 +63,12 @@ namespace BetterCoinflips
                     case 1:
                         if (_cfg.RedCardChance > rd.Next(1, 101))
                         {
-                            Pickup.CreateAndSpawn(ItemType.KeycardFacilityManager, ev.Player.Position,
-                                new Quaternion(0, 0, 0, 0));
+                            Pickup.CreateAndSpawn(ItemType.KeycardFacilityManager, ev.Player.Position, new Quaternion());
                             SendBroadcast(ev.Player, _cfg.RedCardMessage);
                         }
                         else
                         {
-                            Pickup.CreateAndSpawn(ItemType.KeycardContainmentEngineer, ev.Player.Position,
-                                new Quaternion(0, 0, 0, 0));
+                            Pickup.CreateAndSpawn(ItemType.KeycardContainmentEngineer, ev.Player.Position, new Quaternion());
                             SendBroadcast(ev.Player, _cfg.ContainmentEngineerCardMessage);
                         }
 
@@ -113,17 +105,16 @@ namespace BetterCoinflips
                         f.CreatePickup(ev.Player.Position);
                         SendBroadcast(ev.Player, _cfg.OneAmmoLogicerMessage);
                         break;
-                    default:
-                        Pickup.CreateAndSpawn(ItemType.SCP2176, ev.Player.Position,
-                            new Quaternion(0, 0, 0, 0)); //generates an error for some reason
+                    case 9:
+                        Pickup.CreateAndSpawn(ItemType.SCP2176, ev.Player.Position, new Quaternion(0, 0, 0, 0));
                         SendBroadcast(ev.Player, _cfg.LightbulbMessage);
                         break;
-                    /*case 9:
+                    case 10:
                         Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
                         candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
-                        candy.DropCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink, false, false, true, InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
-                        SendBroadcast(ev.Player, "test");
-                        break;*/
+                        candy.CreatePickup(ev.Player.Position);
+                        SendBroadcast(ev.Player, _cfg.PinkCandyMessage);
+                        break;
                 }
             }
 
@@ -141,11 +132,13 @@ namespace BetterCoinflips
                     { 8, _cfg.TrollFlashEffectChance },
                     { 9, _cfg.SCPTpEffectChance },
                     { 10, _cfg.OneHPLeftEffectChance },
-                    { 11, _cfg.FakeCassieEffectChance }
+                    { 11, _cfg.PrimedVaseEffectChance},
+                    { 12, _cfg.ShitPantsEffectChance },
+                    { 13, _cfg.FakeCassieEffectChance }
                 };
                 int totalChance = effectChances.Values.Sum();
                 int randomNum = rd.Next(1, totalChance + 1);
-                int tailsEvent = 1; // Set a default value for headsEvent
+                int tailsEvent = 13; // Set a default value for headsEvent
 
                 foreach (KeyValuePair<int, int> kvp in effectChances)
                 {
@@ -204,8 +197,6 @@ namespace BetterCoinflips
                         grenade.FuseTime = (float)_cfg.LiveGrenadeFuseTime;
                         grenade.SpawnActive(ev.Player.Position + Vector3.up);
                         SendBroadcast(ev.Player, _cfg.LiveGrenadeMessage);
-
-
                         break;
                     case 7:
                         Item gun2 = Item.Create(ItemType.ParticleDisruptor);
@@ -223,8 +214,7 @@ namespace BetterCoinflips
                     case 9:
                         if (Player.Get(Side.Scp).Any())
                         {
-                            Player scpPlayer = Player.Get(Side.Scp).Where(p => p.Role.Type != RoleTypeId.Scp079)
-                                .ToList().RandomItem();
+                            Player scpPlayer = Player.Get(Side.Scp).Where(p => p.Role.Type != RoleTypeId.Scp079).ToList().RandomItem();
                             ev.Player.Position = scpPlayer.Position;
                             SendBroadcast(ev.Player, _cfg.TPToRandomSCPMessage);
                         }
@@ -239,12 +229,17 @@ namespace BetterCoinflips
                         ev.Player.Hurt(ev.Player.Health - 1);
                         SendBroadcast(ev.Player, _cfg.HugeDamageMessage);
                         break;
-                    case 13:
+                    case 11:
                         Scp244 vase = (Scp244)Item.Create(ItemType.SCP244a);
                         vase.Primed = true;
                         vase.CreatePickup(ev.Player.Position);
+                        SendBroadcast(ev.Player, _cfg.PrimedVaseMessage);
                         break;
-                    default:
+                    case 12:
+                        ev.Player.PlaceTantrum();
+                        SendBroadcast(ev.Player, _cfg.ShitPantsMessage);
+                        break;
+                    case 13:
                         Cassie.MessageTranslated("scp 1 7 3 successfully terminated by automatic security system","SCP-173 successfully terminated by Automatic Security System.");
                         SendBroadcast(ev.Player, _cfg.FakeSCPKillMessage);
                         break;
@@ -254,6 +249,32 @@ namespace BetterCoinflips
             if (_cfg.RemoveCoinOnThrow)
             {
                 ev.Player.RemoveHeldItem();
+            }
+        }
+
+        public void OnSpawningItem(SpawningItemEventArgs ev)
+        {
+            if (!_cfg.SpawnDefaultCoins && ev.Pickup.Type == ItemType.Coin)
+            {
+                ev.IsAllowed = false;
+            }
+
+            if (_cfg.ItemToReplace != ItemType.None && ev.Pickup.Type == _cfg.ItemToReplace)
+            {
+                ev.IsAllowed = false;
+                Pickup.CreateAndSpawn(ItemType.Coin, ev.Pickup.Position, new Quaternion());
+            }
+        }
+
+        public void OnInteractingDoorEventArgs(InteractingDoorEventArgs ev)
+        {
+            foreach (Pickup pickup in ev.Door.Room.Pickups)
+            {
+                if (pickup.IsLocked && pickup.Type == _cfg.ItemToReplace)
+                {
+                    pickup.Destroy();
+                    Pickup.CreateAndSpawn(ItemType.Coin, pickup.RelativePosition.Position, new Quaternion());
+                }
             }
         }
     }

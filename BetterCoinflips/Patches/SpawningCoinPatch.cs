@@ -1,25 +1,18 @@
-using GameCore;
 using HarmonyLib;
 using MapGeneration.Distributors;
-using UnityEngine;
-using Log = Exiled.API.Features.Log;
 
 namespace BetterCoinflips.Patches
 {
-    public class SpawningCoinPatch
+    [HarmonyPatch(typeof(LockerChamber), nameof(LockerChamber.SpawnItem))]
+    public static class LockerChamberItemSpawnPatch 
     {
-        [HarmonyPatch(typeof(ItemDistributor), nameof(ItemDistributor.CreatePickup))]
-        public static class CreatePickupPatch
+        public static bool Prefix(ItemType id, int amount)
         {
-            public static bool Prefix(ItemType id, Transform t, string triggerDoor)
+            if (id == ItemType.Coin && !Plugin.Instance.Config.SpawnDefaultCoins)
             {
-                if (id == ItemType.Coin)
-                {
-                    Log.Info("sraka");
-                    return false;
-                }
-                return true;
+                return false;
             }
+            return true;
         }
     }
 }
