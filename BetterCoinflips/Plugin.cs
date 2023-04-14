@@ -10,7 +10,7 @@ namespace BetterCoinflips
     {
         public static Plugin Instance;
         public override Version RequiredExiledVersion => new Version(6,0,0);
-        public override Version Version => new Version(2, 0,0);
+        public override Version Version => new Version(2, 0,1);
         public override string Author => "Miki_hero";
 
         private EventHandlers _eventHandler;
