@@ -3,5 +3,5 @@ obj/
 packages.config
 .idea/
 .vs/
-BetterCoinflips.sln.DotSettings.user
+*.sln.DotSettings.user
 TestCommand.cs
