@@ -56,16 +56,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventHandlers.cs" />
     <Compile Include="Patches\SpawningCoinPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="EventHandlers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Translations.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">
-      <Version>6.1.0-beta.3</Version>
+      <Version>6.1.0-rc.0-4</Version>
     </PackageReference>
     <PackageReference Include="Lib.Harmony">
       <Version>2.2.2</Version>

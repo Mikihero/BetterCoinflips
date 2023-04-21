@@ -32,7 +32,7 @@ namespace BetterCoinflips
         public double LiveGrenadeFuseTime { get; set; } = 3.25;
 
         [Description("List of bad effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]
-        public HashSet<EffectType> BadEffects { get; set; } = new HashSet<EffectType>
+        public HashSet<EffectType> BadEffects { get; set; } = new()
         {
             EffectType.Asphyxiated,
             EffectType.Blinded,
@@ -50,7 +50,7 @@ namespace BetterCoinflips
         };
 
         [Description("List of good effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]
-        public HashSet<EffectType> GoodEffects { get; set; } = new HashSet<EffectType>
+        public HashSet<EffectType> GoodEffects { get; set; } = new()
         {
             EffectType.BodyshotReduction,
             EffectType.DamageReduction,

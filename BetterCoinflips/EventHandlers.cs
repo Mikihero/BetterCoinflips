@@ -68,7 +68,7 @@ namespace BetterCoinflips
 
                 Log.Debug($"headsEvent = {headsEvent}");
 
-                switch (headsEvent) //TODO: Add effects: spawning 173 shit, 
+                switch (headsEvent)
                 {
                     case 1:
                         if (_cfg.RedCardChance > rd.Next(1, 101))

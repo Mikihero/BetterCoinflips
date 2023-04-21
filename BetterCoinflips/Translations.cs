@@ -5,7 +5,7 @@ namespace BetterCoinflips
 {
     public class Translations : ITranslation
     {
-                [Description("The message broadcast to a player when they receive a facility manager keycard (the red one) from the coin.")]
+        [Description("The message broadcast to a player when they receive a facility manager keycard (the red one) from the coin.")]
         public string RedCardMessage { get; set; } = "You acquired a Facility Manager keycard!";
 
         [Description("The message broadcast to a player when they receive a containment engineer keycard (the useless one) from the coin.")]
