@@ -6,7 +6,7 @@ using Player = Exiled.Events.Handlers.Player;
 
 namespace BetterCoinflips
 {
-    public class Plugin : Plugin<Config>
+    public class Plugin : Plugin<Config, Translations>
     {
         public static Plugin Instance;
         public override Version RequiredExiledVersion => new Version(6,0,0);

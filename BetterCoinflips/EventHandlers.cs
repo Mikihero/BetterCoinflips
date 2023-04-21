@@ -15,8 +15,18 @@ namespace BetterCoinflips
     public class EventHandlers
     {
         private readonly Config _cfg = Plugin.Instance.Config;
+        private readonly Translations _tr = Plugin.Instance.Translation;
         private System.Random rd = new();
         private int test = 0;
+        private readonly Dictionary<string, string> _scpNames = new()
+        {
+            { "1 7 3", "SCP-173"},
+            { "9 3 9", "SCP-939"},
+            { "0 9 6", "SCP-096"},
+            { "0 7 9", "SCP-079"},
+            { "0 4 9", "SCP-049"},
+            { "1 0 6", "SCP-106"}
+        };
 
         private void SendBroadcast(Player pl, string message)
         {
@@ -64,60 +74,59 @@ namespace BetterCoinflips
                         if (_cfg.RedCardChance > rd.Next(1, 101))
                         {
                             Pickup.CreateAndSpawn(ItemType.KeycardFacilityManager, ev.Player.Position, new Quaternion());
-                            SendBroadcast(ev.Player, _cfg.RedCardMessage);
+                            SendBroadcast(ev.Player, _tr.RedCardMessage);
                         }
                         else
                         {
                             Pickup.CreateAndSpawn(ItemType.KeycardContainmentEngineer, ev.Player.Position, new Quaternion());
-                            SendBroadcast(ev.Player, _cfg.ContainmentEngineerCardMessage);
+                            SendBroadcast(ev.Player, _tr.ContainmentEngineerCardMessage);
                         }
 
                         break;
                     case 2:
                         Pickup.CreateAndSpawn(ItemType.Medkit, ev.Player.Position, new Quaternion(0, 0, 0, 0));
                         Pickup.CreateAndSpawn(ItemType.Painkillers, ev.Player.Position, new Quaternion(0, 0, 0, 0));
-                        SendBroadcast(ev.Player, _cfg.MediKitMessage);
+                        SendBroadcast(ev.Player, _tr.MediKitMessage);
                         break;
                     case 3:
                         ev.Player.Teleport(Door.Get(DoorType.EscapeSecondary));
-                        SendBroadcast(ev.Player, _cfg.TpToEscapeMessage);
+                        SendBroadcast(ev.Player, _tr.TpToEscapeMessage);
                         break;
                     case 4:
                         ev.Player.Heal(25);
-                        SendBroadcast(ev.Player, _cfg.MagicHealMessage);
+                        SendBroadcast(ev.Player, _tr.MagicHealMessage);
                         break;
                     case 5:
                         ev.Player.Health *= 1.1f;
-                        SendBroadcast(ev.Player, _cfg.HealthIncreaseMessage);
+                        SendBroadcast(ev.Player, _tr.HealthIncreaseMessage);
                         break;
                     case 6:
                         Pickup.CreateAndSpawn(ItemType.SCP268, ev.Player.Position, new Quaternion(0, 0, 0, 0));
-                        SendBroadcast(ev.Player, _cfg.NeatHatMessage);
+                        SendBroadcast(ev.Player, _tr.NeatHatMessage);
                         break;
                     case 7:
                         ev.Player.EnableEffect(_cfg.GoodEffects.ToList().RandomItem(), 5, true);
-                        SendBroadcast(ev.Player, _cfg.RandomGoodEffectMessage);
+                        SendBroadcast(ev.Player, _tr.RandomGoodEffectMessage);
                         break;
                     case 8:
                         Item gun = Item.Create(ItemType.GunLogicer);
                         Firearm f = gun as Firearm;
                         f.Ammo = 1;
                         f.CreatePickup(ev.Player.Position);
-                        SendBroadcast(ev.Player, _cfg.OneAmmoLogicerMessage);
+                        SendBroadcast(ev.Player, _tr.OneAmmoLogicerMessage);
                         break;
                     case 9:
                         Pickup.CreateAndSpawn(ItemType.SCP2176, ev.Player.Position, new Quaternion(0, 0, 0, 0));
-                        SendBroadcast(ev.Player, _cfg.LightbulbMessage);
+                        SendBroadcast(ev.Player, _tr.LightbulbMessage);
                         break;
                     case 10:
                         Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
                         candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
                         candy.CreatePickup(ev.Player.Position);
-                        SendBroadcast(ev.Player, _cfg.PinkCandyMessage);
+                        SendBroadcast(ev.Player, _tr.PinkCandyMessage);
                         break;
                 }
             }
-
             if (ev.IsTails)
             {
                 Dictionary<int, int> effectChances = new Dictionary<int, int>
@@ -157,15 +166,15 @@ namespace BetterCoinflips
                 {
                     case 1:
                         ev.Player.Health *= 0.7f;
-                        SendBroadcast(ev.Player, _cfg.HPReductionMessage);
+                        SendBroadcast(ev.Player, _tr.HPReductionMessage);
                         break;
                     case 2:
                         ev.Player.Teleport(Door.Get(DoorType.PrisonDoor));
-                        SendBroadcast(ev.Player, _cfg.TPToClassDCellsMessage);
+                        SendBroadcast(ev.Player, _tr.TPToClassDCellsMessage);
                         break;
                     case 3:
                         ev.Player.EnableEffect(_cfg.BadEffects.ToList().RandomItem(), 5, true);
-                        SendBroadcast(ev.Player, _cfg.RandomBadEffectMessage);
+                        SendBroadcast(ev.Player, _tr.RandomBadEffectMessage);
                         break;
                     case 4:
                         if (!Warhead.IsDetonated)
@@ -173,75 +182,76 @@ namespace BetterCoinflips
                             if (Warhead.IsInProgress)
                             {
                                 Warhead.Stop();
-                                SendBroadcast(ev.Player, _cfg.WarheadStopMessage);
+                                SendBroadcast(ev.Player, _tr.WarheadStopMessage);
                             }
                             else
                             {
                                 Warhead.Start();
-                                SendBroadcast(ev.Player, _cfg.WarheadStartMessage);
+                                SendBroadcast(ev.Player, _tr.WarheadStartMessage);
                             }
                         }
                         else
                         {
                             Warhead.Start();
-                            SendBroadcast(ev.Player, _cfg.WarheadStartMessage);
+                            SendBroadcast(ev.Player, _tr.WarheadStartMessage);
                         }
 
                         break;
                     case 5:
                         Map.TurnOffAllLights(_cfg.MapBlackoutTime);
-                        SendBroadcast(ev.Player, _cfg.LightsOutMessage);
+                        SendBroadcast(ev.Player, _tr.LightsOutMessage);
                         break;
                     case 6:
                         ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
                         grenade.FuseTime = (float)_cfg.LiveGrenadeFuseTime;
                         grenade.SpawnActive(ev.Player.Position + Vector3.up);
-                        SendBroadcast(ev.Player, _cfg.LiveGrenadeMessage);
+                        SendBroadcast(ev.Player, _tr.LiveGrenadeMessage);
                         break;
                     case 7:
                         Item gun2 = Item.Create(ItemType.ParticleDisruptor);
                         Firearm f2 = gun2 as Firearm;
                         f2.Ammo = 0;
                         f2.CreatePickup(ev.Player.Position);
-                        SendBroadcast(ev.Player, _cfg.TrollGunMessage);
+                        SendBroadcast(ev.Player, _tr.TrollGunMessage);
                         break;
                     case 8:
                         FlashGrenade flash = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
                         flash.FuseTime = 1f;
                         flash.SpawnActive(ev.Player.Position);
-                        SendBroadcast(ev.Player, _cfg.TrollFlashMessage);
+                        SendBroadcast(ev.Player, _tr.TrollFlashMessage);
                         break;
                     case 9:
                         if (Player.Get(Side.Scp).Any())
                         {
                             Player scpPlayer = Player.Get(Side.Scp).Where(p => p.Role.Type != RoleTypeId.Scp079).ToList().RandomItem();
                             ev.Player.Position = scpPlayer.Position;
-                            SendBroadcast(ev.Player, _cfg.TPToRandomSCPMessage);
+                            SendBroadcast(ev.Player, _tr.TPToRandomSCPMessage);
                         }
                         else
                         {
                             ev.Player.Health -= 15;
                             if (ev.Player.Health < 0) ev.Player.Kill(DamageType.Unknown);
-                            SendBroadcast(ev.Player, _cfg.SmallDamageMessage);
+                            SendBroadcast(ev.Player, _tr.SmallDamageMessage);
                         }
                         break;
                     case 10:
                         ev.Player.Hurt(ev.Player.Health - 1);
-                        SendBroadcast(ev.Player, _cfg.HugeDamageMessage);
+                        SendBroadcast(ev.Player, _tr.HugeDamageMessage);
                         break;
                     case 11:
                         Scp244 vase = (Scp244)Item.Create(ItemType.SCP244a);
                         vase.Primed = true;
                         vase.CreatePickup(ev.Player.Position);
-                        SendBroadcast(ev.Player, _cfg.PrimedVaseMessage);
+                        SendBroadcast(ev.Player, _tr.PrimedVaseMessage);
                         break;
                     case 12:
                         ev.Player.PlaceTantrum();
-                        SendBroadcast(ev.Player, _cfg.ShitPantsMessage);
+                        SendBroadcast(ev.Player, _tr.ShitPantsMessage);
                         break;
                     case 13:
-                        Cassie.MessageTranslated("scp 1 7 3 successfully terminated by automatic security system","SCP-173 successfully terminated by Automatic Security System.");
-                        SendBroadcast(ev.Player, _cfg.FakeSCPKillMessage);
+                        var name = _scpNames.ToList().RandomItem();
+                        Cassie.MessageTranslated($"scp {name.Key} successfully terminated by automatic security system",$"{name.Value} successfully terminated by Automatic Security System.");
+                        SendBroadcast(ev.Player, _tr.FakeSCPKillMessage);
                         break;
                 }
             }
