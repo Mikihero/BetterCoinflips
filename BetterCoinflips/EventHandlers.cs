@@ -3,6 +3,7 @@ using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using System.Linq;
+using Exiled.API.Features.DamageHandlers;
 using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
@@ -165,7 +166,10 @@ namespace BetterCoinflips
                 switch (tailsEvent)
                 {
                     case 1:
-                        ev.Player.Health *= 0.7f;
+                        if ((int)ev.Player.Health == 1)
+                            ev.Player.Kill(DamageType.CardiacArrest);
+                        else
+                            ev.Player.Health *= 0.7f;
                         SendBroadcast(ev.Player, _tr.HPReductionMessage);
                         break;
                     case 2:
@@ -235,7 +239,10 @@ namespace BetterCoinflips
                         }
                         break;
                     case 10:
-                        ev.Player.Hurt(ev.Player.Health - 1);
+                        if ((int)ev.Player.Health == 1)
+                            ev.Player.Kill(DamageType.CardiacArrest);
+                        else
+                            ev.Player.Health = 1;
                         SendBroadcast(ev.Player, _tr.HugeDamageMessage);
                         break;
                     case 11:
