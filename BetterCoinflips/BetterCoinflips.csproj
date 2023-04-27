@@ -56,6 +56,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\CoinUses\CoinUses.cs" />
+    <Compile Include="Commands\CoinUses\Get\Get.cs" />
+    <Compile Include="Commands\CoinUses\Get\Player.cs" />
+    <Compile Include="Commands\CoinUses\Get\Serial.cs" />
+    <Compile Include="Commands\CoinUses\Set\Player.cs" />
+    <Compile Include="Commands\CoinUses\Set\Serial.cs" />
+    <Compile Include="Commands\CoinUses\Set\Set.cs" />
+    <Compile Include="Commands\GetSerial.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Patches\SpawningCoinPatch.cs" />
     <Compile Include="Plugin.cs" />

@@ -84,5 +84,8 @@ namespace BetterCoinflips
         
         [Description("The message broadcast to a player when the coin fakes a cassie of an SCP dying.")]
         public string FakeSCPKillMessage { get; set; } = "Did you just kill an SCP?!";
+
+        [Description("The message to be added the the chosen effect broadcast if the coin breaks after that throw.")]
+        public string CoinBreaksMessage { get; set; } = "\nAlso your coin was used too much and it broke down.";
     }
 }
