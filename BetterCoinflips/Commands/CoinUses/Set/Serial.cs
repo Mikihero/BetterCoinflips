@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 
 namespace BetterCoinflips.Commands.CoinUses.Set
 {
@@ -12,6 +13,12 @@ namespace BetterCoinflips.Commands.CoinUses.Set
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!((CommandSender)sender).CheckPermission("bc.coinuses.set"))
+            {
+                response = "You do not have permission to use this command";
+                return false;
+            }
+            
             if (arguments.Count != 2)
             {
                 response = "Usage: coinuses set serial [serial] [amount]";

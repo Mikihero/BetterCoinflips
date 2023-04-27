@@ -1,5 +1,6 @@
 using System;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 
 namespace BetterCoinflips.Commands.CoinUses.Get
 {
@@ -19,6 +20,12 @@ namespace BetterCoinflips.Commands.CoinUses.Get
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!((CommandSender)sender).CheckPermission("bc.coinuses.get"))
+            {
+                response = "You do not have permission to use this command";
+                return false;
+            }
+            
             response = "Invalid subcommand. Available ones: player, serial";
             return false;
         }

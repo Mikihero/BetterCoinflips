@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using CommandSystem;
+using Exiled.Permissions.Extensions;
 
 namespace BetterCoinflips.Commands.CoinUses.Get
 {
@@ -12,6 +13,12 @@ namespace BetterCoinflips.Commands.CoinUses.Get
         
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!((CommandSender)sender).CheckPermission("bc.coinuses.get"))
+            {
+                response = "You do not have permission to use this command";
+                return false;
+            }
+            
             if (arguments.Count == 0)
             {
                 Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(sender);

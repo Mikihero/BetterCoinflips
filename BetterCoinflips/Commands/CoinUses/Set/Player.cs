@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using CommandSystem;
 using Exiled.API.Features.Items;
+using Exiled.Permissions.Extensions;
 
 namespace BetterCoinflips.Commands.CoinUses.Set
 {
@@ -13,6 +14,12 @@ namespace BetterCoinflips.Commands.CoinUses.Set
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
+            if (!((CommandSender)sender).CheckPermission("bc.coinuses.set"))
+            {
+                response = "You do not have permission to use this command";
+                return false;
+            }
+            
             if (arguments.Count == 1)
             {
                 Item coin = GetCoinByPlayer(Exiled.API.Features.Player.Get(sender));
@@ -64,7 +71,7 @@ namespace BetterCoinflips.Commands.CoinUses.Set
                 return true;
             }
 
-            response = "Usage: coinuses set player [id/name] [amount]\nOR:\ncoinuses set player amount";
+            response = "Usage: coinuses set player [id/name] [amount]\nOR: coinuses set player amount";
             return false;
         }
 

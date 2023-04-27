@@ -21,12 +21,6 @@ namespace BetterCoinflips.Commands.CoinUses
 
         protected override bool ExecuteParent(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("bc.coinuses"))
-            {
-                response = "You do not have permission to use this command";
-                return false;
-            }
-
             response = "Invalid subcommand. Available ones: set, get";
             return false;
         }

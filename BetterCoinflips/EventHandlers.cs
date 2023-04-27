@@ -287,7 +287,7 @@ namespace BetterCoinflips
             }
         }
 
-        public void OnInteractingDoorEventArgs(InteractingDoorEventArgs ev) //TODO: Add the config ability to replace only a certain amount of the specified items
+        public void OnInteractingDoorEventArgs(InteractingDoorEventArgs ev)
         {
             foreach (Pickup pickup in ev.Door.Room.Pickups)
             {

@@ -3,7 +3,7 @@
   
 SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you flip a coin a 'random' effect will happen depending on the coinflips outcome.
 
-# **Features:**
+# Features:
 
 - Whenever someone flips a coin and it lands on heads one of the following will happen:  
  1. A Containment Engineer/Facility Manager(85%/15%, configurable) keycard will spawn at their feet.  
@@ -32,9 +32,20 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
   12. An SCP-173 tantrum is placed at their feet.
   13. A fake CASSIE is send saying that SCP-173 was killed by a Tesla gate.
 
-- The plugin will prevent the spawns of any coins in lockers etc.
-- The plugin will replace every chosen item (by default SCP-1853) with a coin in the SCP pedestals.
-- The plugin will remove a thrown coin from a players inventory
+- The plugin will prevent the spawns of a specified amount of coins in lockers etc.
+- The plugin will replace a specified amount of the chosen item (by default SCP-500) with a coin in the SCP pedestals.
+- The plugin will remove a thrown coin from a players inventory.
+- The plugin will assign a random amount of uses to every thrown coin. This amount can be read or set with a command.
+
+# Commands
+
+- GetSerial - gets the serial number of an item held by you or another player.
+- CoinUses - gets or sets the number of uses a specific coin has. Example usage: `coinuses get player 5`, `coin uses set player 4`, `coinuses set serial 10` 
+
+# Permissions
+
+- bc.coinuses.set - grants access to the CoinUses Set command
+- bc.coinuses.get - grants access to the CoinUses Get command
 
 # Default config
 
@@ -44,12 +55,15 @@ better_cf:
   is_enabled: true
   # Whether or not debug logs should be shown. Default: false
   debug: false
-  # Whether or not the default coins should spawn (eg. in lockers). Default: false
-  spawn_default_coins: false
-  # The ItemType of the item to be replaced with a coin, the item is supposed to be something found in SCP pedestals.
-  item_to_replace: SCP1853
-  # Whether or not the coin should be removed from a players inventory after it's thrown. Default: false.
-  remove_coin_on_throw: false
+  # The amount of base game spawned coins that should be removed. Default: 4
+  default_coins_amount: 4
+  # The ItemType of the item to be replaced with a coin and the amount to be replaced, the item is supposed to be something found in SCP pedestals.
+  item_to_replace:
+    SCP500: 2
+  # The boundaries of the random range of throws each coin will have before it breaks. The upper bound is exclusive.
+  min_max_default_coins:
+  - 1
+  - 4
   # The duration of the broadcast informing you about your 'reward'. Default: 3
   broadcast_time: 3
   # The duration of the map blackout. Default: 10
@@ -59,18 +73,26 @@ better_cf:
   # List of bad effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html
   bad_effects:
   - Asphyxiated
+  - Bleeding
   - Blinded
   - Burned
   - Concussed
+  - Corroding
+  - CardiacArrest
   - Deafened
+  - Decontaminating
   - Disabled
   - Ensnared
   - Exhausted
   - Flashed
   - Hemorrhage
+  - Hypothermia
+  - InsufficientLighting
+  - Poisoned
   - SeveredHands
   - SinkHole
   - Stained
+  - SoundtrackMute
   # List of good effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html
   good_effects:
   - BodyshotReduction
@@ -79,11 +101,12 @@ better_cf:
   - Invisible
   - MovementBoost
   - RainbowTaste
+  - Scp1853
   - Scp207
   - Vitality
   # The % chance of receiving a Facility Manager keycard instead of a Containment Engineer keycard when that effect is chosen. Default: 15
   red_card_chance: 15
-  # The chance of these effects happening. It's a proportional chance not a % chance.
+  # The chance of these good effects happening. It's a proportional chance not a % chance.
   keycard_effect_chance: 20
   medical_kit_effect_chance: 35
   t_p_to_escape_effect_chance: 5
@@ -94,7 +117,7 @@ better_cf:
   one_ammo_logicer_effect_chance: 1
   lightbulb_effect_chance: 15
   pink_candy_effect_chance: 10
-  # The chance of these effects happening. It's a proportional chance not a % chance.
+  # The chance of these bad effects happening. It's a proportional chance not a % chance.
   hp_reduction_effect_chance: 20
   t_p_to_class_d_cells_effect_chance: 5
   random_bad_effect_chance: 20
