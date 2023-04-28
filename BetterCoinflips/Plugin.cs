@@ -1,12 +1,13 @@
 ﻿using Exiled.API.Features;
 using System;
+using BetterCoinflips.Configs;
 using HarmonyLib;
 using Map = Exiled.Events.Handlers.Map;
 using Player = Exiled.Events.Handlers.Player;
 
 namespace BetterCoinflips
 {
-    public class Plugin : Plugin<Config, Translations>
+    public class Plugin : Plugin<Config, Configs.Translations>
     {
         public static Plugin Instance;
         public override Version RequiredExiledVersion => new(6,1,0);

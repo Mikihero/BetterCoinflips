@@ -64,12 +64,12 @@
     <Compile Include="Commands\CoinUses\Set\Serial.cs" />
     <Compile Include="Commands\CoinUses\Set\Set.cs" />
     <Compile Include="Commands\GetSerial.cs" />
+    <Compile Include="Configs\Config.cs" />
+    <Compile Include="Configs\Translations.cs" />
     <Compile Include="EventHandlers.cs" />
     <Compile Include="Patches\SpawningCoinPatch.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Config.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Translations.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="EXILED">

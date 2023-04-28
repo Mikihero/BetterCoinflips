@@ -2,19 +2,23 @@ using System.Collections.Generic;
 using Exiled.API.Enums;
 using Exiled.API.Features;
 using System.Linq;
+using BetterCoinflips.Configs;
 using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
+using InventorySystem.Items.Firearms;
+using InventorySystem.Items.Firearms.Attachments;
 using PlayerRoles;
 using UnityEngine;
+using Firearm = Exiled.API.Features.Items.Firearm;
 
 namespace BetterCoinflips
 {
     public class EventHandlers
     {
         private readonly Config _cfg = Plugin.Instance.Config;
-        private readonly Translations _tr = Plugin.Instance.Translation;
+        private readonly Configs.Translations _tr = Plugin.Instance.Translation;
         private System.Random rd = new();
         private readonly Dictionary<string, string> _scpNames = new()
         {
@@ -46,7 +50,10 @@ namespace BetterCoinflips
                     { 7, _cfg.RandomGoodEffectChance },
                     { 8, _cfg.OneAmmoLogicerEffectChance },
                     { 9, _cfg.LightbulbEffectChance },
-                    { 10, _cfg.PinkCandyEffectChance}
+                    { 10, _cfg.PinkCandyEffectChance },
+                    { 11, _cfg.EmptyHidEffectChance },
+                    { 12, _cfg.BadRevoEffectChance },
+                    
                 };
                 int totalChance = effectChances.Values.Sum();
                 int randomNum = rd.Next(1, totalChance + 1);
@@ -120,6 +127,20 @@ namespace BetterCoinflips
                         candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
                         candy.CreatePickup(ev.Player.Position);
                         message = _tr.PinkCandyMessage;
+                        break;
+                    case 11:
+                        MicroHid hid = (MicroHid)Item.Create(ItemType.MicroHID);
+                        hid.Energy = 0;
+                        hid.CreatePickup(ev.Player.Position);
+                        message = _tr.EmptyHidMessage;
+                        break;    
+                    case 12:
+                        Firearm revo = (Firearm)Firearm.Create(ItemType.GunRevolver);
+                        revo.AddAttachment(AttachmentName.CylinderMag8);
+                        revo.AddAttachment(AttachmentName.ShortBarrel);
+                        revo.AddAttachment(AttachmentName.ScopeSight);
+                        revo.CreatePickup(ev.Player.Position);
+                        message = _tr.BadRevoMessage;
                         break;
                 }
             }
@@ -299,6 +320,5 @@ namespace BetterCoinflips
                 }
             }
         }
-        //TODO: Explore the possibility of a custom 914 recipe for a coin
     }
 }

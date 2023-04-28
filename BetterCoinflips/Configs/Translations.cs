@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using Exiled.API.Interfaces;
 
-namespace BetterCoinflips
+namespace BetterCoinflips.Configs
 {
     public class Translations : ITranslation
     {

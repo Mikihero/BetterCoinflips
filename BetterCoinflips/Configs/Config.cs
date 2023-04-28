@@ -1,9 +1,9 @@
-﻿using Exiled.API.Enums;
-using Exiled.API.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
+using Exiled.API.Enums;
+using Exiled.API.Interfaces;
 
-namespace BetterCoinflips
+namespace BetterCoinflips.Configs
 {
     public class Config : IConfig
     {

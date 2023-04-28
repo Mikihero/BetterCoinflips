@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using CommandSystem;
+using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Permissions.Extensions;
 
@@ -14,7 +15,8 @@ namespace BetterCoinflips.Commands.CoinUses.Set
 
         public bool Execute(ArraySegment<string> arguments, ICommandSender sender, out string response)
         {
-            if (!((CommandSender)sender).CheckPermission("bc.coinuses.set"))
+            Exiled.API.Features.Player player = Exiled.API.Features.Player.Get(sender);
+            if (!sender.CheckPermission("bc.coinuses.set"))
             {
                 response = "You do not have permission to use this command";
                 return false;
@@ -22,7 +24,7 @@ namespace BetterCoinflips.Commands.CoinUses.Set
             
             if (arguments.Count == 1)
             {
-                Item coin = GetCoinByPlayer(Exiled.API.Features.Player.Get(sender));
+                Item coin = GetCoinByPlayer(player);
                 if (coin == null)
                 {
                     response = "You are not holding a coin.";
@@ -67,10 +69,12 @@ namespace BetterCoinflips.Commands.CoinUses.Set
                 }
 
                 EventHandlers.CoinUses[coin.Serial] = amount;
+                string message = player.DoNotTrack ? $"{player.Nickname}({player.RawUserId})" : $"{player.Nickname}";
+                Log.Debug($"{message} just set the uses of the coin # {coin.Serial}, to {amount}.");
                 response = $"Successfully set the coins uses to {amount}.";
                 return true;
             }
-
+            
             response = "Usage: coinuses set player [id/name] [amount]\nOR: coinuses set player amount";
             return false;
         }
