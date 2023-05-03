@@ -109,5 +109,8 @@ namespace BetterCoinflips.Configs
         public int PrimedVaseEffectChance { get; set; } = 20;
         public int ShitPantsEffectChance { get; set; } = 40;
         public int FakeCassieEffectChance { get; set; } = 50;
+        public int ZombieFcEffectChance { get; set; } = 30;
+        public int InventoryResetEffectChance { get; set; } = 20;
+        public int ClassSwapEffectChance { get; set; } = 10;
     }
 }

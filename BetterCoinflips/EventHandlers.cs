@@ -161,7 +161,10 @@ namespace BetterCoinflips
                     { 10, _cfg.OneHpLeftEffectChance },
                     { 11, _cfg.PrimedVaseEffectChance},
                     { 12, _cfg.ShitPantsEffectChance },
-                    { 13, _cfg.FakeCassieEffectChance }
+                    { 13, _cfg.FakeCassieEffectChance },
+                    { 14, _cfg.ZombieFcEffectChance },
+                    { 15, _cfg.InventoryResetEffectChance },
+                    { 16, _cfg.ClassSwapEffectChance },
                 };
                 int totalChance = effectChances.Values.Sum();
                 int randomNum = _rd.Next(1, totalChance + 1);
@@ -276,6 +279,52 @@ namespace BetterCoinflips
                         var scpName = _scpNames.ToList().RandomItem();
                         Cassie.MessageTranslated($"scp {scpName.Key} successfully terminated by automatic security system",$"{scpName.Value} successfully terminated by Automatic Security System.");
                         message = _tr.FakeScpKillMessage;
+                        break;
+                    case 14:
+                        ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.None);
+                        message = _tr.ZombieFcMessage;
+                        break;
+                    case 15:
+                        ev.Player.DropHeldItem();
+                        ev.Player.ResetInventory(new ItemType[] {});
+                        message = _tr.InventoryResetMessage;
+                        break;
+                    case 16:
+                        ev.Player.DropHeldItem();
+                        switch (ev.Player.Role.Type)
+                        {
+                            case RoleTypeId.Scientist:
+                                ev.Player.Role.Set(RoleTypeId.ClassD, RoleSpawnFlags.AssignInventory);
+                                break;
+                            case RoleTypeId.ClassD:
+                                ev.Player.Role.Set(RoleTypeId.Scientist, RoleSpawnFlags.AssignInventory);
+                                break;
+                            case RoleTypeId.ChaosConscript:
+                            case RoleTypeId.ChaosRifleman:
+                                ev.Player.Role.Set(RoleTypeId.NtfSergeant, RoleSpawnFlags.AssignInventory);
+                                break;
+                            case RoleTypeId.ChaosMarauder:
+                            case RoleTypeId.ChaosRepressor:
+                                ev.Player.Role.Set(RoleTypeId.NtfCaptain, RoleSpawnFlags.AssignInventory);
+                                break;
+                            case RoleTypeId.FacilityGuard:
+                                ev.Player.Role.Set(RoleTypeId.ChaosRifleman, RoleSpawnFlags.AssignInventory);
+                                break;
+                            case RoleTypeId.NtfPrivate:
+                            case RoleTypeId.NtfSergeant:
+                            case RoleTypeId.NtfSpecialist:
+                                ev.Player.Role.Set(RoleTypeId.ChaosRifleman, RoleSpawnFlags.AssignInventory);
+                                break;
+                            case RoleTypeId.NtfCaptain:
+                                List<RoleTypeId> roles = new List<RoleTypeId>
+                                {
+                                    RoleTypeId.ChaosMarauder,
+                                    RoleTypeId.ChaosRepressor
+                                };
+                                ev.Player.Role.Set(roles.RandomItem(), RoleSpawnFlags.AssignInventory);
+                                break;
+                        }
+                        message = _tr.ClassSwapMessage;
                         break;
                 }
             }

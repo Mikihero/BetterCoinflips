@@ -33,6 +33,9 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
  11. A primed SCP-244 is spawned on their head.
  12. An SCP-173 tantrum is placed at their feet.
  13. A fake CASSIE is send saying that SCP-173 was killed by a Tesla gate.
+ 14. The player will be forceclassed to SCP-049-2.
+ 15. The player's inventory will be reset.
+ 16. The player's role will be changed to the opposite one (class d - scientist, mtf - ci etc.)
 
 - The plugin will prevent the spawns of a specified amount of coins around the map.
 - The plugin will replace a specified amount of the chosen item (by default SCP-500) with a coin in the SCP pedestals.
@@ -134,4 +137,7 @@ better_cf:
   primed_vase_effect_chance: 20
   shit_pants_effect_chance: 40
   fake_cassie_effect_chance: 50
+  zombie_fc_effect_chance: 30
+  inventory_reset_effect_chance: 20
+  class_swap_effect_chance: 10
 ```

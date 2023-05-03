@@ -90,7 +90,16 @@ namespace BetterCoinflips.Configs
         
         [Description("The message broadcast to a player when the coin fakes a cassie of an SCP dying.")]
         public string FakeScpKillMessage { get; set; } = "Did you just kill an SCP?!";
-
+        
+        [Description("The message broadcast to a player when the are forceclassed to SCP-049-2 by the coin.")]
+        public string ZombieFcMessage { get; set; } = "Get zombified LOL";
+        
+        [Description("The message broadcast to a player when their items are removed by the coin.")]
+        public string InventoryResetMessage { get; set; } = "You lost your stuff.";
+        
+        [Description("The message broadcast to a player when the are forceclassed to the opposite team by the coin.")]
+        public string ClassSwapMessage { get; set; } = "That's what I call an UNO reverse card!";
+        
         [Description("The message to be added the the chosen effect broadcast if the coin breaks after that throw.")]
         public string CoinBreaksMessage { get; set; } = "\nAlso your coin was used too much and it broke down.";
     }
