@@ -361,6 +361,10 @@ namespace BetterCoinflips
 
         public void OnInteractingDoorEventArgs(InteractingDoorEventArgs ev)
         {
+            if (ev.Door == null || ev.Door.Room == null || ev.Door.Room.Pickups == null)
+            {
+                return;
+            }
             foreach (Pickup pickup in ev.Door.Room.Pickups)
             {
                 if (pickup == null)
