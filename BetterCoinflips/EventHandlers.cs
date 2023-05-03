@@ -7,7 +7,6 @@ using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
-using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Attachments;
 using PlayerRoles;
 using UnityEngine;
@@ -19,7 +18,7 @@ namespace BetterCoinflips
     {
         private readonly Config _cfg = Plugin.Instance.Config;
         private readonly Configs.Translations _tr = Plugin.Instance.Translation;
-        private System.Random rd = new();
+        private readonly System.Random _rd = new();
         private readonly Dictionary<string, string> _scpNames = new()
         {
             { "1 7 3", "SCP-173"},
@@ -29,6 +28,7 @@ namespace BetterCoinflips
             { "0 4 9", "SCP-049"},
             { "1 0 6", "SCP-106"}
         };
+        // ReSharper disable once FieldCanBeMadeReadOnly.Global
         public static Dictionary<ushort, int> CoinUses = new();
         
         private void SendBroadcast(Player pl, string message) => pl.Broadcast(_cfg.BroadcastTime, message);
@@ -43,9 +43,9 @@ namespace BetterCoinflips
                 {
                     { 1, _cfg.KeycardEffectChance },
                     { 2, _cfg.MedicalKitEffectChance },
-                    { 3, _cfg.TPToEscapeEffectChance },
+                    { 3, _cfg.TpToEscapeEffectChance },
                     { 4, _cfg.HealEffectChance },
-                    { 5, _cfg.MoreHPEffectChance },
+                    { 5, _cfg.MoreHpEffectChance },
                     { 6, _cfg.HatEffectChance },
                     { 7, _cfg.RandomGoodEffectChance },
                     { 8, _cfg.OneAmmoLogicerEffectChance },
@@ -56,7 +56,7 @@ namespace BetterCoinflips
                     
                 };
                 int totalChance = effectChances.Values.Sum();
-                int randomNum = rd.Next(1, totalChance + 1);
+                int randomNum = _rd.Next(1, totalChance + 1);
                 int headsEvent = 2; // Set a default value for headsEvent
 
                 foreach (KeyValuePair<int, int> kvp in effectChances)
@@ -75,7 +75,7 @@ namespace BetterCoinflips
                 switch (headsEvent)
                 {
                     case 1:
-                        if (_cfg.RedCardChance > rd.Next(1, 101))
+                        if (_cfg.RedCardChance > _rd.Next(1, 101))
                         {
                             Pickup.CreateAndSpawn(ItemType.KeycardFacilityManager, ev.Player.Position, new Quaternion());
                             message = _tr.RedCardMessage;
@@ -108,14 +108,15 @@ namespace BetterCoinflips
                         message = _tr.NeatHatMessage;
                         break;
                     case 7:
-                        ev.Player.EnableEffect(_cfg.GoodEffects.ToList().RandomItem(), 5, true);
+                        var effect = _cfg.GoodEffects.ToList().RandomItem();
+                        ev.Player.EnableEffect(effect, 5, true);
+                        Log.Debug($"Chosen random effect: {effect}");
                         message = _tr.RandomGoodEffectMessage;
                         break;
                     case 8:
-                        Item gun = Item.Create(ItemType.GunLogicer);
-                        Firearm f = gun as Firearm;
-                        f.Ammo = 1;
-                        f.CreatePickup(ev.Player.Position);
+                        Firearm gun = (Firearm)Item.Create(ItemType.GunLogicer);
+                        gun.Ammo = 1;
+                        gun.CreatePickup(ev.Player.Position);
                         message = _tr.OneAmmoLogicerMessage;
                         break;
                     case 9:
@@ -135,7 +136,7 @@ namespace BetterCoinflips
                         message = _tr.EmptyHidMessage;
                         break;    
                     case 12:
-                        Firearm revo = (Firearm)Firearm.Create(ItemType.GunRevolver);
+                        Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
                         revo.AddAttachment(AttachmentName.CylinderMag8);
                         revo.AddAttachment(AttachmentName.ShortBarrel);
                         revo.AddAttachment(AttachmentName.ScopeSight);
@@ -149,21 +150,21 @@ namespace BetterCoinflips
                 Dictionary<int, int> effectChances = new Dictionary<int, int>
                 {
                     { 1, _cfg.HpReductionEffectChance },
-                    { 2, _cfg.TPToClassDCellsEffectChance },
+                    { 2, _cfg.TpToClassDCellsEffectChance },
                     { 3, _cfg.RandomBadEffectChance },
                     { 4, _cfg.WarheadEffectChance },
                     { 5, _cfg.LightsOutEffectChance },
-                    { 6, _cfg.LiveHEEffectChance },
+                    { 6, _cfg.LiveHeEffectChance },
                     { 7, _cfg.TrollGunEffectChance },
                     { 8, _cfg.TrollFlashEffectChance },
-                    { 9, _cfg.SCPTpEffectChance },
-                    { 10, _cfg.OneHPLeftEffectChance },
+                    { 9, _cfg.ScpTpEffectChance },
+                    { 10, _cfg.OneHpLeftEffectChance },
                     { 11, _cfg.PrimedVaseEffectChance},
                     { 12, _cfg.ShitPantsEffectChance },
                     { 13, _cfg.FakeCassieEffectChance }
                 };
                 int totalChance = effectChances.Values.Sum();
-                int randomNum = rd.Next(1, totalChance + 1);
+                int randomNum = _rd.Next(1, totalChance + 1);
                 int tailsEvent = 13; // Set a default value for headsEvent
 
                 foreach (KeyValuePair<int, int> kvp in effectChances)
@@ -186,14 +187,16 @@ namespace BetterCoinflips
                             ev.Player.Kill(DamageType.CardiacArrest);
                         else
                             ev.Player.Health *= 0.7f;
-                        message = _tr.HPReductionMessage;
+                        message = _tr.HpReductionMessage;
                         break;
                     case 2:
                         ev.Player.Teleport(Door.Get(DoorType.PrisonDoor));
-                        message = _tr.TPToClassDCellsMessage;
+                        message = _tr.TpToClassDCellsMessage;
                         break;
                     case 3:
-                        ev.Player.EnableEffect(_cfg.BadEffects.ToList().RandomItem(), 5, true);
+                        var effect = _cfg.BadEffects.ToList().RandomItem();
+                        ev.Player.EnableEffect(effect, 5, true);
+                        Log.Debug($"Chosen random effect: {effect}");
                         message = _tr.RandomBadEffectMessage;
                         break;
                     case 4:
@@ -227,10 +230,9 @@ namespace BetterCoinflips
                         message = _tr.LiveGrenadeMessage;
                         break;
                     case 7:
-                        Item gun2 = Item.Create(ItemType.ParticleDisruptor);
-                        Firearm f2 = gun2 as Firearm;
-                        f2.Ammo = 0;
-                        f2.CreatePickup(ev.Player.Position);
+                        Firearm gun = (Firearm)Item.Create(ItemType.ParticleDisruptor);
+                        gun.Ammo = 0;
+                        gun.CreatePickup(ev.Player.Position);
                         message = _tr.TrollGunMessage;
                         break;
                     case 8:
@@ -244,7 +246,7 @@ namespace BetterCoinflips
                         {
                             Player scpPlayer = Player.Get(Side.Scp).Where(p => p.Role.Type != RoleTypeId.Scp079).ToList().RandomItem();
                             ev.Player.Position = scpPlayer.Position;
-                            message = _tr.TPToRandomSCPMessage;
+                            message = _tr.TpToRandomScpMessage;
                         }
                         else
                         {
@@ -271,16 +273,16 @@ namespace BetterCoinflips
                         message = _tr.ShitPantsMessage;
                         break;
                     case 13:
-                        var name = _scpNames.ToList().RandomItem();
-                        Cassie.MessageTranslated($"scp {name.Key} successfully terminated by automatic security system",$"{name.Value} successfully terminated by Automatic Security System.");
-                        message = _tr.FakeSCPKillMessage;
+                        var scpName = _scpNames.ToList().RandomItem();
+                        Cassie.MessageTranslated($"scp {scpName.Key} successfully terminated by automatic security system",$"{scpName.Value} successfully terminated by Automatic Security System.");
+                        message = _tr.FakeScpKillMessage;
                         break;
                 }
             }
             
             if (!CoinUses.ContainsKey(ev.Player.CurrentItem.Serial))
             {
-                CoinUses.Add(ev.Player.CurrentItem.Serial, rd.Next(_cfg.MinMaxDefaultCoins[0], _cfg.MinMaxDefaultCoins[1]));
+                CoinUses.Add(ev.Player.CurrentItem.Serial, _rd.Next(_cfg.MinMaxDefaultCoins[0], _cfg.MinMaxDefaultCoins[1]));
                 Log.Debug($"Added a coin, Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
             }
             else
@@ -312,6 +314,10 @@ namespace BetterCoinflips
         {
             foreach (Pickup pickup in ev.Door.Room.Pickups)
             {
+                if (pickup == null)
+                {
+                    return;
+                }
                 if (pickup.IsLocked && pickup.Type == _cfg.ItemToReplace.ElementAt(0).Key && _cfg.ItemToReplace.ElementAt(0).Key != ItemType.None && pickup.Type == _cfg.ItemToReplace.ElementAt(0).Key && _cfg.ItemToReplace.ElementAt(0).Value != 0)
                 {
                     pickup.Destroy();

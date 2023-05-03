@@ -38,13 +38,19 @@ namespace BetterCoinflips.Configs
         [Description("The message broadcast to a player when they receive a pink candy from the coin.")]
         public string PinkCandyMessage { get; set; } = "You got a pretty candy!";
 
+        [Description("The message broadcast to a player when they receive an empty micro hid from the coin.")]
+        public string EmptyHidMessage { get; set; } = "You got a MICRO HID?!";
+
+        [Description("The message broadcast to a player when they receive the worst revolver possible from the coin.")]
+        public string BadRevoMessage { get; set; } = "What is this abomination!?";
+        
 
 
         [Description("The message broadcast to a player when they get their hp reduced by 30% by the coin.")]
-        public string HPReductionMessage { get; set; } = "Your hp got reduced by 30%.";
+        public string HpReductionMessage { get; set; } = "Your hp got reduced by 30%.";
 
         [Description("The message broadcast to a player when they get teleported to Class D cells by the coin.")]
-        public string TPToClassDCellsMessage { get; set; } = "You got teleported to Class D cells.";
+        public string TpToClassDCellsMessage { get; set; } = "You got teleported to Class D cells.";
 
         [Description("The message broadcast to a player when they receive a random bad effect from the coin.")]
         public string RandomBadEffectMessage { get; set; } = "You got a random effect.";
@@ -68,7 +74,7 @@ namespace BetterCoinflips.Configs
         public string TrollFlashMessage { get; set; } = "You heard something?";
 
         [Description("The message broadcast to a player when they are teleported to a random SCP by the coin.")]
-        public string TPToRandomSCPMessage { get; set; } = "You were teleported to an SCP.";
+        public string TpToRandomScpMessage { get; set; } = "You were teleported to an SCP.";
 
         [Description("The message broadcast to a player when they are dealth 15 damage by the coin.")]
         public string SmallDamageMessage { get; set; } = "You've lost 15hp.";
@@ -77,13 +83,13 @@ namespace BetterCoinflips.Configs
         public string HugeDamageMessage { get; set; } = "You've lost a lot of hp";
 
         [Description("The message broadcast to a player when they a primed vase is spawned on their head.")]
-        public string PrimedVaseMessage { get; set; } = "Your grandma payed you a visit!";
+        public string PrimedVaseMessage { get; set; } = "Your grandma paid you a visit!";
 
         [Description("The message broadcast to a player when an SCP-173 tantrum is spawned beneath their feet.")]
         public string ShitPantsMessage { get; set; } = "You just shit your pants.";
         
         [Description("The message broadcast to a player when the coin fakes a cassie of an SCP dying.")]
-        public string FakeSCPKillMessage { get; set; } = "Did you just kill an SCP?!";
+        public string FakeScpKillMessage { get; set; } = "Did you just kill an SCP?!";
 
         [Description("The message to be added the the chosen effect broadcast if the coin breaks after that throw.")]
         public string CoinBreaksMessage { get; set; } = "\nAlso your coin was used too much and it broke down.";

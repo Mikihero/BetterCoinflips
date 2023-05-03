@@ -7,35 +7,36 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
 
 - Whenever someone flips a coin and it lands on heads one of the following will happen:  
  1. A Containment Engineer/Facility Manager(85%/15%, configurable) keycard will spawn at their feet.  
-  2. A 'medical kit' will spawn at their feet consisting of a medkit and painkillers.  
-  3. They will be teleported to the doors leading straight to the escape zone.  
-  4. They will be healed by 25 health.  
-  5. Their current hp will be increased by 10%.
-  6. An SCP-268 will spawn at their feet.
-  7. They will receive a random good effect (configurable) for 5 seconds.
-  8. They will get a Logicer with 1 ammo.  
-  9. An SCP-2176 will spawn at their feet. 
-  10. A pink candy will spawn at their feet. 
+ 2. A 'medical kit' will spawn at their feet consisting of a medkit and painkillers.  
+ 3. They will be teleported to the doors leading straight to the escape zone.  
+ 4. They will be healed by 25 health.  
+ 5. Their current hp will be increased by 10%.
+ 6. An SCP-268 will spawn at their feet.
+ 7. They will receive a random good effect (configurable) for 5 seconds.
+ 8. They will get a Logicer with 1 ammo.  
+ 9. An SCP-2176 will spawn at their feet. 
+ 10. A pink candy will spawn at their feet. 
+ 11. An empty micro hid will spawn at their feet.
+ 12. A revolver with the worst attachments possible will spawn at their feet. 
 
 - Whenever someone flips a coin and it lands on tails one of the following will happen:  
  1. Their current hp will be set to 70%.  
-  2. They will be teleported to Class D containment cells.  
-  3. They will get a random bad effect (configurable) for 5 seconds.  
-  4. Warhead will be enabled or disabled depending on it's current state.  
-  5. Lights all across the map will be turned off for 10 seconds.  
-  6. A live grenade will be spawned on their head and explode ~3 seconds later.
-  7. An empty Particle Disruptor will be spawned at their feet and instantly disappear.
-  8. A flash grenade will spawn on their head and explode after 1 second.
-  9. They are teleported to an SCP if there are any alive, otherwise they lose 15 hp.
-  10. They lose all but 1 hp.
-  11. A primed SCP-244 is spawned on their head.
-  12. An SCP-173 tantrum is placed at their feet.
-  13. A fake CASSIE is send saying that SCP-173 was killed by a Tesla gate.
+ 2. They will be teleported to Class D containment cells.  
+ 3. They will get a random bad effect (configurable) for 5 seconds.  
+ 4. Warhead will be enabled or disabled depending on it's current state.  
+ 5. Lights all across the map will be turned off for 10 seconds.  
+ 6. A live grenade will be spawned on their head and explode ~3 seconds later.
+ 7. An empty Particle Disruptor will be spawned at their feet and instantly disappear.
+ 8. A flash grenade will spawn on their head and explode after 1 second.
+ 9. They are teleported to an SCP if there are any alive, otherwise they lose 15 hp.
+ 10. They lose all but 1 hp.
+ 11. A primed SCP-244 is spawned on their head.
+ 12. An SCP-173 tantrum is placed at their feet.
+ 13. A fake CASSIE is send saying that SCP-173 was killed by a Tesla gate.
 
-- The plugin will prevent the spawns of a specified amount of coins in lockers etc.
+- The plugin will prevent the spawns of a specified amount of coins around the map.
 - The plugin will replace a specified amount of the chosen item (by default SCP-500) with a coin in the SCP pedestals.
-- The plugin will remove a thrown coin from a players inventory.
-- The plugin will assign a random amount of uses to every thrown coin. This amount can be read or set with a command.
+- The plugin will assign a random amount of uses to every thrown coin. This amount can be read or set with a command. If a coin runs out of uses it breaks.
 
 # Commands
 
@@ -109,25 +110,27 @@ better_cf:
   # The chance of these good effects happening. It's a proportional chance not a % chance.
   keycard_effect_chance: 20
   medical_kit_effect_chance: 35
-  t_p_to_escape_effect_chance: 5
+  tp_to_escape_effect_chance: 5
   heal_effect_chance: 10
-  more_h_p_effect_chance: 10
+  more_hp_effect_chance: 10
   hat_effect_chance: 10
   random_good_effect_chance: 30
   one_ammo_logicer_effect_chance: 1
   lightbulb_effect_chance: 15
   pink_candy_effect_chance: 10
+  empty_hid_effect_chance: 10
+  bad_revo_effect_chance: 5
   # The chance of these bad effects happening. It's a proportional chance not a % chance.
   hp_reduction_effect_chance: 20
-  t_p_to_class_d_cells_effect_chance: 5
+  tp_to_class_d_cells_effect_chance: 5
   random_bad_effect_chance: 20
   warhead_effect_chance: 10
   lights_out_effect_chance: 20
-  live_h_e_effect_chance: 30
+  live_he_effect_chance: 30
   troll_gun_effect_chance: 50
   troll_flash_effect_chance: 50
-  s_c_p_tp_effect_chance: 20
-  one_h_p_left_effect_chance: 15
+  scp_tp_effect_chance: 20
+  one_hp_left_effect_chance: 15
   primed_vase_effect_chance: 20
   shit_pants_effect_chance: 40
   fake_cassie_effect_chance: 50

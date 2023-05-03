@@ -75,12 +75,13 @@ namespace BetterCoinflips.Commands.CoinUses.Set
                 return true;
             }
             
-            response = "Usage: coinuses set player [id/name] [amount]\nOR: coinuses set player amount";
+            response = "\nUsage: coinuses set player [id/name] [amount]\nOR: coinuses set player [amount]";
             return false;
         }
 
         private Item GetCoinByPlayer(Exiled.API.Features.Player pl)
         {
+            // ReSharper disable once MergeIntoPattern
             return pl.CurrentItem != null && pl.CurrentItem.Type == ItemType.Coin ? pl.CurrentItem : null;
         }
     }

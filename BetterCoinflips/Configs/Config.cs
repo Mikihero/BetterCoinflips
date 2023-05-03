@@ -84,26 +84,28 @@ namespace BetterCoinflips.Configs
         [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
         public int KeycardEffectChance { get; set; } = 20;
         public int MedicalKitEffectChance { get; set; } = 35;
-        public int TPToEscapeEffectChance { get; set; } = 5;
+        public int TpToEscapeEffectChance { get; set; } = 5;
         public int HealEffectChance { get; set; } = 10;
-        public int MoreHPEffectChance { get; set; } = 10;
+        public int MoreHpEffectChance { get; set; } = 10;
         public int HatEffectChance { get; set; } = 10;
         public int RandomGoodEffectChance { get; set; } = 30;
         public int OneAmmoLogicerEffectChance { get; set; } = 1;
         public int LightbulbEffectChance { get; set; } = 15;
         public int PinkCandyEffectChance { get; set; } = 10;
+        public int EmptyHidEffectChance { get; set; } = 10;
+        public int BadRevoEffectChance { get; set; } = 5;
 
         [Description("The chance of these bad effects happening. It's a proportional chance not a % chance.")]
         public int HpReductionEffectChance { get; set; } = 20;
-        public int TPToClassDCellsEffectChance { get; set; } = 5;
+        public int TpToClassDCellsEffectChance { get; set; } = 5;
         public int RandomBadEffectChance { get; set; } = 20;
         public int WarheadEffectChance { get; set; } = 10;
         public int LightsOutEffectChance { get; set; } = 20;
-        public int LiveHEEffectChance { get; set; } = 30;
+        public int LiveHeEffectChance { get; set; } = 30;
         public int TrollGunEffectChance { get; set; } = 50;
         public int TrollFlashEffectChance { get; set; } = 50;
-        public int SCPTpEffectChance { get; set; } = 20;
-        public int OneHPLeftEffectChance { get; set; } = 15;
+        public int ScpTpEffectChance { get; set; } = 20;
+        public int OneHpLeftEffectChance { get; set; } = 15;
         public int PrimedVaseEffectChance { get; set; } = 20;
         public int ShitPantsEffectChance { get; set; } = 40;
         public int FakeCassieEffectChance { get; set; } = 50;
