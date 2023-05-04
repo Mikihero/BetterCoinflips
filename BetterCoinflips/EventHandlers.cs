@@ -10,6 +10,7 @@ using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.Firearms.Attachments;
 using PlayerRoles;
 using UnityEngine;
+using Utf8Json.Resolvers.Internal;
 using Firearm = Exiled.API.Features.Items.Firearm;
 
 namespace BetterCoinflips
@@ -36,6 +37,27 @@ namespace BetterCoinflips
         public void OnCoinFlip(FlippingCoinEventArgs ev)
         {
             string message = "";
+            
+            int ifChainResult = 0;
+            if (!CoinUses.ContainsKey(ev.Player.CurrentItem.Serial))
+            {
+                CoinUses.Add(ev.Player.CurrentItem.Serial, _rd.Next(_cfg.MinMaxDefaultCoins[0], _cfg.MinMaxDefaultCoins[1]));
+                Log.Debug($"Registered a coin, Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
+            }
+            else
+            {
+                CoinUses[ev.Player.CurrentItem.Serial]--;
+                Log.Debug($"Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
+            }
+            if (CoinUses[ev.Player.CurrentItem.Serial] < 1)
+            {
+                CoinUses.Remove(ev.Player.CurrentItem.Serial);
+                ifChainResult = 3;
+                Log.Debug("Removed the coin");
+            }
+            
+            
+            
             Log.Debug($"Is tails: {ev.IsTails}");
             if (!ev.IsTails)
             {
@@ -51,9 +73,7 @@ namespace BetterCoinflips
                     { 8, _cfg.OneAmmoLogicerEffectChance },
                     { 9, _cfg.LightbulbEffectChance },
                     { 10, _cfg.PinkCandyEffectChance },
-                    { 11, _cfg.EmptyHidEffectChance },
-                    { 12, _cfg.BadRevoEffectChance },
-                    
+                    { 11, _cfg.BadRevoEffectChance },
                 };
                 int totalChance = effectChances.Values.Sum();
                 int randomNum = _rd.Next(1, totalChance + 1);
@@ -69,7 +89,7 @@ namespace BetterCoinflips
 
                     randomNum -= kvp.Value;
                 }
-
+                
                 Log.Debug($"headsEvent = {headsEvent}");
 
                 switch (headsEvent)
@@ -129,13 +149,13 @@ namespace BetterCoinflips
                         candy.CreatePickup(ev.Player.Position);
                         message = _tr.PinkCandyMessage;
                         break;
-                    case 11:
+                    /*case 11:
                         MicroHid hid = (MicroHid)Item.Create(ItemType.MicroHID);
-                        hid.Energy = 0;
+                        hid.Energy = 0.1f;
                         hid.CreatePickup(ev.Player.Position);
                         message = _tr.EmptyHidMessage;
-                        break;    
-                    case 12:
+                        break;*/    
+                    case 11:
                         Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
                         revo.AddAttachment(AttachmentName.CylinderMag8);
                         revo.AddAttachment(AttachmentName.ShortBarrel);
@@ -165,6 +185,7 @@ namespace BetterCoinflips
                     { 14, _cfg.ZombieFcEffectChance },
                     { 15, _cfg.InventoryResetEffectChance },
                     { 16, _cfg.ClassSwapEffectChance },
+                    { 17, _cfg.InstantExplosionEffectChance },
                 };
                 int totalChance = effectChances.Values.Sum();
                 int randomNum = _rd.Next(1, totalChance + 1);
@@ -290,7 +311,7 @@ namespace BetterCoinflips
                         message = _tr.InventoryResetMessage;
                         break;
                     case 16:
-                        ev.Player.DropHeldItem();
+                        ev.Player.DropItems();
                         switch (ev.Player.Role.Type)
                         {
                             case RoleTypeId.Scientist:
@@ -326,30 +347,29 @@ namespace BetterCoinflips
                         }
                         message = _tr.ClassSwapMessage;
                         break;
+                    case 17:
+                        ExplosiveGrenade instaBoom = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+                        instaBoom.FuseTime = 0.2f;
+                        instaBoom.SpawnActive(ev.Player.Position);
+                        message = _tr.InstantExplosionMessage;
+                        break;
                 }
             }
+
+            switch (ifChainResult)
+            {
+                case 3:
+                    if (ev.Player.CurrentItem != null)
+                    {
+                        ev.Player.RemoveHeldItem();
+                    }
+                    message += _tr.CoinBreaksMessage;
+                    break;
+            }
             
-            if (!CoinUses.ContainsKey(ev.Player.CurrentItem.Serial))
-            {
-                CoinUses.Add(ev.Player.CurrentItem.Serial, _rd.Next(_cfg.MinMaxDefaultCoins[0], _cfg.MinMaxDefaultCoins[1]));
-                Log.Debug($"Added a coin, Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
-            }
-            else
-            {
-                CoinUses[ev.Player.CurrentItem.Serial]--;
-                Log.Debug($"Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
-            }
-            if (CoinUses[ev.Player.CurrentItem.Serial] < 1)
-            {
-                CoinUses.Remove(ev.Player.CurrentItem.Serial);
-                ev.Player.RemoveHeldItem();
-                message += _tr.CoinBreaksMessage;
-                Log.Debug("Removed the coin");
-            }
             SendBroadcast(ev.Player, message);
         }
         
-
         public void OnSpawningItem(SpawningItemEventArgs ev)
         {
             if (_cfg.DefaultCoinsAmount != 0 && ev.Pickup.Type == ItemType.Coin)

@@ -38,9 +38,6 @@ namespace BetterCoinflips.Configs
         [Description("The message broadcast to a player when they receive a pink candy from the coin.")]
         public string PinkCandyMessage { get; set; } = "You got a pretty candy!";
 
-        [Description("The message broadcast to a player when they receive an empty micro hid from the coin.")]
-        public string EmptyHidMessage { get; set; } = "You got a MICRO HID?!";
-
         [Description("The message broadcast to a player when they receive the worst revolver possible from the coin.")]
         public string BadRevoMessage { get; set; } = "What is this abomination!?";
         
@@ -102,5 +99,8 @@ namespace BetterCoinflips.Configs
         
         [Description("The message to be added the the chosen effect broadcast if the coin breaks after that throw.")]
         public string CoinBreaksMessage { get; set; } = "\nAlso your coin was used too much and it broke down.";
+        
+        [Description("The message broadcast to a player when they are exploded by the coin.")]
+        public string InstantExplosionMessage { get; set; } = "You got smoked.";
     }
 }

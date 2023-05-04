@@ -16,7 +16,7 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
  8. They will get a Logicer with 1 ammo.  
  9. An SCP-2176 will spawn at their feet. 
  10. A pink candy will spawn at their feet. 
- 11. An empty micro hid will spawn at their feet.
+ 11. An instantly exploding grenade will spawn on their head.
  12. A revolver with the worst attachments possible will spawn at their feet. 
 
 - Whenever someone flips a coin and it lands on tails one of the following will happen:  
@@ -121,7 +121,6 @@ better_cf:
   one_ammo_logicer_effect_chance: 1
   lightbulb_effect_chance: 15
   pink_candy_effect_chance: 10
-  empty_hid_effect_chance: 10
   bad_revo_effect_chance: 5
   # The chance of these bad effects happening. It's a proportional chance not a % chance.
   hp_reduction_effect_chance: 20
@@ -140,4 +139,5 @@ better_cf:
   zombie_fc_effect_chance: 30
   inventory_reset_effect_chance: 20
   class_swap_effect_chance: 10
+  instant_explosion_effect_chance: 10
 ```
