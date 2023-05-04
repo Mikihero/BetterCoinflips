@@ -1,6 +1,5 @@
 using System;
 using CommandSystem;
-using Exiled.Permissions.Extensions;
 
 namespace BetterCoinflips.Commands.CoinUses
 {

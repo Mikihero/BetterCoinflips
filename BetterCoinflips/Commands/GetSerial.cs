@@ -4,7 +4,6 @@ using CommandSystem;
 using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.Permissions.Extensions;
-using Mirror;
 
 namespace BetterCoinflips.Commands
 {

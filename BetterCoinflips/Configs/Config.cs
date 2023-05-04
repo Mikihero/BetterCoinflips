@@ -93,6 +93,7 @@ namespace BetterCoinflips.Configs
         public int LightbulbEffectChance { get; set; } = 15;
         public int PinkCandyEffectChance { get; set; } = 10;
         public int BadRevoEffectChance { get; set; } = 5;
+        public int EmptyHidEffectChance { get; set; } = 5;
 
         [Description("The chance of these bad effects happening. It's a proportional chance not a % chance.")]
         public int HpReductionEffectChance { get; set; } = 20;

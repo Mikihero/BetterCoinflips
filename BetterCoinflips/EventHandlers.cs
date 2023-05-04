@@ -10,7 +10,6 @@ using Exiled.Events.EventArgs.Player;
 using InventorySystem.Items.Firearms.Attachments;
 using PlayerRoles;
 using UnityEngine;
-using Utf8Json.Resolvers.Internal;
 using Firearm = Exiled.API.Features.Items.Firearm;
 
 namespace BetterCoinflips
@@ -74,6 +73,7 @@ namespace BetterCoinflips
                     { 9, _cfg.LightbulbEffectChance },
                     { 10, _cfg.PinkCandyEffectChance },
                     { 11, _cfg.BadRevoEffectChance },
+                    { 12, _cfg.EmptyHidEffectChance },
                 };
                 int totalChance = effectChances.Values.Sum();
                 int randomNum = _rd.Next(1, totalChance + 1);
@@ -149,12 +149,6 @@ namespace BetterCoinflips
                         candy.CreatePickup(ev.Player.Position);
                         message = _tr.PinkCandyMessage;
                         break;
-                    /*case 11:
-                        MicroHid hid = (MicroHid)Item.Create(ItemType.MicroHID);
-                        hid.Energy = 0.1f;
-                        hid.CreatePickup(ev.Player.Position);
-                        message = _tr.EmptyHidMessage;
-                        break;*/    
                     case 11:
                         Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
                         revo.AddAttachment(AttachmentName.CylinderMag8);
@@ -162,6 +156,13 @@ namespace BetterCoinflips
                         revo.AddAttachment(AttachmentName.ScopeSight);
                         revo.CreatePickup(ev.Player.Position);
                         message = _tr.BadRevoMessage;
+                        break;
+                    case 12:
+                        MicroHIDPickup item = (MicroHIDPickup)Pickup.Create(ItemType.MicroHID);
+                        item.Position = ev.Player.Position;
+                        item.Spawn();
+                        item.Energy = 0;
+                        message = _tr.EmptyHidMessage;
                         break;
                 }
             }
@@ -250,7 +251,7 @@ namespace BetterCoinflips
                     case 6:
                         ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
                         grenade.FuseTime = (float)_cfg.LiveGrenadeFuseTime;
-                        grenade.SpawnActive(ev.Player.Position + Vector3.up);
+                        grenade.SpawnActive(ev.Player.Position + Vector3.up, ev.Player);
                         message = _tr.LiveGrenadeMessage;
                         break;
                     case 7:
@@ -349,8 +350,8 @@ namespace BetterCoinflips
                         break;
                     case 17:
                         ExplosiveGrenade instaBoom = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-                        instaBoom.FuseTime = 0.2f;
-                        instaBoom.SpawnActive(ev.Player.Position);
+                        instaBoom.FuseTime = 0.1f;
+                        instaBoom.SpawnActive(ev.Player.Position, ev.Player);
                         message = _tr.InstantExplosionMessage;
                         break;
                 }

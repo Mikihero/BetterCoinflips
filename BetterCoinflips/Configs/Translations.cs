@@ -40,6 +40,9 @@ namespace BetterCoinflips.Configs
 
         [Description("The message broadcast to a player when they receive the worst revolver possible from the coin.")]
         public string BadRevoMessage { get; set; } = "What is this abomination!?";
+
+        [Description("The message broadcast to a player when they receive an empty micro hid from the coin.")]
+        public string EmptyHidMessage { get; set; } = "DID YOU JUST GET A MICRO HID!?";
         
 
 
