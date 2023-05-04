@@ -16,8 +16,8 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
  8. They will get a Logicer with 1 ammo.  
  9. An SCP-2176 will spawn at their feet. 
  10. A pink candy will spawn at their feet. 
- 11. An instantly exploding grenade will spawn on their head.
- 12. A revolver with the worst attachments possible will spawn at their feet. 
+ 11. A revolver with the worst attachments possible will spawn at their feet. 
+ 12. An empty micro hid will spawn at their feet.
 
 - Whenever someone flips a coin and it lands on tails one of the following will happen:  
  1. Their current hp will be set to 70%.  
@@ -36,6 +36,7 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
  14. The player will be forceclassed to SCP-049-2.
  15. The player's inventory will be reset.
  16. The player's role will be changed to the opposite one (class d - scientist, mtf - ci etc.)
+ 17. An instantly exploding grenade will spawn on their head.
 
 - The plugin will prevent the spawns of a specified amount of coins around the map.
 - The plugin will replace a specified amount of the chosen item (by default SCP-500) with a coin in the SCP pedestals.
