@@ -61,7 +61,6 @@ namespace BetterCoinflips.Configs
             EffectType.SeveredHands,
             EffectType.SinkHole,
             EffectType.Stained,
-            EffectType.SoundtrackMute
         };
         
         [Description("List of good effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]
