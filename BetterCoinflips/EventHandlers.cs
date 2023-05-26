@@ -304,7 +304,7 @@ namespace BetterCoinflips
                         break;
                     case 14:
                         ev.Player.DropHeldItem();
-                        ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.None);
+                        ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
                         message = _tr.ZombieFcMessage;
                         break;
                     case 15:
