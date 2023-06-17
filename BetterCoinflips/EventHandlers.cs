@@ -16,7 +16,7 @@ namespace BetterCoinflips
 {
     public class EventHandlers
     {
-        private readonly Config _cfg = Plugin.Instance.Config;
+        private static readonly Config _cfg = Plugin.Instance.Config;
         private readonly Configs.Translations _tr = Plugin.Instance.Translation;
         private readonly System.Random _rd = new();
         private readonly Dictionary<string, string> _scpNames = new()
@@ -30,6 +30,43 @@ namespace BetterCoinflips
         };
         // ReSharper disable once FieldCanBeMadeReadOnly.Global
         public static Dictionary<ushort, int> CoinUses = new();
+
+        readonly Dictionary<int, int> _goodEffectChances = new()
+        {
+            { 1, _cfg.KeycardEffectChance },
+            { 2, _cfg.MedicalKitEffectChance },
+            { 3, _cfg.TpToEscapeEffectChance },
+            { 4, _cfg.HealEffectChance },
+            { 5, _cfg.MoreHpEffectChance },
+            { 6, _cfg.HatEffectChance },
+            { 7, _cfg.RandomGoodEffectChance },
+            { 8, _cfg.OneAmmoLogicerEffectChance },
+            { 9, _cfg.LightbulbEffectChance },
+            { 10, _cfg.PinkCandyEffectChance },
+            { 11, _cfg.BadRevoEffectChance },
+            { 12, _cfg.EmptyHidEffectChance },
+        };
+
+        readonly Dictionary<int, int> _badEffectChances = new()
+        {
+            { 1, _cfg.HpReductionEffectChance },
+            { 2, _cfg.TpToClassDCellsEffectChance },
+            { 3, _cfg.RandomBadEffectChance },
+            { 4, _cfg.WarheadEffectChance },
+            { 5, _cfg.LightsOutEffectChance },
+            { 6, _cfg.LiveHeEffectChance },
+            { 7, _cfg.TrollGunEffectChance },
+            { 8, _cfg.TrollFlashEffectChance },
+            { 9, _cfg.ScpTpEffectChance },
+            { 10, _cfg.OneHpLeftEffectChance },
+            { 11, _cfg.PrimedVaseEffectChance},
+            { 12, _cfg.ShitPantsEffectChance },
+            { 13, _cfg.FakeCassieEffectChance },
+            { 14, _cfg.ZombieFcEffectChance },
+            { 15, _cfg.InventoryResetEffectChance },
+            { 16, _cfg.ClassSwapEffectChance },
+            { 17, _cfg.InstantExplosionEffectChance },
+        };
         
         private void SendBroadcast(Player pl, string message) => pl.Broadcast(_cfg.BroadcastTime, message);
 
@@ -54,32 +91,16 @@ namespace BetterCoinflips
                 ifChainResult = 3;
                 Log.Debug("Removed the coin");
             }
-            
-            
-            
+
             Log.Debug($"Is tails: {ev.IsTails}");
             if (!ev.IsTails)
             {
-                Dictionary<int, int> effectChances = new Dictionary<int, int>
-                {
-                    { 1, _cfg.KeycardEffectChance },
-                    { 2, _cfg.MedicalKitEffectChance },
-                    { 3, _cfg.TpToEscapeEffectChance },
-                    { 4, _cfg.HealEffectChance },
-                    { 5, _cfg.MoreHpEffectChance },
-                    { 6, _cfg.HatEffectChance },
-                    { 7, _cfg.RandomGoodEffectChance },
-                    { 8, _cfg.OneAmmoLogicerEffectChance },
-                    { 9, _cfg.LightbulbEffectChance },
-                    { 10, _cfg.PinkCandyEffectChance },
-                    { 11, _cfg.BadRevoEffectChance },
-                    { 12, _cfg.EmptyHidEffectChance },
-                };
-                int totalChance = effectChances.Values.Sum();
+                
+                int totalChance = _goodEffectChances.Values.Sum();
                 int randomNum = _rd.Next(1, totalChance + 1);
                 int headsEvent = 2; // Set a default value for headsEvent
 
-                foreach (KeyValuePair<int, int> kvp in effectChances)
+                foreach (KeyValuePair<int, int> kvp in _goodEffectChances)
                 {
                     if (randomNum <= kvp.Value)
                     {
@@ -168,31 +189,11 @@ namespace BetterCoinflips
             }
             if (ev.IsTails)
             {
-                Dictionary<int, int> effectChances = new Dictionary<int, int>
-                {
-                    { 1, _cfg.HpReductionEffectChance },
-                    { 2, _cfg.TpToClassDCellsEffectChance },
-                    { 3, _cfg.RandomBadEffectChance },
-                    { 4, _cfg.WarheadEffectChance },
-                    { 5, _cfg.LightsOutEffectChance },
-                    { 6, _cfg.LiveHeEffectChance },
-                    { 7, _cfg.TrollGunEffectChance },
-                    { 8, _cfg.TrollFlashEffectChance },
-                    { 9, _cfg.ScpTpEffectChance },
-                    { 10, _cfg.OneHpLeftEffectChance },
-                    { 11, _cfg.PrimedVaseEffectChance},
-                    { 12, _cfg.ShitPantsEffectChance },
-                    { 13, _cfg.FakeCassieEffectChance },
-                    { 14, _cfg.ZombieFcEffectChance },
-                    { 15, _cfg.InventoryResetEffectChance },
-                    { 16, _cfg.ClassSwapEffectChance },
-                    { 17, _cfg.InstantExplosionEffectChance },
-                };
-                int totalChance = effectChances.Values.Sum();
+                int totalChance = _badEffectChances.Values.Sum();
                 int randomNum = _rd.Next(1, totalChance + 1);
                 int tailsEvent = 13; // Set a default value for headsEvent
 
-                foreach (KeyValuePair<int, int> kvp in effectChances)
+                foreach (KeyValuePair<int, int> kvp in _badEffectChances)
                 {
                     if (randomNum <= kvp.Value)
                     {
