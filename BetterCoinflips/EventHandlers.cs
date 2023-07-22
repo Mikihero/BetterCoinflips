@@ -308,6 +308,10 @@ namespace BetterCoinflips
                     case 14:
                         ev.Player.DropHeldItem();
                         ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+                        if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
+                        {
+                            ev.Player.EnableEffect(EffectType.Corroding);
+                        }
                         message = _tr.ZombieFcMessage;
                         break;
                     case 15:
@@ -349,6 +353,11 @@ namespace BetterCoinflips
                                 };
                                 ev.Player.Role.Set(roles.RandomItem(), RoleSpawnFlags.AssignInventory);
                                 break;
+                        }
+
+                        if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
+                        {
+                            ev.Player.EnableEffect(EffectType.Corroding);
                         }
                         message = _tr.ClassSwapMessage;
                         break;
