@@ -73,22 +73,24 @@ namespace BetterCoinflips
         public void OnCoinFlip(FlippingCoinEventArgs ev)
         {
             string message = "";
-            
             int ifChainResult = 0;
+            
             if (!CoinUses.ContainsKey(ev.Player.CurrentItem.Serial))
             {
                 CoinUses.Add(ev.Player.CurrentItem.Serial, _rd.Next(_cfg.MinMaxDefaultCoins[0], _cfg.MinMaxDefaultCoins[1]));
                 Log.Debug($"Registered a coin, Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
             }
-            else
-            {
-                CoinUses[ev.Player.CurrentItem.Serial]--;
-                Log.Debug($"Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
-            }
             if (CoinUses[ev.Player.CurrentItem.Serial] < 1)
             {
                 CoinUses.Remove(ev.Player.CurrentItem.Serial);
                 ifChainResult = 3;
+                if (ev.Player.CurrentItem != null)
+                {
+                    ev.Player.RemoveHeldItem();
+                    message = _tr.CoinNoUsesMessage;
+                    SendBroadcast(ev.Player, message);
+                    return;
+                }
                 Log.Debug("Removed the coin");
             }
 
@@ -359,6 +361,9 @@ namespace BetterCoinflips
                 }
             }
 
+            CoinUses[ev.Player.CurrentItem.Serial]--;
+            Log.Debug($"Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
+            
             switch (ifChainResult)
             {
                 case 3:
@@ -370,7 +375,7 @@ namespace BetterCoinflips
                     break;
             }
             
-            SendBroadcast(ev.Player, message);
+            
         }
         
         public void OnSpawningItem(SpawningItemEventArgs ev)

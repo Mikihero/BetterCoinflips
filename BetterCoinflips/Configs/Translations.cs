@@ -102,6 +102,9 @@ namespace BetterCoinflips.Configs
         
         [Description("The message to be added the the chosen effect broadcast if the coin breaks after that throw.")]
         public string CoinBreaksMessage { get; set; } = "\nAlso your coin was used too much and it broke down.";
+
+        [Description("The message to be broadcast if you try to throw a coin that rolled 0 uses.")]
+        public string CoinNoUsesMessage { get; set; } = "Your coin had no uses to begin with!";
         
         [Description("The message broadcast to a player when they are exploded by the coin.")]
         public string InstantExplosionMessage { get; set; } = "You got smoked.";
