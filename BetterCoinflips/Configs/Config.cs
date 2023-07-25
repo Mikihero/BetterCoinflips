@@ -29,6 +29,9 @@ namespace BetterCoinflips.Configs
             4
         };
 
+        [Description("Time in seconds between coin toses.")]
+        public double CoinCooldown { get; set; } = 5;
+
         [Description("The duration of the broadcast informing you about your 'reward'. Default: 3")]
         public ushort BroadcastTime { get; set; } = 3;
 

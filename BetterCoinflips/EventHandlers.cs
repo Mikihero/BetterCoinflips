@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Exiled.API.Enums;
 using Exiled.API.Features;
@@ -67,15 +68,27 @@ namespace BetterCoinflips
             { 16, _cfg.ClassSwapEffectChance },
             { 17, _cfg.InstantExplosionEffectChance },
         };
-        
+
+        private Dictionary<string, DateTime> _cooldownDict = new();
+
         private void SendBroadcast(Player pl, string message) => pl.Broadcast(_cfg.BroadcastTime, message);
 
         public void OnCoinFlip(FlippingCoinEventArgs ev)
         {
             string message = "";
-            int ifChainResult = 0;
-
-            Log.Info(_rd.Next(1,1));
+            int helper = 0;
+            
+            bool flag = _cooldownDict.ContainsKey(ev.Player.RawUserId) && (DateTime.UtcNow - _cooldownDict[ev.Player.RawUserId]).TotalSeconds < Plugin.Instance.Config.CoinCooldown;
+            if (flag)
+            {
+                message = _tr.TossOnCooldownMessage;
+                ev.IsAllowed = false;
+                SendBroadcast(ev.Player, message);
+                Log.Debug($"{ev.Player.Nickname} tried to throw a coin on cooldown.");
+                return;
+            }
+            
+            _cooldownDict[ev.Player.RawUserId] = DateTime.UtcNow;
             
             if (!CoinUses.ContainsKey(ev.Player.CurrentItem.Serial))
             {
@@ -100,7 +113,7 @@ namespace BetterCoinflips
 
             if (CoinUses[ev.Player.CurrentItem.Serial] < 1)
             {
-                ifChainResult = 3;
+                helper = 3;
             }
 
             Log.Debug($"Is tails: {ev.IsTails}");
@@ -379,7 +392,7 @@ namespace BetterCoinflips
                 }
             }
             
-            switch (ifChainResult)
+            switch (helper)
             {
                 case 3:
                     if (ev.Player.CurrentItem != null)

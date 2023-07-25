@@ -5,6 +5,9 @@ namespace BetterCoinflips.Configs
 {
     public class Translations : ITranslation
     {
+        [Description("The message broadcast to a player trying to throw a coin during cooldown.")]
+        public string TossOnCooldownMessage { get; set; } = "You can't throw the coin yet.";
+        
         [Description("The message broadcast to a player when they receive a facility manager keycard (the red one) from the coin.")]
         public string RedCardMessage { get; set; } = "You acquired a Facility Manager keycard!";
 
