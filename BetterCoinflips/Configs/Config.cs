@@ -61,9 +61,11 @@ namespace BetterCoinflips.Configs
             EffectType.Hypothermia,
             EffectType.InsufficientLighting,
             EffectType.Poisoned,
+            EffectType.PocketCorroding,
             EffectType.SeveredHands,
             EffectType.SinkHole,
             EffectType.Stained,
+            EffectType.Traumatized
         };
         
         [Description("List of good effects that can be applied to the players. List available at: https://exiled-team.github.io/EXILED/api/Exiled.API.Enums.EffectType.html")]

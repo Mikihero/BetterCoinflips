@@ -17,7 +17,7 @@ namespace BetterCoinflips
 {
     public class EventHandlers
     {
-        private static readonly Config _cfg = Plugin.Instance.Config;
+        private static readonly Config Cfg = Plugin.Instance.Config;
         private readonly Configs.Translations _tr = Plugin.Instance.Translation;
         private readonly System.Random _rd = new();
         private readonly Dictionary<string, string> _scpNames = new()
@@ -34,44 +34,44 @@ namespace BetterCoinflips
 
         readonly Dictionary<int, int> _goodEffectChances = new()
         {
-            { 1, _cfg.KeycardEffectChance },
-            { 2, _cfg.MedicalKitEffectChance },
-            { 3, _cfg.TpToEscapeEffectChance },
-            { 4, _cfg.HealEffectChance },
-            { 5, _cfg.MoreHpEffectChance },
-            { 6, _cfg.HatEffectChance },
-            { 7, _cfg.RandomGoodEffectChance },
-            { 8, _cfg.OneAmmoLogicerEffectChance },
-            { 9, _cfg.LightbulbEffectChance },
-            { 10, _cfg.PinkCandyEffectChance },
-            { 11, _cfg.BadRevoEffectChance },
-            { 12, _cfg.EmptyHidEffectChance },
+            { 1, Cfg.KeycardEffectChance },
+            { 2, Cfg.MedicalKitEffectChance },
+            { 3, Cfg.TpToEscapeEffectChance },
+            { 4, Cfg.HealEffectChance },
+            { 5, Cfg.MoreHpEffectChance },
+            { 6, Cfg.HatEffectChance },
+            { 7, Cfg.RandomGoodEffectChance },
+            { 8, Cfg.OneAmmoLogicerEffectChance },
+            { 9, Cfg.LightbulbEffectChance },
+            { 10, Cfg.PinkCandyEffectChance },
+            { 11, Cfg.BadRevoEffectChance },
+            { 12, Cfg.EmptyHidEffectChance },
         };
 
         readonly Dictionary<int, int> _badEffectChances = new()
         {
-            { 1, _cfg.HpReductionEffectChance },
-            { 2, _cfg.TpToClassDCellsEffectChance },
-            { 3, _cfg.RandomBadEffectChance },
-            { 4, _cfg.WarheadEffectChance },
-            { 5, _cfg.LightsOutEffectChance },
-            { 6, _cfg.LiveHeEffectChance },
-            { 7, _cfg.TrollGunEffectChance },
-            { 8, _cfg.TrollFlashEffectChance },
-            { 9, _cfg.ScpTpEffectChance },
-            { 10, _cfg.OneHpLeftEffectChance },
-            { 11, _cfg.PrimedVaseEffectChance},
-            { 12, _cfg.ShitPantsEffectChance },
-            { 13, _cfg.FakeCassieEffectChance },
-            { 14, _cfg.ZombieFcEffectChance },
-            { 15, _cfg.InventoryResetEffectChance },
-            { 16, _cfg.ClassSwapEffectChance },
-            { 17, _cfg.InstantExplosionEffectChance },
+            { 1, Cfg.HpReductionEffectChance },
+            { 2, Cfg.TpToClassDCellsEffectChance },
+            { 3, Cfg.RandomBadEffectChance },
+            { 4, Cfg.WarheadEffectChance },
+            { 5, Cfg.LightsOutEffectChance },
+            { 6, Cfg.LiveHeEffectChance },
+            { 7, Cfg.TrollGunEffectChance },
+            { 8, Cfg.TrollFlashEffectChance },
+            { 9, Cfg.ScpTpEffectChance },
+            { 10, Cfg.OneHpLeftEffectChance },
+            { 11, Cfg.PrimedVaseEffectChance},
+            { 12, Cfg.ShitPantsEffectChance },
+            { 13, Cfg.FakeCassieEffectChance },
+            { 14, Cfg.ZombieFcEffectChance },
+            { 15, Cfg.InventoryResetEffectChance },
+            { 16, Cfg.ClassSwapEffectChance },
+            { 17, Cfg.InstantExplosionEffectChance },
         };
 
         private Dictionary<string, DateTime> _cooldownDict = new();
 
-        private void SendBroadcast(Player pl, string message) => pl.Broadcast(_cfg.BroadcastTime, message);
+        private void SendBroadcast(Player pl, string message) => pl.Broadcast(Cfg.BroadcastTime, message);
 
         public void OnCoinFlip(FlippingCoinEventArgs ev)
         {
@@ -92,7 +92,7 @@ namespace BetterCoinflips
             
             if (!CoinUses.ContainsKey(ev.Player.CurrentItem.Serial))
             {
-                CoinUses.Add(ev.Player.CurrentItem.Serial, _rd.Next(_cfg.MinMaxDefaultCoins[0], _cfg.MinMaxDefaultCoins[1]));
+                CoinUses.Add(ev.Player.CurrentItem.Serial, _rd.Next(Cfg.MinMaxDefaultCoins[0], Cfg.MinMaxDefaultCoins[1]));
                 Log.Debug($"Registered a coin, Uses Left: {CoinUses[ev.Player.CurrentItem.Serial]}");
                 if (CoinUses[ev.Player.CurrentItem.Serial] < 1)
                 {
@@ -140,7 +140,7 @@ namespace BetterCoinflips
                 switch (headsEvent)
                 {
                     case 1:
-                        if (_cfg.RedCardChance > _rd.Next(1, 101))
+                        if (Cfg.RedCardChance > _rd.Next(1, 101))
                         {
                             Pickup.CreateAndSpawn(ItemType.KeycardFacilityManager, ev.Player.Position, new Quaternion());
                             message = _tr.RedCardMessage;
@@ -173,7 +173,7 @@ namespace BetterCoinflips
                         message = _tr.NeatHatMessage;
                         break;
                     case 7:
-                        var effect = _cfg.GoodEffects.ToList().RandomItem();
+                        var effect = Cfg.GoodEffects.ToList().RandomItem();
                         ev.Player.EnableEffect(effect, 5, true);
                         Log.Debug($"Chosen random effect: {effect}");
                         message = _tr.RandomGoodEffectMessage;
@@ -244,8 +244,11 @@ namespace BetterCoinflips
                         message = _tr.TpToClassDCellsMessage;
                         break;
                     case 3:
-                        var effect = _cfg.BadEffects.ToList().RandomItem();
-                        ev.Player.EnableEffect(effect, 5, true);
+                        var effect = Cfg.BadEffects.ToList().RandomItem();
+                        if (effect == EffectType.PocketCorroding)
+                            ev.Player.EnableEffect(EffectType.PocketCorroding);
+                        else
+                            ev.Player.EnableEffect(effect, 5, true);
                         Log.Debug($"Chosen random effect: {effect}");
                         message = _tr.RandomBadEffectMessage;
                         break;
@@ -270,12 +273,12 @@ namespace BetterCoinflips
                         }
                         break;
                     case 5:
-                        Map.TurnOffAllLights(_cfg.MapBlackoutTime);
+                        Map.TurnOffAllLights(Cfg.MapBlackoutTime);
                         message = _tr.LightsOutMessage;
                         break;
                     case 6:
                         ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-                        grenade.FuseTime = (float)_cfg.LiveGrenadeFuseTime;
+                        grenade.FuseTime = (float)Cfg.LiveGrenadeFuseTime;
                         grenade.SpawnActive(ev.Player.Position + Vector3.up, ev.Player);
                         message = _tr.LiveGrenadeMessage;
                         break;
@@ -331,9 +334,7 @@ namespace BetterCoinflips
                         ev.Player.DropHeldItem();
                         ev.Player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
                         if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
-                        {
-                            ev.Player.EnableEffect(EffectType.Corroding);
-                        }
+                            ev.Player.EnableEffect(EffectType.PocketCorroding);
                         message = _tr.ZombieFcMessage;
                         break;
                     case 15:
@@ -379,7 +380,7 @@ namespace BetterCoinflips
 
                         if (ev.Player.CurrentRoom.Type == RoomType.Pocket)
                         {
-                            ev.Player.EnableEffect(EffectType.Corroding);
+                            ev.Player.EnableEffect(EffectType.PocketCorroding);
                         }
                         message = _tr.ClassSwapMessage;
                         break;
@@ -408,10 +409,10 @@ namespace BetterCoinflips
         
         public void OnSpawningItem(SpawningItemEventArgs ev)
         {
-            if (_cfg.DefaultCoinsAmount != 0 && ev.Pickup.Type == ItemType.Coin)
+            if (Cfg.DefaultCoinsAmount != 0 && ev.Pickup.Type == ItemType.Coin)
             {
                 ev.IsAllowed = false;
-                _cfg.DefaultCoinsAmount--;
+                Cfg.DefaultCoinsAmount--;
             }
         }
 
@@ -427,11 +428,11 @@ namespace BetterCoinflips
                 {
                     return;
                 }
-                if (pickup.IsLocked && pickup.Type == _cfg.ItemToReplace.ElementAt(0).Key && _cfg.ItemToReplace.ElementAt(0).Key != ItemType.None && pickup.Type == _cfg.ItemToReplace.ElementAt(0).Key && _cfg.ItemToReplace.ElementAt(0).Value != 0)
+                if (pickup.IsLocked && pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key && Cfg.ItemToReplace.ElementAt(0).Key != ItemType.None && pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key && Cfg.ItemToReplace.ElementAt(0).Value != 0)
                 {
                     pickup.Destroy();
                     Pickup.CreateAndSpawn(ItemType.Coin, pickup.RelativePosition.Position, new Quaternion());
-                    _cfg.ItemToReplace[_cfg.ItemToReplace.ElementAt(0).Key]--;
+                    Cfg.ItemToReplace[Cfg.ItemToReplace.ElementAt(0).Key]--;
                 }
             }
         }
