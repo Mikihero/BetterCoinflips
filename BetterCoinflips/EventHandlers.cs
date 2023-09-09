@@ -423,12 +423,16 @@ namespace BetterCoinflips
             {
                 return;
             }
-            foreach (Pickup pickup in ev.Door.Room.Pickups)
+
+            for (int i = 0; i < Pickup.List.Count(); i++)
             {
+                Pickup pickup = Pickup.List.ElementAt(i);
+                
                 if (pickup == null)
                 {
                     return;
                 }
+                
                 if (pickup.IsLocked && pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key && Cfg.ItemToReplace.ElementAt(0).Key != ItemType.None && pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key && Cfg.ItemToReplace.ElementAt(0).Value != 0)
                 {
                     pickup.Destroy();
