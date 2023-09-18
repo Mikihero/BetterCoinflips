@@ -10,8 +10,8 @@ namespace BetterCoinflips
     public class Plugin : Plugin<Config, Configs.Translations>
     {
         public static Plugin Instance;
-        public override Version RequiredExiledVersion => new(8,1,0, 0);
-        public override Version Version => new(4, 0, 0);
+        public override Version RequiredExiledVersion => new(8,2,1, 0);
+        public override Version Version => new(4, 1, 0);
         public override string Author => "Miki_hero";
         public override string Name => "BetterCoinflips";
         public override string Prefix => "better_cf";
