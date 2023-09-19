@@ -33,44 +33,44 @@ namespace BetterCoinflips
         // ReSharper disable once FieldCanBeMadeReadOnly.Global
         public static Dictionary<ushort, int> CoinUses = new();
 
-        readonly Dictionary<int, int> _goodEffectChances = new()
+        private readonly Dictionary<int, int> _goodEffectChances = new()
         {
-            { 1, Cfg.KeycardEffectChance },
-            { 2, Cfg.MedicalKitEffectChance },
-            { 3, Cfg.TpToEscapeEffectChance },
-            { 4, Cfg.HealEffectChance },
-            { 5, Cfg.MoreHpEffectChance },
-            { 6, Cfg.HatEffectChance },
-            { 7, Cfg.RandomGoodEffectChance },
-            { 8, Cfg.OneAmmoLogicerEffectChance },
-            { 9, Cfg.LightbulbEffectChance },
-            { 10, Cfg.PinkCandyEffectChance },
-            { 11, Cfg.BadRevoEffectChance },
-            { 12, Cfg.EmptyHidEffectChance },
+            { 0, Cfg.KeycardEffectChance },
+            { 1, Cfg.MedicalKitEffectChance },
+            { 2, Cfg.TpToEscapeEffectChance },
+            { 3, Cfg.HealEffectChance },
+            { 4, Cfg.MoreHpEffectChance },
+            { 5, Cfg.HatEffectChance },
+            { 6, Cfg.RandomGoodEffectChance },
+            { 7, Cfg.OneAmmoLogicerEffectChance },
+            { 8, Cfg.LightbulbEffectChance },
+            { 9, Cfg.PinkCandyEffectChance },
+            { 10, Cfg.BadRevoEffectChance },
+            { 11, Cfg.EmptyHidEffectChance }
         };
 
-        readonly Dictionary<int, int> _badEffectChances = new()
+        private readonly Dictionary<int, int> _badEffectChances = new()
         {
-            { 1, Cfg.HpReductionEffectChance },
-            { 2, Cfg.TpToClassDCellsEffectChance },
-            { 3, Cfg.RandomBadEffectChance },
-            { 4, Cfg.WarheadEffectChance },
-            { 5, Cfg.LightsOutEffectChance },
-            { 6, Cfg.LiveHeEffectChance },
-            { 7, Cfg.TrollGunEffectChance },
-            { 8, Cfg.TrollFlashEffectChance },
-            { 9, Cfg.ScpTpEffectChance },
-            { 10, Cfg.OneHpLeftEffectChance },
-            { 11, Cfg.PrimedVaseEffectChance},
-            { 12, Cfg.ShitPantsEffectChance },
-            { 13, Cfg.FakeCassieEffectChance },
-            { 14, Cfg.ZombieFcEffectChance },
-            { 15, Cfg.InventoryResetEffectChance },
-            { 16, Cfg.ClassSwapEffectChance },
-            { 17, Cfg.InstantExplosionEffectChance },
+            { 0, Cfg.HpReductionEffectChance },
+            { 1, Cfg.TpToClassDCellsEffectChance },
+            { 2, Cfg.RandomBadEffectChance },
+            { 3, Cfg.WarheadEffectChance },
+            { 4, Cfg.LightsOutEffectChance },
+            { 5, Cfg.LiveHeEffectChance },
+            { 6, Cfg.TrollGunEffectChance },
+            { 7, Cfg.TrollFlashEffectChance },
+            { 8, Cfg.ScpTpEffectChance },
+            { 9, Cfg.OneHpLeftEffectChance },
+            { 10, Cfg.PrimedVaseEffectChance },
+            { 11, Cfg.ShitPantsEffectChance },
+            { 12, Cfg.FakeCassieEffectChance },
+            { 13, Cfg.ZombieFcEffectChance },
+            { 14, Cfg.InventoryResetEffectChance },
+            { 15, Cfg.ClassSwapEffectChance },
+            { 16, Cfg.InstantExplosionEffectChance }
         };
 
-        private Dictionary<string, DateTime> _cooldownDict = new();
+        private readonly Dictionary<string, DateTime> _cooldownDict = new();
 
         private void SendBroadcast(Player pl, string message) => pl.Broadcast(Cfg.BroadcastTime, message);
 
