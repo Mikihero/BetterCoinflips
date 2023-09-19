@@ -23,13 +23,13 @@ namespace BetterCoinflips
         {
             Instance = this;
             RegisterEvents();
-            Patch();
+            // Patch();
             base.OnEnabled();
         }
 
         public override void OnDisabled()
         {
-            UnPatch();
+            // UnPatch();
             UnRegisterEvents();
             Instance = null;
             base.OnDisabled();
@@ -40,14 +40,16 @@ namespace BetterCoinflips
             _eventHandler = new EventHandlers();
             Player.FlippingCoin += _eventHandler.OnCoinFlip;
             Map.SpawningItem += _eventHandler.OnSpawningItem;
-            Player.InteractingDoor += _eventHandler.OnInteractingDoorEventArgs;
+            Map.FillingLocker += _eventHandler.OnFillingLocker;
+            // Player.InteractingDoor += _eventHandler.OnInteractingDoorEventArgs;
         }
 
         private void UnRegisterEvents()
         {
             Player.FlippingCoin -= _eventHandler.OnCoinFlip;
             Map.SpawningItem -= _eventHandler.OnSpawningItem;
-            Player.InteractingDoor -= _eventHandler.OnInteractingDoorEventArgs;
+            Map.FillingLocker -= _eventHandler.OnFillingLocker;
+            // Player.InteractingDoor -= _eventHandler.OnInteractingDoorEventArgs;
             _eventHandler = null;
         }
 
