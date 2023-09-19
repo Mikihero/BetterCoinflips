@@ -6,6 +6,7 @@ namespace BetterCoinflips.Patches
     [HarmonyPatch(typeof(LockerChamber), nameof(LockerChamber.SpawnItem))]
     public static class LockerChamberItemSpawnPatch 
     {
+        //removing coins from normal lockers TODO: look into replacing with an event
         public static bool Prefix(ItemType id, int amount)
         {
             if (id == ItemType.Coin && Plugin.Instance.Config.DefaultCoinsAmount != 0)
