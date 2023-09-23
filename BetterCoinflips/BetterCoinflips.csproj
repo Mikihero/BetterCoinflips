@@ -67,7 +67,6 @@
     <Compile Include="Configs\Config.cs" />
     <Compile Include="Configs\Translations.cs" />
     <Compile Include="EventHandlers.cs" />
-    <Compile Include="Patches\SpawningCoinPatch.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Types\CoinEffect.cs" />

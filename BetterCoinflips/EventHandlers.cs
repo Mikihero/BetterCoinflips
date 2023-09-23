@@ -193,56 +193,21 @@ namespace BetterCoinflips
             }
         }
 
+        //removing locker spawning coins and replacing the chosen item in SCP pedestals
         public void OnFillingLocker(FillingLockerEventArgs ev)
         {
             if (ev.Pickup.Type == ItemType.Coin && Plugin.Instance.Config.DefaultCoinsAmount != 0)
             {
-                Log.Info("test");
                 ev.IsAllowed = false;
                 Plugin.Instance.Config.DefaultCoinsAmount--;
             }
-            else if (Cfg.ItemToReplace.ElementAt(0).Key != ItemType.None
-                     && ev.Pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key
+            else if (ev.Pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key
                      && Cfg.ItemToReplace.ElementAt(0).Value != 0)
             {
-                Log.Info("test2");
                 ev.IsAllowed = false;
                 Pickup.CreateAndSpawn(ItemType.Coin, ev.Pickup.Position, new Quaternion());
                 Cfg.ItemToReplace[Cfg.ItemToReplace.ElementAt(0).Key]--;
             }
         }
-        
-        //replacing SCP items in SCP pedestals with a coin, TODO: look into replacing with the correct event
-        /*public void OnInteractingDoorEventArgs(InteractingDoorEventArgs ev)
-        {
-            if (ev.Door?.Room == null || ev.Door.Room.Pickups == null)
-            {
-                return;
-            }
-            
-            //can't use foreach cause InvalidOpeartionException: Collection was modified can happen
-            for (int i = 0; i < Pickup.List.Count(); i++)
-            {
-                Pickup pickup = Pickup.List.ElementAt(i);
-                
-                if (pickup == null)
-                {
-                    return;
-                }
-                
-                //check if it's the correct SCP item and if it's in the pedestal
-                if (pickup.IsLocked 
-                    && pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key 
-                    && Cfg.ItemToReplace.ElementAt(0).Key != ItemType.None 
-                    && pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key 
-                    && Cfg.ItemToReplace.ElementAt(0).Value != 0)
-                {
-                    //replace SCP item with coin
-                    pickup.Destroy();
-                    Pickup.CreateAndSpawn(ItemType.Coin, pickup.RelativePosition.Position, new Quaternion());
-                    Cfg.ItemToReplace[Cfg.ItemToReplace.ElementAt(0).Key]--;
-                }
-            }
-        }*/
     }
 }
