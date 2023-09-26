@@ -9,6 +9,7 @@ using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
 using InventorySystem.Items.Firearms.Attachments;
 using PlayerRoles;
+using Respawning;
 using UnityEngine;
 using Player = Exiled.API.Features.Player;
 
@@ -43,39 +44,46 @@ namespace BetterCoinflips.Types
 
         public static List<CoinFlipEffect> GoodEffects = new()
         {
+            //1
             new CoinFlipEffect(player =>
             {
                 Pickup.CreateAndSpawn(flag1 ? ItemType.KeycardFacilityManager : ItemType.KeycardContainmentEngineer,
                     player.Position, new Quaternion());
             }, flag1 ? _tr.RedCardMessage : _tr.ContainmentEngineerCardMessage),
 
+            //2
             new CoinFlipEffect(player =>
             {
                 Pickup.CreateAndSpawn(ItemType.Medkit, player.Position, new Quaternion());
                 Pickup.CreateAndSpawn(ItemType.Painkillers, player.Position, new Quaternion());
             }, _tr.MediKitMessage),
 
+            //3
             new CoinFlipEffect(player =>
             {
                 player.Teleport(Door.Get(DoorType.EscapeSecondary));
             }, _tr.TpToEscapeMessage),
 
+            //4
             new CoinFlipEffect(player =>
             {
                 player.Heal(25);
             }, _tr.MagicHealMessage),
 
+            //5
             new CoinFlipEffect(player =>
             {
                 player.Health *= 1.1f;
 
             }, _tr.HealthIncreaseMessage),
 
+            //6
             new CoinFlipEffect(player =>
             {
                 Pickup.CreateAndSpawn(ItemType.SCP268, player.Position, new Quaternion());
             }, _tr.NeatHatMessage),
 
+            //7
             new CoinFlipEffect(player =>
             {
                 var effect = _cfg.GoodEffects.ToList().RandomItem();
@@ -83,6 +91,7 @@ namespace BetterCoinflips.Types
                 Log.Debug($"Chosen random effect: {effect}");
             }, _tr.RandomGoodEffectMessage),
 
+            //8
             new CoinFlipEffect(player =>
             {
                 Firearm gun = (Firearm)Item.Create(ItemType.GunLogicer);
@@ -90,11 +99,13 @@ namespace BetterCoinflips.Types
                 gun.CreatePickup(player.Position);
             }, _tr.OneAmmoLogicerMessage),
 
+            //9
             new CoinFlipEffect(player =>
             {
                 Pickup.CreateAndSpawn(ItemType.SCP2176, player.Position, new Quaternion());
             }, _tr.LightbulbMessage),
 
+            //10
             new CoinFlipEffect(player =>
             {
                 Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
@@ -102,6 +113,7 @@ namespace BetterCoinflips.Types
                 candy.CreatePickup(player.Position);
             }, _tr.PinkCandyMessage),
 
+            //11
             new CoinFlipEffect(player =>
             {
                 Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
@@ -110,17 +122,28 @@ namespace BetterCoinflips.Types
                 revo.CreatePickup(player.Position);
             }, _tr.BadRevoMessage),
 
+            //12
             new CoinFlipEffect(player =>
             {
                 MicroHIDPickup item = (MicroHIDPickup)Pickup.Create(ItemType.MicroHID);
                 item.Position = player.Position;
                 item.Spawn();
                 item.Energy = 0;
-            }, _tr.EmptyHidMessage)
+            }, _tr.EmptyHidMessage),
+            
+            //13
+            new CoinFlipEffect(player =>
+            {
+                if (Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox)
+                    Respawn.ForceWave(SpawnableTeamType.NineTailedFox, true);
+                else
+                    Respawn.ForceWave(SpawnableTeamType.ChaosInsurgency, true);
+            }, _tr.ForceRespawnMessage),
         };
 
         public static List<CoinFlipEffect> BadEffects = new()
         {
+            //1
             new CoinFlipEffect(player =>
             {
                 if ((int)player.Health == 1)
@@ -129,12 +152,14 @@ namespace BetterCoinflips.Types
                     player.Health *= 0.7f;
             }, _tr.HpReductionMessage),
             
+            //2
             new CoinFlipEffect(player =>
             {
                 player.Teleport(Door.Get(DoorType.PrisonDoor));
 
             }, _tr.TpToClassDCellsMessage),
             
+            //3
             new CoinFlipEffect(player =>
             {
                 var effect = _cfg.BadEffects.ToList().RandomItem();
@@ -145,6 +170,7 @@ namespace BetterCoinflips.Types
                 Log.Debug($"Chosen random effect: {effect}");
             }, _tr.RandomBadEffectMessage),
             
+            //4
             new CoinFlipEffect(player =>
             {
                 if (Warhead.IsDetonated || !Warhead.IsInProgress)
@@ -153,11 +179,13 @@ namespace BetterCoinflips.Types
                     Warhead.Stop();
             }, Warhead.IsDetonated || !Warhead.IsInProgress ? _tr.WarheadStartMessage : _tr.WarheadStopMessage),
             
+            //5
             new CoinFlipEffect(player =>
             {
                 Map.TurnOffAllLights(_cfg.MapBlackoutTime);
             }, _tr.LightsOutMessage),
             
+            //6
             new CoinFlipEffect(player =>
             {
                 ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
@@ -165,6 +193,7 @@ namespace BetterCoinflips.Types
                 grenade.SpawnActive(player.Position + Vector3.up, player);
             }, _tr.LiveGrenadeMessage),
             
+            //7
             new CoinFlipEffect(player =>
             {
                 Firearm gun = (Firearm)Item.Create(ItemType.ParticleDisruptor);
@@ -172,6 +201,7 @@ namespace BetterCoinflips.Types
                 gun.CreatePickup(player.Position);
             }, _tr.TrollGunMessage),
             
+            //8
             new CoinFlipEffect(player =>
             {
                 FlashGrenade flash = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
@@ -179,6 +209,7 @@ namespace BetterCoinflips.Types
                 flash.SpawnActive(player.Position);
             }, _tr.TrollFlashMessage),
             
+            //9
             new CoinFlipEffect(player =>
             {
                 if (Player.Get(Side.Scp).Any())
@@ -194,6 +225,7 @@ namespace BetterCoinflips.Types
                 }
             }, Player.Get(Side.Scp).Any() ? _tr.TpToRandomScpMessage : _tr.SmallDamageMessage),
             
+            //10
             new CoinFlipEffect(player =>
             {
                 if ((int)player.Health == 1)
@@ -202,6 +234,7 @@ namespace BetterCoinflips.Types
                     player.Health = 1;
             }, _tr.HugeDamageMessage),
             
+            //11
             new CoinFlipEffect(player =>
             {
                 Scp244 vase = (Scp244)Item.Create(ItemType.SCP244a);
@@ -209,17 +242,20 @@ namespace BetterCoinflips.Types
                 vase.CreatePickup(player.Position);
             }, _tr.PrimedVaseMessage),
             
+            //12
             new CoinFlipEffect(player =>
             {
                 player.PlaceTantrum();
             }, _tr.ShitPantsMessage),
             
+            //13
             new CoinFlipEffect(player =>
             {
                 var scpName = _scpNames.ToList().RandomItem();
                 Cassie.MessageTranslated($"scp {scpName.Key} successfully terminated by automatic security system",$"{scpName.Value} successfully terminated by Automatic Security System.");
             }, _tr.FakeScpKillMessage),
             
+            //14
             new CoinFlipEffect(player =>
             {
                 player.DropHeldItem();
@@ -228,12 +264,14 @@ namespace BetterCoinflips.Types
                     player.EnableEffect(EffectType.PocketCorroding);   
             }, _tr.ZombieFcMessage),
             
+            //15
             new CoinFlipEffect(player =>
             {
                 player.DropHeldItem();
                 player.ResetInventory(new ItemType[] {});
             }, _tr.InventoryResetMessage),
             
+            //16
             new CoinFlipEffect(player =>
             {
                 player.DropItems();
@@ -277,12 +315,28 @@ namespace BetterCoinflips.Types
                 }
             }, _tr.ClassSwapMessage),
             
+            //17
             new CoinFlipEffect(player =>
             {
                 ExplosiveGrenade instaBoom = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
                 instaBoom.FuseTime = 0.1f;
                 instaBoom.SpawnActive(player.Position, player);
-            }, _tr.InstantExplosionMessage)
+            }, _tr.InstantExplosionMessage),
+            
+            //18
+            new CoinFlipEffect(player =>
+            {
+                var playerList = Player.List.ToList();
+                playerList.Remove(player);
+                var targetPlayer = playerList.RandomItem();
+                playerList.Remove(targetPlayer);
+            }, _tr.PlayerSwapMessage),
+            
+            //19
+            new CoinFlipEffect(player =>
+            {
+                
+            } )
         };
     }
 }

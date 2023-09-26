@@ -34,7 +34,8 @@ namespace BetterCoinflips
             { 8, Cfg.LightbulbEffectChance },
             { 9, Cfg.PinkCandyEffectChance },
             { 10, Cfg.BadRevoEffectChance },
-            { 11, Cfg.EmptyHidEffectChance }
+            { 11, Cfg.EmptyHidEffectChance },
+            { 12, Cfg.ForceRespawnEffectChance },
         };
 
         //Dict of all bad coin effect chances with an index
@@ -56,7 +57,8 @@ namespace BetterCoinflips
             { 13, Cfg.ZombieFcEffectChance },
             { 14, Cfg.InventoryResetEffectChance },
             { 15, Cfg.ClassSwapEffectChance },
-            { 16, Cfg.InstantExplosionEffectChance }
+            { 16, Cfg.InstantExplosionEffectChance },
+            { 17, Cfg.PlayerSwapEffectChance },
         };
 
         private readonly Dictionary<string, DateTime> _cooldownDict = new();

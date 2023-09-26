@@ -98,7 +98,8 @@ namespace BetterCoinflips.Configs
         public int PinkCandyEffectChance { get; set; } = 10;
         public int BadRevoEffectChance { get; set; } = 5;
         public int EmptyHidEffectChance { get; set; } = 5;
-
+        public int ForceRespawnEffectChance { get; set; } = 15;
+        
         [Description("The chance of these bad effects happening. It's a proportional chance not a % chance.")]
         public int HpReductionEffectChance { get; set; } = 20;
         public int TpToClassDCellsEffectChance { get; set; } = 5;
@@ -117,5 +118,6 @@ namespace BetterCoinflips.Configs
         public int InventoryResetEffectChance { get; set; } = 20;
         public int ClassSwapEffectChance { get; set; } = 10;
         public int InstantExplosionEffectChance { get; set; } = 10;
+        public int PlayerSwapEffectChance { get; set; } = 20;
     }
 }
