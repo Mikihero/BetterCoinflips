@@ -40,7 +40,7 @@ namespace BetterCoinflips.Configs
         public string PrimedVaseMessage { get; set; } = "Your grandma paid you a visit!";
         public string ShitPantsMessage { get; set; } = "You just shit your pants.";
         public string FakeScpKillMessage { get; set; } = "Did you just kill an SCP?!";
-        public string ZombieFcMessage { get; set; } = "Get zombified LOL";
+        public string TurnIntoScpMessage { get; set; } = "Get SCP-fied LOL!";
         public string InventoryResetMessage { get; set; } = "You lost your stuff.";
         public string ClassSwapMessage { get; set; } = "That's what I call an UNO reverse card!";
         public string CoinBreaksMessage { get; set; } = "\nAlso your coin was used too much and it broke down.";
@@ -48,5 +48,7 @@ namespace BetterCoinflips.Configs
         public string InstantExplosionMessage { get; set; } = "You got smoked.";
         public string PlayerSwapMessage { get; set; } = "This could be a very awkward situation.";
         public string KickMessage { get; set; } = "Bye!";
+        public string SpectSwapMessage { get; set; } = "You just made someone's round better!";
+        public string TeslaTpMessage { get; set; } = "So you're a fan of electricity?";
     }
 }

@@ -259,11 +259,12 @@ namespace BetterCoinflips.Types
             //14
             new CoinFlipEffect(player =>
             {
-                player.DropHeldItem();
-                player.Role.Set(RoleTypeId.Scp0492, RoleSpawnFlags.AssignInventory);
+                player.DropItems();
+                var randomScp = _cfg.ValidScps.RandomItem();
+                player.Role.Set(randomScp, RoleSpawnFlags.AssignInventory);
                 if (player.CurrentRoom.Type == RoomType.Pocket)
                     player.EnableEffect(EffectType.PocketCorroding);   
-            }, _tr.ZombieFcMessage),
+            }, _tr.TurnIntoScpMessage),
             
             //15
             new CoinFlipEffect(player =>
@@ -327,7 +328,7 @@ namespace BetterCoinflips.Types
             //18
             new CoinFlipEffect(player =>
             {
-                var playerList = Player.List.ToList();
+                var playerList = Player.List.Where(x => x.Role.Type != RoleTypeId.Spectator).ToList();
                 playerList.Remove(player);
                 var targetPlayer = playerList.RandomItem();
                 var pos = targetPlayer.Position;
@@ -341,7 +342,27 @@ namespace BetterCoinflips.Types
                 Timing.CallDelayed(1f, () => player.Kick(_cfg.KickReason));
             }, _tr.KickMessage),
             
+            //20
+            new CoinFlipEffect(player =>
+            {
+                var spect = Player.Get(RoleTypeId.Spectator).ToList().RandomItem();
+                var helper = player;
+                player.Role.Set(RoleTypeId.Spectator);
+                spect.Role.Set(helper.Role.Type);
+                spect.Teleport(helper.Position);
+                spect.ResetInventory(helper.Items);
+                foreach (var ammo in helper.Ammo)
+                {
+                    spect.Ammo[ammo.Key] = ammo.Value;
+                }
+            }, _tr.SpectSwapMessage),
             
+            //21
+            new CoinFlipEffect(player =>
+            {
+                player.DropHeldItem();
+                player.Teleport(Exiled.API.Features.TeslaGate.List.ToList().RandomItem());
+            }, _tr.TeslaTpMessage)
         };
     }
 }

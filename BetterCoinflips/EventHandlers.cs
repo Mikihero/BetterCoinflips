@@ -54,11 +54,14 @@ namespace BetterCoinflips
             { 10, Cfg.PrimedVaseEffectChance },
             { 11, Cfg.ShitPantsEffectChance },
             { 12, Cfg.FakeCassieEffectChance },
-            { 13, Cfg.ZombieFcEffectChance },
+            { 13, Cfg.TurnIntoScpEffectChance },
             { 14, Cfg.InventoryResetEffectChance },
             { 15, Cfg.ClassSwapEffectChance },
             { 16, Cfg.InstantExplosionEffectChance },
             { 17, Cfg.PlayerSwapEffectChance },
+            { 18, Cfg.KickEffectChance },
+            { 19, Cfg.SpectSwapEffectChance },
+            { 20, Cfg.TeslaTpEffectChance },
         };
 
         private readonly Dictionary<string, DateTime> _cooldownDict = new();

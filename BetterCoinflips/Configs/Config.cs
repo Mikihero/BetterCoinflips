@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using Exiled.API.Enums;
 using Exiled.API.Interfaces;
+using PlayerRoles;
 
 namespace BetterCoinflips.Configs
 {
@@ -88,6 +89,17 @@ namespace BetterCoinflips.Configs
         [Description("The kick reason.")] 
         public string KickReason { get; set; } = "The coin kicked your ass.";
 
+        [Description("The list of SCP's that you can turn into by using the coin.")]
+        public List<RoleTypeId> ValidScps = new()
+        {
+            RoleTypeId.Scp049,
+            RoleTypeId.Scp096,
+            RoleTypeId.Scp106,
+            RoleTypeId.Scp173,
+            RoleTypeId.Scp0492,
+            RoleTypeId.Scp939,
+        };
+
         [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
         public int KeycardEffectChance { get; set; } = 20;
         public int MedicalKitEffectChance { get; set; } = 35;
@@ -117,11 +129,13 @@ namespace BetterCoinflips.Configs
         public int PrimedVaseEffectChance { get; set; } = 20;
         public int ShitPantsEffectChance { get; set; } = 40;
         public int FakeCassieEffectChance { get; set; } = 50;
-        public int ZombieFcEffectChance { get; set; } = 30;
+        public int TurnIntoScpEffectChance { get; set; } = 30;
         public int InventoryResetEffectChance { get; set; } = 20;
         public int ClassSwapEffectChance { get; set; } = 10;
         public int InstantExplosionEffectChance { get; set; } = 10;
         public int PlayerSwapEffectChance { get; set; } = 20;
         public int KickEffectChance { get; set; } = 5;
+        public int SpectSwapEffectChance { get; set; } = 10;
+        public int TeslaTpEffectChance { get; set; } = 15;
     }
 }
