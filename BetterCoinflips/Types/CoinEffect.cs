@@ -8,6 +8,7 @@ using Exiled.API.Features.Doors;
 using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
 using InventorySystem.Items.Firearms.Attachments;
+using MEC;
 using PlayerRoles;
 using Respawning;
 using UnityEngine;
@@ -329,14 +330,18 @@ namespace BetterCoinflips.Types
                 var playerList = Player.List.ToList();
                 playerList.Remove(player);
                 var targetPlayer = playerList.RandomItem();
-                playerList.Remove(targetPlayer);
+                var pos = targetPlayer.Position;
+                targetPlayer.Teleport(player.Position);
+                player.Teleport(pos);
             }, _tr.PlayerSwapMessage),
             
             //19
             new CoinFlipEffect(player =>
             {
-                
-            } )
+                Timing.CallDelayed(1f, () => player.Kick(_cfg.KickReason));
+            }, _tr.KickMessage),
+            
+            
         };
     }
 }

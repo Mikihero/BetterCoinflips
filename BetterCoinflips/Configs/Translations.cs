@@ -47,5 +47,6 @@ namespace BetterCoinflips.Configs
         public string CoinNoUsesMessage { get; set; } = "Your coin had no uses to begin with!";
         public string InstantExplosionMessage { get; set; } = "You got smoked.";
         public string PlayerSwapMessage { get; set; } = "This could be a very awkward situation.";
+        public string KickMessage { get; set; } = "Bye!";
     }
 }
