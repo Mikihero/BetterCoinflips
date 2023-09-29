@@ -5,6 +5,11 @@ namespace BetterCoinflips.Configs
 {
     public class Translations : ITranslation
     {
+        [Description("This is added to the effect message if the coin breaks.")]
+        public string CoinBreaksMessage { get; set; } = "\nAlso your coin was used too much and it broke down.";
+        [Description("The broadcast message when a coin is registered with no uses.")]
+        public string CoinNoUsesMessage { get; set; } = "Your coin had no uses to begin with!";
+        
         [Description("Here you can set the message for each of these good coin effects.")]
         public string TossOnCooldownMessage { get; set; } = "You can't throw the coin yet.";
         public string RedCardMessage { get; set; } = "You acquired a Facility Manager keycard!";
@@ -21,6 +26,8 @@ namespace BetterCoinflips.Configs
         public string BadRevoMessage { get; set; } = "What is this abomination!?";
         public string EmptyHidMessage { get; set; } = "DID YOU JUST GET A MICRO HID!?";
         public string ForceRespawnMessage { get; set; } = "Were they supposed to respawn this early?";
+        public string SizeChangeMessage { get; set; } = "You became a fat fuck.";
+        public string GunZombieMessage { get; set; } = "Well that's an interesting change of pace.";
 
 
         
@@ -43,12 +50,15 @@ namespace BetterCoinflips.Configs
         public string TurnIntoScpMessage { get; set; } = "Get SCP-fied LOL!";
         public string InventoryResetMessage { get; set; } = "You lost your stuff.";
         public string ClassSwapMessage { get; set; } = "That's what I call an UNO reverse card!";
-        public string CoinBreaksMessage { get; set; } = "\nAlso your coin was used too much and it broke down.";
-        public string CoinNoUsesMessage { get; set; } = "Your coin had no uses to begin with!";
         public string InstantExplosionMessage { get; set; } = "You got smoked.";
         public string PlayerSwapMessage { get; set; } = "This could be a very awkward situation.";
         public string KickMessage { get; set; } = "Bye!";
-        public string SpectSwapMessage { get; set; } = "You just made someone's round better!";
+        public string SpectSwapPlayerMessage { get; set; } = "You just made someone's round better!";
+        public string SpectSwapSpectMessage { get; set; } = "You were chosen as a random spectator to replace this player!";
         public string TeslaTpMessage { get; set; } = "So you're a fan of electricity?";
+        [Description("This message will be broadcast to both players.")]
+        public string InventorySwapMessage { get; set; } = "Your inventory was swapped with a random player.";
+        public string RandomTeleportMessage { get; set; } = "You were randomly teleported.";
+        public string HandcuffMessage { get; set; } = "You were arrested for uhh commiting war crimes... or something.";
     }
 }

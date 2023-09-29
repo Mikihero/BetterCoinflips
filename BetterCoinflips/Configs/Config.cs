@@ -101,41 +101,46 @@ namespace BetterCoinflips.Configs
         };
 
         [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
-        public int KeycardEffectChance { get; set; } = 20;
-        public int MedicalKitEffectChance { get; set; } = 35;
-        public int TpToEscapeEffectChance { get; set; } = 5;
-        public int HealEffectChance { get; set; } = 10;
-        public int MoreHpEffectChance { get; set; } = 10;
-        public int HatEffectChance { get; set; } = 10;
+        public int KeycardChance { get; set; } = 20;
+        public int MedicalKitChance { get; set; } = 35;
+        public int TpToEscapeChance { get; set; } = 5;
+        public int HealChance { get; set; } = 10;
+        public int MoreHpChance { get; set; } = 10;
+        public int HatChance { get; set; } = 10;
         public int RandomGoodEffectChance { get; set; } = 30;
-        public int OneAmmoLogicerEffectChance { get; set; } = 1;
-        public int LightbulbEffectChance { get; set; } = 15;
-        public int PinkCandyEffectChance { get; set; } = 10;
-        public int BadRevoEffectChance { get; set; } = 5;
-        public int EmptyHidEffectChance { get; set; } = 5;
-        public int ForceRespawnEffectChance { get; set; } = 15;
+        public int OneAmmoLogicerChance { get; set; } = 1;
+        public int LightbulbChance { get; set; } = 15;
+        public int PinkCandyChance { get; set; } = 10;
+        public int BadRevoChance { get; set; } = 5;
+        public int EmptyHidChance { get; set; } = 5;
+        public int ForceRespawnChance { get; set; } = 15;
+        public int SizeChangeChance { get; set; } = 20;
+        public int GunZombieChance { get; set; } = 5;
 
         [Description("The chance of these bad effects happening. It's a proportional chance not a % chance.")]
-        public int HpReductionEffectChance { get; set; } = 20;
-        public int TpToClassDCellsEffectChance { get; set; } = 5;
+        public int HpReductionChance { get; set; } = 20;
+        public int TpToClassDCellsChance { get; set; } = 5;
         public int RandomBadEffectChance { get; set; } = 20;
-        public int WarheadEffectChance { get; set; } = 10;
-        public int LightsOutEffectChance { get; set; } = 20;
-        public int LiveHeEffectChance { get; set; } = 30;
-        public int TrollGunEffectChance { get; set; } = 50;
-        public int TrollFlashEffectChance { get; set; } = 50;
-        public int ScpTpEffectChance { get; set; } = 20;
-        public int OneHpLeftEffectChance { get; set; } = 15;
-        public int PrimedVaseEffectChance { get; set; } = 20;
-        public int ShitPantsEffectChance { get; set; } = 40;
-        public int FakeCassieEffectChance { get; set; } = 50;
-        public int TurnIntoScpEffectChance { get; set; } = 30;
-        public int InventoryResetEffectChance { get; set; } = 20;
-        public int ClassSwapEffectChance { get; set; } = 10;
-        public int InstantExplosionEffectChance { get; set; } = 10;
-        public int PlayerSwapEffectChance { get; set; } = 20;
-        public int KickEffectChance { get; set; } = 5;
-        public int SpectSwapEffectChance { get; set; } = 10;
-        public int TeslaTpEffectChance { get; set; } = 15;
+        public int WarheadChance { get; set; } = 10;
+        public int LightsOutChance { get; set; } = 20;
+        public int LiveHeChance { get; set; } = 30;
+        public int TrollGunChance { get; set; } = 50;
+        public int TrollFlashChance { get; set; } = 50;
+        public int ScpTpChance { get; set; } = 20;
+        public int OneHpLeftChance { get; set; } = 15;
+        public int PrimedVaseChance { get; set; } = 20;
+        public int ShitPantsChance { get; set; } = 40;
+        public int FakeCassieChance { get; set; } = 50;
+        public int TurnIntoScpChance { get; set; } = 30;
+        public int InventoryResetChance { get; set; } = 20;
+        public int ClassSwapChance { get; set; } = 10;
+        public int InstantExplosionChance { get; set; } = 10;
+        public int PlayerSwapChance { get; set; } = 20;
+        public int KickChance { get; set; } = 5;
+        public int SpectSwapChance { get; set; } = 10;
+        public int TeslaTpChance { get; set; } = 15;
+        public int InventorySwapChance { get; set; } = 20;
+        public int HandcuffChance { get; set; } = 10;
+        public int RandomTeleportChance { get; set; } = 15;
     }
 }

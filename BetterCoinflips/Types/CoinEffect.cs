@@ -140,6 +140,21 @@ namespace BetterCoinflips.Types
                 else
                     Respawn.ForceWave(SpawnableTeamType.ChaosInsurgency, true);
             }, _tr.ForceRespawnMessage),
+            
+            //14
+            new CoinFlipEffect(player =>
+            {
+                player.Scale = new Vector3(1.3f, 0.5f, 1.3f);
+            }, _tr.SizeChangeMessage),
+            
+            //15
+            new CoinFlipEffect(player =>
+            {
+                player.DropHeldItem();
+                player.Role.Set(RoleTypeId.Scp0492);
+                Firearm gun = (Firearm)Item.Create(ItemType.GunCOM15);
+                gun.Give(player);
+            }, _tr.GunZombieMessage),
         };
 
         public static List<CoinFlipEffect> BadEffects = new()
@@ -270,7 +285,7 @@ namespace BetterCoinflips.Types
             new CoinFlipEffect(player =>
             {
                 player.DropHeldItem();
-                player.ResetInventory(new ItemType[] {});
+                player.ClearInventory();
             }, _tr.InventoryResetMessage),
             
             //16
@@ -355,14 +370,38 @@ namespace BetterCoinflips.Types
                 {
                     spect.Ammo[ammo.Key] = ammo.Value;
                 }
-            }, _tr.SpectSwapMessage),
+                EventHandlers.SendBroadcast(spect, _tr.SpectSwapSpectMessage);
+            }, _tr.SpectSwapPlayerMessage),
             
             //21
             new CoinFlipEffect(player =>
             {
                 player.DropHeldItem();
                 player.Teleport(Exiled.API.Features.TeslaGate.List.ToList().RandomItem());
-            }, _tr.TeslaTpMessage)
+            }, _tr.TeslaTpMessage),
+            
+            //22
+            new CoinFlipEffect(player =>
+            {
+                var target = Player.List.Where(x => x != player).ToList().RandomItem();
+                var items = target.Items;
+                target.ResetInventory(player.Items);
+                player.ResetInventory(items);
+                EventHandlers.SendBroadcast(target, _tr.InventorySwapMessage);
+            }, _tr.InventorySwapMessage),
+            
+            //23
+            new CoinFlipEffect(player =>
+            {
+                player.RandomTeleport<Room>();
+            }, _tr.RandomTeleportMessage),
+            
+            //24
+            new CoinFlipEffect(player =>
+            {
+                player.Handcuff();
+                player.DropItems();
+            }, _tr.HandcuffMessage),
         };
     }
 }
