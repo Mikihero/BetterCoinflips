@@ -136,10 +136,7 @@ namespace BetterCoinflips.Types
             //12
             new CoinFlipEffect(player =>
             {
-                if (Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox)
-                    Respawn.ForceWave(SpawnableTeamType.NineTailedFox, true);
-                else
-                    Respawn.ForceWave(SpawnableTeamType.ChaosInsurgency, true);
+                Respawn.ForceWave(Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox ? SpawnableTeamType.NineTailedFox : SpawnableTeamType.ChaosInsurgency, true);
             }, Translations.ForceRespawnMessage),
             
             //13
@@ -339,14 +336,13 @@ namespace BetterCoinflips.Types
                 playerList.Remove(player);
                 if (playerList.IsEmpty())
                 {
-                    Timing.CallDelayed(0.1f, () => EventHandlers.SendBroadcast(player, Translations.PlayerSwapIfOneAliveMessage));
                     return;
                 }
                 var targetPlayer = playerList.RandomItem();
                 var pos = targetPlayer.Position;
                 targetPlayer.Teleport(player.Position);
                 player.Teleport(pos);
-            }, Translations.PlayerSwapMessage),
+            }, Player.List.Where(x => x.Role.Type != RoleTypeId.Spectator).IsEmpty() ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage),
             
             //18
             new CoinFlipEffect(player =>
