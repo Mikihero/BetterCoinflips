@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BetterCoinflips.Configs;
 using Exiled.API.Enums;
+using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.Doors;
 using Exiled.API.Features.Items;
@@ -18,9 +19,9 @@ namespace BetterCoinflips.Types
 {
     public class CoinFlipEffect
     {
-        private static readonly Config _cfg = Plugin.Instance.Config;
-        private static readonly Configs.Translations _tr = Plugin.Instance.Translation;
-        private static readonly System.Random _rd = new();
+        private static readonly Config Cfg = Plugin.Instance.Config;
+        private static readonly Configs.Translations Translations = Plugin.Instance.Translation;
+        private static readonly System.Random Rd = new();
         
         public Action<Player> Execute { get; set; }
         public string Message { get; set; }
@@ -41,191 +42,182 @@ namespace BetterCoinflips.Types
             { "1 0 6", "SCP-106"}
         };
         
-        private static bool flag1 = _cfg.RedCardChance > _rd.Next(1, 101);
+        private static bool flag1 = Cfg.RedCardChance > Rd.Next(1, 101);
 
         public static List<CoinFlipEffect> GoodEffects = new()
         {
-            //1
+            //0
             new CoinFlipEffect(player =>
             {
                 Pickup.CreateAndSpawn(flag1 ? ItemType.KeycardFacilityManager : ItemType.KeycardContainmentEngineer,
                     player.Position, new Quaternion());
-            }, flag1 ? _tr.RedCardMessage : _tr.ContainmentEngineerCardMessage),
+            }, flag1 ? Translations.RedCardMessage : Translations.ContainmentEngineerCardMessage),
 
-            //2
+            //1
             new CoinFlipEffect(player =>
             {
                 Pickup.CreateAndSpawn(ItemType.Medkit, player.Position, new Quaternion());
                 Pickup.CreateAndSpawn(ItemType.Painkillers, player.Position, new Quaternion());
-            }, _tr.MediKitMessage),
+            }, Translations.MediKitMessage),
+
+            //2
+            new CoinFlipEffect(player =>
+            {
+                player.Teleport(Door.Get(DoorType.EscapeSecondary));
+            }, Translations.TpToEscapeMessage),
 
             //3
             new CoinFlipEffect(player =>
             {
-                player.Teleport(Door.Get(DoorType.EscapeSecondary));
-            }, _tr.TpToEscapeMessage),
+                player.Heal(25);
+            }, Translations.MagicHealMessage),
 
             //4
             new CoinFlipEffect(player =>
             {
-                player.Heal(25);
-            }, _tr.MagicHealMessage),
+                player.Health *= 1.1f;
+
+            }, Translations.HealthIncreaseMessage),
 
             //5
             new CoinFlipEffect(player =>
             {
-                player.Health *= 1.1f;
-
-            }, _tr.HealthIncreaseMessage),
+                Pickup.CreateAndSpawn(ItemType.SCP268, player.Position, new Quaternion());
+            }, Translations.NeatHatMessage),
 
             //6
             new CoinFlipEffect(player =>
             {
-                Pickup.CreateAndSpawn(ItemType.SCP268, player.Position, new Quaternion());
-            }, _tr.NeatHatMessage),
-
-            //7
-            new CoinFlipEffect(player =>
-            {
-                var effect = _cfg.GoodEffects.ToList().RandomItem();
+                var effect = Cfg.GoodEffects.ToList().RandomItem();
                 player.EnableEffect(effect, 5, true);
                 Log.Debug($"Chosen random effect: {effect}");
-            }, _tr.RandomGoodEffectMessage),
+            }, Translations.RandomGoodEffectMessage),
 
-            //8
+            //7
             new CoinFlipEffect(player =>
             {
                 Firearm gun = (Firearm)Item.Create(ItemType.GunLogicer);
                 gun.Ammo = 1;
                 gun.CreatePickup(player.Position);
-            }, _tr.OneAmmoLogicerMessage),
+            }, Translations.OneAmmoLogicerMessage),
 
-            //9
+            //8
             new CoinFlipEffect(player =>
             {
                 Pickup.CreateAndSpawn(ItemType.SCP2176, player.Position, new Quaternion());
-            }, _tr.LightbulbMessage),
+            }, Translations.LightbulbMessage),
 
-            //10
+            //9
             new CoinFlipEffect(player =>
             {
                 Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
                 candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
                 candy.CreatePickup(player.Position);
-            }, _tr.PinkCandyMessage),
+            }, Translations.PinkCandyMessage),
 
-            //11
+            //10
             new CoinFlipEffect(player =>
             {
                 Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
                 revo.AddAttachment(new[]
                     { AttachmentName.CylinderMag8, AttachmentName.ShortBarrel, AttachmentName.ScopeSight });
                 revo.CreatePickup(player.Position);
-            }, _tr.BadRevoMessage),
+            }, Translations.BadRevoMessage),
 
-            //12
+            //11
             new CoinFlipEffect(player =>
             {
                 MicroHIDPickup item = (MicroHIDPickup)Pickup.Create(ItemType.MicroHID);
                 item.Position = player.Position;
                 item.Spawn();
                 item.Energy = 0;
-            }, _tr.EmptyHidMessage),
+            }, Translations.EmptyHidMessage),
             
-            //13
+            //12
             new CoinFlipEffect(player =>
             {
                 if (Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox)
                     Respawn.ForceWave(SpawnableTeamType.NineTailedFox, true);
                 else
                     Respawn.ForceWave(SpawnableTeamType.ChaosInsurgency, true);
-            }, _tr.ForceRespawnMessage),
+            }, Translations.ForceRespawnMessage),
             
-            //14
+            //13
             new CoinFlipEffect(player =>
             {
                 player.Scale = new Vector3(1.3f, 0.5f, 1.3f);
-            }, _tr.SizeChangeMessage),
-            
-            //15
-            new CoinFlipEffect(player =>
-            {
-                player.DropHeldItem();
-                player.Role.Set(RoleTypeId.Scp0492);
-                Firearm gun = (Firearm)Item.Create(ItemType.GunCOM15);
-                gun.Give(player);
-            }, _tr.GunZombieMessage),
+            }, Translations.SizeChangeMessage),
         };
 
         public static List<CoinFlipEffect> BadEffects = new()
         {
-            //1
+            //0
             new CoinFlipEffect(player =>
             {
                 if ((int)player.Health == 1)
                     player.Kill(DamageType.CardiacArrest);
                 else
                     player.Health *= 0.7f;
-            }, _tr.HpReductionMessage),
+            }, Translations.HpReductionMessage),
             
-            //2
+            //1
             new CoinFlipEffect(player =>
             {
                 player.Teleport(Door.Get(DoorType.PrisonDoor));
 
-            }, _tr.TpToClassDCellsMessage),
+            }, Translations.TpToClassDCellsMessage),
             
-            //3
+            //2
             new CoinFlipEffect(player =>
             {
-                var effect = _cfg.BadEffects.ToList().RandomItem();
+                var effect = Cfg.BadEffects.ToList().RandomItem();
                 if (effect == EffectType.PocketCorroding)
                     player.EnableEffect(EffectType.PocketCorroding);
                 else
                     player.EnableEffect(effect, 5, true);
                 Log.Debug($"Chosen random effect: {effect}");
-            }, _tr.RandomBadEffectMessage),
+            }, Translations.RandomBadEffectMessage),
             
-            //4
+            //3
             new CoinFlipEffect(player =>
             {
                 if (Warhead.IsDetonated || !Warhead.IsInProgress)
                     Warhead.Start();
                 else
                     Warhead.Stop();
-            }, Warhead.IsDetonated || !Warhead.IsInProgress ? _tr.WarheadStartMessage : _tr.WarheadStopMessage),
+            }, Warhead.IsDetonated || !Warhead.IsInProgress ? Translations.WarheadStartMessage : Translations.WarheadStopMessage),
+            
+            //4
+            new CoinFlipEffect(player =>
+            {
+                Map.TurnOffAllLights(Cfg.MapBlackoutTime);
+            }, Translations.LightsOutMessage),
             
             //5
             new CoinFlipEffect(player =>
             {
-                Map.TurnOffAllLights(_cfg.MapBlackoutTime);
-            }, _tr.LightsOutMessage),
+                ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+                grenade.FuseTime = (float)Cfg.LiveGrenadeFuseTime;
+                grenade.SpawnActive(player.Position + Vector3.up, player);
+            }, Translations.LiveGrenadeMessage),
             
             //6
-            new CoinFlipEffect(player =>
-            {
-                ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-                grenade.FuseTime = (float)_cfg.LiveGrenadeFuseTime;
-                grenade.SpawnActive(player.Position + Vector3.up, player);
-            }, _tr.LiveGrenadeMessage),
-            
-            //7
             new CoinFlipEffect(player =>
             {
                 Firearm gun = (Firearm)Item.Create(ItemType.ParticleDisruptor);
                 gun.Ammo = 0;
                 gun.CreatePickup(player.Position);
-            }, _tr.TrollGunMessage),
+            }, Translations.TrollGunMessage),
             
-            //8
+            //7
             new CoinFlipEffect(player =>
             {
                 FlashGrenade flash = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
                 flash.FuseTime = 1f;
                 flash.SpawnActive(player.Position);
-            }, _tr.TrollFlashMessage),
+            }, Translations.TrollFlashMessage),
             
-            //9
+            //8
             new CoinFlipEffect(player =>
             {
                 if (Player.Get(Side.Scp).Any())
@@ -239,56 +231,56 @@ namespace BetterCoinflips.Types
                     if (player.Health < 0) 
                         player.Kill(DamageType.Unknown);
                 }
-            }, Player.Get(Side.Scp).Any() ? _tr.TpToRandomScpMessage : _tr.SmallDamageMessage),
+            }, Player.Get(Side.Scp).Any() ? Translations.TpToRandomScpMessage : Translations.SmallDamageMessage),
             
-            //10
+            //9
             new CoinFlipEffect(player =>
             {
                 if ((int)player.Health == 1)
                     player.Kill(DamageType.CardiacArrest);
                 else
                     player.Health = 1;
-            }, _tr.HugeDamageMessage),
+            }, Translations.HugeDamageMessage),
             
-            //11
+            //10
             new CoinFlipEffect(player =>
             {
                 Scp244 vase = (Scp244)Item.Create(ItemType.SCP244a);
                 vase.Primed = true;
                 vase.CreatePickup(player.Position);
-            }, _tr.PrimedVaseMessage),
+            }, Translations.PrimedVaseMessage),
+            
+            //11
+            new CoinFlipEffect(player =>
+            {
+                player.PlaceTantrum();
+            }, Translations.ShitPantsMessage),
             
             //12
             new CoinFlipEffect(player =>
             {
-                player.PlaceTantrum();
-            }, _tr.ShitPantsMessage),
+                var scpName = _scpNames.ToList().RandomItem();
+                Cassie.MessageTranslated($"scp {scpName.Key} successfully terminated by automatic security system",$"{scpName.Value} successfully terminated by Automatic Security System.");
+            }, Translations.FakeScpKillMessage),
             
             //13
             new CoinFlipEffect(player =>
             {
-                var scpName = _scpNames.ToList().RandomItem();
-                Cassie.MessageTranslated($"scp {scpName.Key} successfully terminated by automatic security system",$"{scpName.Value} successfully terminated by Automatic Security System.");
-            }, _tr.FakeScpKillMessage),
+                player.DropItems();
+                var randomScp = Cfg.ValidScps.RandomItem();
+                player.Role.Set(randomScp, RoleSpawnFlags.AssignInventory);
+                if (player.CurrentRoom.Type == RoomType.Pocket)
+                    player.EnableEffect(EffectType.PocketCorroding);   
+            }, Translations.TurnIntoScpMessage),
             
             //14
             new CoinFlipEffect(player =>
             {
-                player.DropItems();
-                var randomScp = _cfg.ValidScps.RandomItem();
-                player.Role.Set(randomScp, RoleSpawnFlags.AssignInventory);
-                if (player.CurrentRoom.Type == RoomType.Pocket)
-                    player.EnableEffect(EffectType.PocketCorroding);   
-            }, _tr.TurnIntoScpMessage),
-            
-            //15
-            new CoinFlipEffect(player =>
-            {
                 player.DropHeldItem();
                 player.ClearInventory();
-            }, _tr.InventoryResetMessage),
+            }, Translations.InventoryResetMessage),
             
-            //16
+            //15
             new CoinFlipEffect(player =>
             {
                 player.DropItems();
@@ -330,78 +322,140 @@ namespace BetterCoinflips.Types
                 {
                     player.EnableEffect(EffectType.PocketCorroding);
                 }
-            }, _tr.ClassSwapMessage),
+            }, Translations.ClassSwapMessage),
             
-            //17
+            //16
             new CoinFlipEffect(player =>
             {
                 ExplosiveGrenade instaBoom = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
                 instaBoom.FuseTime = 0.1f;
                 instaBoom.SpawnActive(player.Position, player);
-            }, _tr.InstantExplosionMessage),
+            }, Translations.InstantExplosionMessage),
             
-            //18
+            //17
             new CoinFlipEffect(player =>
             {
                 var playerList = Player.List.Where(x => x.Role.Type != RoleTypeId.Spectator).ToList();
                 playerList.Remove(player);
+                if (playerList.IsEmpty())
+                {
+                    Timing.CallDelayed(0.1f, () => EventHandlers.SendBroadcast(player, Translations.PlayerSwapIfOneAliveMessage));
+                    return;
+                }
                 var targetPlayer = playerList.RandomItem();
                 var pos = targetPlayer.Position;
                 targetPlayer.Teleport(player.Position);
                 player.Teleport(pos);
-            }, _tr.PlayerSwapMessage),
+            }, Translations.PlayerSwapMessage),
+            
+            //18
+            new CoinFlipEffect(player =>
+            {
+                Timing.CallDelayed(1f, () => player.Kick(Cfg.KickReason));
+            }, Translations.KickMessage),
             
             //19
             new CoinFlipEffect(player =>
             {
-                Timing.CallDelayed(1f, () => player.Kick(_cfg.KickReason));
-            }, _tr.KickMessage),
+                var spectList = Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).ToList();
+                if (spectList.IsEmpty())
+                {
+                    return;
+                }
+                var spect = spectList.RandomItem();
+                spect.Role.Set(player.Role.Type, RoleSpawnFlags.None);
+                spect.Teleport(player);
+                spect.Health = player.Health;
+                List<ItemType> playerItems = new List<ItemType>();
+                foreach (var item in player.Items)
+                {
+                    playerItems.Add(item.Type);
+                }
+
+                foreach (var item in playerItems)
+                {
+                    spect.AddItem(item);
+                }
+
+                for (int i = 0; i < player.Ammo.Count; i++)
+                {
+                    spect.AddAmmo(player.Ammo.ElementAt(i).Key.GetAmmoType(), player.Ammo.ElementAt(i).Value);
+                    player.SetAmmo(player.Ammo.ElementAt(i).Key.GetAmmoType(), 0);
+                }
+
+                player.ClearInventory();
+                player.Role.Set(RoleTypeId.Spectator);
+                
+                EventHandlers.SendBroadcast(spect, Translations.SpectSwapSpectMessage);
+            }, Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).IsEmpty() ? Translations.SpectSwapNoSpectsMessage : Translations.SpectSwapPlayerMessage),
             
             //20
             new CoinFlipEffect(player =>
             {
-                var spect = Player.Get(RoleTypeId.Spectator).ToList().RandomItem();
-                var helper = player;
-                player.Role.Set(RoleTypeId.Spectator);
-                spect.Role.Set(helper.Role.Type);
-                spect.Teleport(helper.Position);
-                spect.ResetInventory(helper.Items);
-                foreach (var ammo in helper.Ammo)
-                {
-                    spect.Ammo[ammo.Key] = ammo.Value;
-                }
-                EventHandlers.SendBroadcast(spect, _tr.SpectSwapSpectMessage);
-            }, _tr.SpectSwapPlayerMessage),
+                player.DropHeldItem();
+                player.Teleport(Exiled.API.Features.TeslaGate.List.ToList().RandomItem());
+            }, Translations.TeslaTpMessage),
             
             //21
             new CoinFlipEffect(player =>
             {
-                player.DropHeldItem();
-                player.Teleport(Exiled.API.Features.TeslaGate.List.ToList().RandomItem());
-            }, _tr.TeslaTpMessage),
+                var target = Player.List.Where(x => x != player).ToList().RandomItem();
+                
+                //saving items
+                List<ItemType> items1 = new();
+                List<ItemType> items2 = new();
+                foreach (var item in player.Items)
+                {
+                    items1.Add(item.Type);
+                }
+                foreach (var item in target.Items)
+                {
+                    items2.Add(item.Type);
+                }
+                
+                //saving ammo
+                Dictionary<AmmoType, ushort> ammo1 = new();
+                Dictionary<AmmoType, ushort> ammo2 = new();
+                for (int i = 0; i < player.Ammo.Count; i++)
+                {
+                    ammo1.Add(player.Ammo.ElementAt(i).Key.GetAmmoType(), player.Ammo.ElementAt(i).Value);
+                    player.SetAmmo(ammo1.ElementAt(i).Key, 0);
+                }
+                for (int i = 0; i < target.Ammo.Count; i++)
+                {
+                    ammo2.Add(target.Ammo.ElementAt(i).Key.GetAmmoType(), target.Ammo.ElementAt(i).Value);
+                    target.SetAmmo(ammo2.ElementAt(i).Key, 0);
+                }
+
+                //giving items
+                target.ResetInventory(items1);
+                player.ResetInventory(items2);
+                
+                //giving ammo
+                foreach (var ammo in ammo2)
+                {
+                    player.SetAmmo(ammo.Key, ammo.Value);
+                }
+                foreach (var ammo in ammo1)
+                {
+                    target.SetAmmo(ammo.Key, ammo.Value);
+                }
+                
+                EventHandlers.SendBroadcast(target, Translations.InventorySwapMessage);
+            }, Translations.InventorySwapMessage),
             
             //22
             new CoinFlipEffect(player =>
             {
-                var target = Player.List.Where(x => x != player).ToList().RandomItem();
-                var items = target.Items;
-                target.ResetInventory(player.Items);
-                player.ResetInventory(items);
-                EventHandlers.SendBroadcast(target, _tr.InventorySwapMessage);
-            }, _tr.InventorySwapMessage),
+                player.RandomTeleport<Room>();
+            }, Translations.RandomTeleportMessage),
             
             //23
             new CoinFlipEffect(player =>
             {
-                player.RandomTeleport<Room>();
-            }, _tr.RandomTeleportMessage),
-            
-            //24
-            new CoinFlipEffect(player =>
-            {
                 player.Handcuff();
                 player.DropItems();
-            }, _tr.HandcuffMessage),
+            }, Translations.HandcuffMessage),
         };
     }
 }

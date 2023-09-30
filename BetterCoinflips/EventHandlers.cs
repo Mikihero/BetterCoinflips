@@ -7,6 +7,7 @@ using BetterCoinflips.Types;
 using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace BetterCoinflips
@@ -37,7 +38,6 @@ namespace BetterCoinflips
             { 11, Cfg.EmptyHidChance },
             { 12, Cfg.ForceRespawnChance },
             { 13, Cfg.SizeChangeChance },
-            { 14, Cfg.GunZombieChance },
         };
 
         //Dict of all bad coin effect chances with an index
@@ -145,7 +145,7 @@ namespace BetterCoinflips
 
                     randomNum -= kvp.Value;
                 }
-
+                
                 Log.Debug($"headsEvent = {headsEvent}");
 
                 //use headsevent to choose the effect and execute it
@@ -171,7 +171,7 @@ namespace BetterCoinflips
 
                     randomNum -= kvp.Value;
                 }
-
+                
                 Log.Debug($"tailsEvent = {tailsEvent}");
 
                 //use tailsevent to choose the effect and execute it
@@ -190,7 +190,10 @@ namespace BetterCoinflips
                 message += _tr.CoinBreaksMessage;
             }
 
-            SendBroadcast(ev.Player, message);
+            if (message != null)
+            {
+                SendBroadcast(ev.Player, message);
+            }
         }
         
         //removing default coins

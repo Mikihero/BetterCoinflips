@@ -115,7 +115,6 @@ namespace BetterCoinflips.Configs
         public int EmptyHidChance { get; set; } = 5;
         public int ForceRespawnChance { get; set; } = 15;
         public int SizeChangeChance { get; set; } = 20;
-        public int GunZombieChance { get; set; } = 5;
 
         [Description("The chance of these bad effects happening. It's a proportional chance not a % chance.")]
         public int HpReductionChance { get; set; } = 20;

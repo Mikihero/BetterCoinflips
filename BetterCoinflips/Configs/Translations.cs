@@ -26,8 +26,7 @@ namespace BetterCoinflips.Configs
         public string BadRevoMessage { get; set; } = "What is this abomination!?";
         public string EmptyHidMessage { get; set; } = "DID YOU JUST GET A MICRO HID!?";
         public string ForceRespawnMessage { get; set; } = "Were they supposed to respawn this early?";
-        public string SizeChangeMessage { get; set; } = "You became a fat fuck.";
-        public string GunZombieMessage { get; set; } = "Well that's an interesting change of pace.";
+        public string SizeChangeMessage { get; set; } = "You got gnomed.";
 
 
         
@@ -52,9 +51,11 @@ namespace BetterCoinflips.Configs
         public string ClassSwapMessage { get; set; } = "That's what I call an UNO reverse card!";
         public string InstantExplosionMessage { get; set; } = "You got smoked.";
         public string PlayerSwapMessage { get; set; } = "This could be a very awkward situation.";
+        public string PlayerSwapIfOneAliveMessage { get; set; } = "You were supposed to switch places with someone but no one else is alive!";
         public string KickMessage { get; set; } = "Bye!";
         public string SpectSwapPlayerMessage { get; set; } = "You just made someone's round better!";
         public string SpectSwapSpectMessage { get; set; } = "You were chosen as a random spectator to replace this player!";
+        public string SpectSwapNoSpectsMessage { get; set; } = "You got lucky cause there are no spectators to take your place.";
         public string TeslaTpMessage { get; set; } = "So you're a fan of electricity?";
         [Description("This message will be broadcast to both players.")]
         public string InventorySwapMessage { get; set; } = "Your inventory was swapped with a random player.";
