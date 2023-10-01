@@ -7,7 +7,6 @@ using BetterCoinflips.Types;
 using Exiled.API.Features.Pickups;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Player;
-using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace BetterCoinflips
