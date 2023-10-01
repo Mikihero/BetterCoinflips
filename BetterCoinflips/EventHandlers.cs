@@ -23,46 +23,55 @@ namespace BetterCoinflips
         //Dict of all good coin effect chances with an index
         private readonly Dictionary<int, int> _goodEffectChances = new()
         {
-            { 0, Cfg.KeycardEffectChance },
-            { 1, Cfg.MedicalKitEffectChance },
-            { 2, Cfg.TpToEscapeEffectChance },
-            { 3, Cfg.HealEffectChance },
-            { 4, Cfg.MoreHpEffectChance },
-            { 5, Cfg.HatEffectChance },
+            { 0, Cfg.KeycardChance },
+            { 1, Cfg.MedicalKitChance },
+            { 2, Cfg.TpToEscapeChance },
+            { 3, Cfg.HealChance },
+            { 4, Cfg.MoreHpChance },
+            { 5, Cfg.HatChance },
             { 6, Cfg.RandomGoodEffectChance },
-            { 7, Cfg.OneAmmoLogicerEffectChance },
-            { 8, Cfg.LightbulbEffectChance },
-            { 9, Cfg.PinkCandyEffectChance },
-            { 10, Cfg.BadRevoEffectChance },
-            { 11, Cfg.EmptyHidEffectChance }
+            { 7, Cfg.OneAmmoLogicerChance },
+            { 8, Cfg.LightbulbChance },
+            { 9, Cfg.PinkCandyChance },
+            { 10, Cfg.BadRevoChance },
+            { 11, Cfg.EmptyHidChance },
+            { 12, Cfg.ForceRespawnChance },
+            { 13, Cfg.SizeChangeChance },
         };
 
         //Dict of all bad coin effect chances with an index
         private readonly Dictionary<int, int> _badEffectChances = new()
         {
-            { 0, Cfg.HpReductionEffectChance },
-            { 1, Cfg.TpToClassDCellsEffectChance },
+            { 0, Cfg.HpReductionChance },
+            { 1, Cfg.TpToClassDCellsChance },
             { 2, Cfg.RandomBadEffectChance },
-            { 3, Cfg.WarheadEffectChance },
-            { 4, Cfg.LightsOutEffectChance },
-            { 5, Cfg.LiveHeEffectChance },
-            { 6, Cfg.TrollGunEffectChance },
-            { 7, Cfg.TrollFlashEffectChance },
-            { 8, Cfg.ScpTpEffectChance },
-            { 9, Cfg.OneHpLeftEffectChance },
-            { 10, Cfg.PrimedVaseEffectChance },
-            { 11, Cfg.ShitPantsEffectChance },
-            { 12, Cfg.FakeCassieEffectChance },
-            { 13, Cfg.ZombieFcEffectChance },
-            { 14, Cfg.InventoryResetEffectChance },
-            { 15, Cfg.ClassSwapEffectChance },
-            { 16, Cfg.InstantExplosionEffectChance }
+            { 3, Cfg.WarheadChance },
+            { 4, Cfg.LightsOutChance },
+            { 5, Cfg.LiveHeChance },
+            { 6, Cfg.TrollGunChance },
+            { 7, Cfg.TrollFlashChance },
+            { 8, Cfg.ScpTpChance },
+            { 9, Cfg.OneHpLeftChance },
+            { 10, Cfg.PrimedVaseChance },
+            { 11, Cfg.ShitPantsChance },
+            { 12, Cfg.FakeCassieChance },
+            { 13, Cfg.TurnIntoScpChance },
+            { 14, Cfg.InventoryResetChance },
+            { 15, Cfg.ClassSwapChance },
+            { 16, Cfg.InstantExplosionChance },
+            { 17, Cfg.PlayerSwapChance },
+            { 18, Cfg.KickChance },
+            { 19, Cfg.SpectSwapChance },
+            { 20, Cfg.TeslaTpChance },
+            { 21, Cfg.InventorySwapChance },
+            { 22, Cfg.RandomTeleportChance },
+            { 23, Cfg.HandcuffChance },
         };
 
         private readonly Dictionary<string, DateTime> _cooldownDict = new();
 
         //helper method
-        private void SendBroadcast(Player pl, string message) => pl.Broadcast(Cfg.BroadcastTime, message);
+        public static void SendBroadcast(Player pl, string message) => pl.Broadcast(new Exiled.API.Features.Broadcast(message, Cfg.BroadcastTime),true);
 
         //main plugin logic
         public void OnCoinFlip(FlippingCoinEventArgs ev)
@@ -135,7 +144,7 @@ namespace BetterCoinflips
 
                     randomNum -= kvp.Value;
                 }
-
+                
                 Log.Debug($"headsEvent = {headsEvent}");
 
                 //use headsevent to choose the effect and execute it
@@ -161,7 +170,7 @@ namespace BetterCoinflips
 
                     randomNum -= kvp.Value;
                 }
-
+                
                 Log.Debug($"tailsEvent = {tailsEvent}");
 
                 //use tailsevent to choose the effect and execute it
@@ -180,7 +189,10 @@ namespace BetterCoinflips
                 message += _tr.CoinBreaksMessage;
             }
 
-            SendBroadcast(ev.Player, message);
+            if (message != null)
+            {
+                SendBroadcast(ev.Player, message);
+            }
         }
         
         //removing default coins
