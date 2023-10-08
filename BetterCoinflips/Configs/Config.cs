@@ -100,6 +100,14 @@ namespace BetterCoinflips.Configs
             RoleTypeId.Scp939,
         };
 
+        [Description("List of ignored roles for the PlayerSwapEffect (#18)")]
+        public List<RoleTypeId> IgnoredRoles = new()
+        {
+            RoleTypeId.Spectator,
+            RoleTypeId.Filmmaker,
+            RoleTypeId.Overwatch,
+        };
+        
         [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
         public int KeycardChance { get; set; } = 20;
         public int MedicalKitChance { get; set; } = 35;
