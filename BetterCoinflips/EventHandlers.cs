@@ -37,6 +37,7 @@ namespace BetterCoinflips
             { 11, Cfg.EmptyHidChance },
             { 12, Cfg.ForceRespawnChance },
             { 13, Cfg.SizeChangeChance },
+            { 14, Cfg.RandomItemChance }
         };
 
         //Dict of all bad coin effect chances with an index

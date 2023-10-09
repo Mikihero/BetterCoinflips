@@ -27,6 +27,7 @@ namespace BetterCoinflips.Configs
         public string EmptyHidMessage { get; set; } = "DID YOU JUST GET A MICRO HID!?";
         public string ForceRespawnMessage { get; set; } = "Were they supposed to respawn this early?";
         public string SizeChangeMessage { get; set; } = "You got gnomed.";
+        public string RandomItemMessage { get; set; } = "You got a random item!";
 
 
         

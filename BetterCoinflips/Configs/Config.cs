@@ -107,6 +107,34 @@ namespace BetterCoinflips.Configs
             RoleTypeId.Filmmaker,
             RoleTypeId.Overwatch,
         };
+
+        public List<ItemType> ItemsToGive = new()
+        {
+            ItemType.Adrenaline,
+            ItemType.Coin,
+            ItemType.Flashlight,
+            ItemType.Jailbird,
+            ItemType.Medkit,
+            ItemType.Painkillers,
+            ItemType.Radio,
+            ItemType.ArmorCombat,
+            ItemType.ArmorHeavy,
+            ItemType.ArmorLight,
+            ItemType.GrenadeFlash,
+            ItemType.GrenadeHE,
+            ItemType.GunA7,
+            ItemType.GunCom45,
+            ItemType.GunCrossvec,
+            ItemType.GunLogicer,
+            ItemType.GunRevolver,
+            ItemType.GunShotgun,
+            ItemType.GunAK,
+            ItemType.GunCOM15,
+            ItemType.GunCOM18,
+            ItemType.GunE11SR,
+            ItemType.GunFSP9,
+            ItemType.GunFRMG0,
+        };
         
         [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
         public int KeycardChance { get; set; } = 20;
@@ -123,6 +151,7 @@ namespace BetterCoinflips.Configs
         public int EmptyHidChance { get; set; } = 5;
         public int ForceRespawnChance { get; set; } = 15;
         public int SizeChangeChance { get; set; } = 20;
+        public int RandomItemChance { get; set; } = 35;
 
         [Description("The chance of these bad effects happening. It's a proportional chance not a % chance.")]
         public int HpReductionChance { get; set; } = 20;
