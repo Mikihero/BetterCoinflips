@@ -19,8 +19,8 @@ namespace BetterCoinflips.Types
 {
     public class CoinFlipEffect
     {
-        private static readonly Config Cfg = Plugin.Instance.Config;
-        private static readonly Configs.Translations Translations = Plugin.Instance.Translation;
+        private static Config Cfg => Plugin.Instance.Config;
+        private static Configs.Translations Translations => Plugin.Instance.Translation;
         private static readonly System.Random Rd = new();
         
         public Action<Player> Execute { get; set; }
@@ -332,7 +332,7 @@ namespace BetterCoinflips.Types
             //17
             new CoinFlipEffect(player =>
             {
-                var playerList = Player.List.Where(x => x.Role.Type != RoleTypeId.Spectator).ToList();
+                var playerList = Player.List.Where(x => !Cfg.IgnoredRoles.Contains(x.Role.Type)).ToList();
                 playerList.Remove(player);
                 if (playerList.IsEmpty())
                 {
