@@ -144,6 +144,12 @@ namespace BetterCoinflips.Types
             {
                 player.Scale = new Vector3(1.3f, 0.5f, 1.3f);
             }, Translations.SizeChangeMessage),
+            
+            //14
+            new CoinFlipEffect(player =>
+            {
+                Item.Create(Cfg.ItemsToGive.RandomItem()).CreatePickup(player.Position);
+            }, Translations.RandomItemMessage),
         };
 
         public static List<CoinFlipEffect> BadEffects = new()
