@@ -35,7 +35,7 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
  11. Thye will receive a primed SCP-244.
  12. They receive an SCP-173 tantrum.
  13. A fake CASSIE is sent saying that SCP-173 was killed by a Tesla gate.
- 14. They will be forceclassed to SCP-049-2.
+ 14. They will be forceclassed to a random SCP.
  15. Their inventory will be reset.
  16. Their role will be changed to the opposite one (class d - scientist, mtf - ci etc.)
  17. An instantly exploding grenade will spawn on their head.
