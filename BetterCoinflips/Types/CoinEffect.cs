@@ -270,6 +270,7 @@ namespace BetterCoinflips.Types
             new CoinFlipEffect(player =>
             {
                 player.DropItems();
+                player.Scale = new(1, 1, 1);
                 var randomScp = Cfg.ValidScps.RandomItem();
                 player.Role.Set(randomScp, RoleSpawnFlags.AssignInventory);
                 if (player.CurrentRoom.Type == RoomType.Pocket)
