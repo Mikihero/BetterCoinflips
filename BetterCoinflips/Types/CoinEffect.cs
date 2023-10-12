@@ -450,8 +450,18 @@ namespace BetterCoinflips.Types
             //22
             new CoinFlipEffect(player =>
             {
-                player.RandomTeleport<Room>();
-            }, Translations.RandomTeleportMessage),
+                if (Warhead.IsDetonated)
+                {
+                    Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
+                    candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Red);
+                    candy.CreatePickup(player.Position);
+                }
+                else
+                {
+                    player.RandomTeleport<Room>();
+                }
+                
+            }, Warhead.IsDetonated ? Translations.RandomTeleportWarheadDetonatedMessage : Translations.RandomTeleportMessage),
             
             //23
             new CoinFlipEffect(player =>

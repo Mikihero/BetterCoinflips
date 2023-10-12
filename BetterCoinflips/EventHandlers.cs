@@ -83,7 +83,7 @@ namespace BetterCoinflips
             bool helper = false; 
             //check if player is on cooldown
             bool flag = _cooldownDict.ContainsKey(ev.Player.RawUserId) 
-                        && (DateTime.UtcNow - _cooldownDict[ev.Player.RawUserId]).TotalSeconds < Plugin.Instance.Config.CoinCooldown;
+                        && (DateTime.UtcNow - _cooldownDict[ev.Player.RawUserId]).TotalSeconds < Cfg.CoinCooldown;
             if (flag)
             {
                 ev.IsAllowed = false;
@@ -201,6 +201,7 @@ namespace BetterCoinflips
         {
             if (Cfg.DefaultCoinsAmount != 0 && ev.Pickup.Type == ItemType.Coin)
             {
+                Log.Debug($"Removed a coin, coins left to remove {Cfg.DefaultCoinsAmount}");
                 ev.IsAllowed = false;
                 Cfg.DefaultCoinsAmount--;
             }
@@ -209,14 +210,16 @@ namespace BetterCoinflips
         //removing locker spawning coins and replacing the chosen item in SCP pedestals
         public void OnFillingLocker(FillingLockerEventArgs ev)
         {
-            if (ev.Pickup.Type == ItemType.Coin && Plugin.Instance.Config.DefaultCoinsAmount != 0)
+            if (ev.Pickup.Type == ItemType.Coin && Cfg.DefaultCoinsAmount != 0)
             {
+                Log.Debug($"Removed a locker coin, coins left to remove {Cfg.DefaultCoinsAmount}");
                 ev.IsAllowed = false;
-                Plugin.Instance.Config.DefaultCoinsAmount--;
+                Cfg.DefaultCoinsAmount--;
             }
             else if (ev.Pickup.Type == Cfg.ItemToReplace.ElementAt(0).Key
                      && Cfg.ItemToReplace.ElementAt(0).Value != 0)
             {
+                Log.Debug($"Placed a coin, coins left to place: {Cfg.ItemToReplace.ElementAt(0).Value}. Replaced item: {ev.Pickup.Type}");
                 ev.IsAllowed = false;
                 Pickup.CreateAndSpawn(ItemType.Coin, ev.Pickup.Position, new Quaternion());
                 Cfg.ItemToReplace[Cfg.ItemToReplace.ElementAt(0).Key]--;

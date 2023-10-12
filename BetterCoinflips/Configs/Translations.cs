@@ -62,6 +62,7 @@ namespace BetterCoinflips.Configs
         [Description("This message will be broadcast to both players.")]
         public string InventorySwapMessage { get; set; } = "Your inventory was swapped with a random player.";
         public string RandomTeleportMessage { get; set; } = "You were randomly teleported.";
+        public string RandomTeleportWarheadDetonatedMessage { get; set; } = "Warhead is detonated so you only got a candy.";
         public string HandcuffMessage { get; set; } = "You were arrested for uhh commiting war crimes... or something.";
     }
 }
