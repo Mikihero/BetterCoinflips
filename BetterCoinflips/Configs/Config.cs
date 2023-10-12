@@ -90,7 +90,7 @@ namespace BetterCoinflips.Configs
         public string KickReason { get; set; } = "The coin kicked your ass.";
 
         [Description("The list of SCP's that you can turn into by using the coin.")]
-        public List<RoleTypeId> ValidScps = new()
+        public HashSet<RoleTypeId> ValidScps { get; set; } = new()
         {
             RoleTypeId.Scp049,
             RoleTypeId.Scp096,
@@ -101,14 +101,14 @@ namespace BetterCoinflips.Configs
         };
 
         [Description("List of ignored roles for the PlayerSwapEffect (#18)")]
-        public List<RoleTypeId> IgnoredRoles = new()
+        public HashSet<RoleTypeId> IgnoredRoles { get; set; } = new()
         {
             RoleTypeId.Spectator,
             RoleTypeId.Filmmaker,
             RoleTypeId.Overwatch,
         };
 
-        public List<ItemType> ItemsToGive = new()
+        public HashSet<ItemType> ItemsToGive { get; set; } = new()
         {
             ItemType.Adrenaline,
             ItemType.Coin,

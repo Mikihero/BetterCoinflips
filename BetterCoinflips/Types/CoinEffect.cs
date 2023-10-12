@@ -148,7 +148,7 @@ namespace BetterCoinflips.Types
             //14
             new CoinFlipEffect(player =>
             {
-                Item.Create(Cfg.ItemsToGive.RandomItem()).CreatePickup(player.Position);
+                Item.Create(Cfg.ItemsToGive.ToList().RandomItem()).CreatePickup(player.Position);
             }, Translations.RandomItemMessage),
         };
 
@@ -271,7 +271,7 @@ namespace BetterCoinflips.Types
             {
                 player.DropItems();
                 player.Scale = new(1, 1, 1);
-                var randomScp = Cfg.ValidScps.RandomItem();
+                var randomScp = Cfg.ValidScps.ToList().RandomItem();
                 player.Role.Set(randomScp, RoleSpawnFlags.AssignInventory);
                 if (player.CurrentRoom.Type == RoomType.Pocket)
                     player.EnableEffect(EffectType.PocketCorroding);   
