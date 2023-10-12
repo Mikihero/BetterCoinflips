@@ -137,7 +137,7 @@ namespace BetterCoinflips.Types
             new CoinFlipEffect(player =>
             {
                 Respawn.ForceWave(Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox ? SpawnableTeamType.NineTailedFox : SpawnableTeamType.ChaosInsurgency, true);
-            }, Translations.ForceRespawnMessage),
+            }, Player.Get(RoleTypeId.Spectator).IsEmpty() ? Translations.ForceRespawnNoSpectsMessage : Translations.ForceRespawnMessage),
             
             //13
             new CoinFlipEffect(player =>
