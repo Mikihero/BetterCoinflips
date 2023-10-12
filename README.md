@@ -20,6 +20,7 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
  12. They will get an empty micro hid.
  13. MTF/CI will respawn immediatly.
  14. Their scale will be set to 1.3/0.5/1.3.
+ 15. They will receive a random item.
 
 - Whenever someone flips a coin and it lands on tails one of the following will happen:  
  1. Their hp will be reduced by 30%.  
