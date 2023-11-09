@@ -29,24 +29,23 @@ SCP:SL plugin that adds a Risk-Reward mechanic to the in-game coin. Whenever you
  4. The Alpha Warhead will be enabled or disabled depending on it's current state.  
  5. Lights all across the map will be turned off for 10 seconds.  
  6. A live grenade will appear on their head.
- 7. They will get an empty Particle Disruptor.
- 8. A live flash grenade will spawn on their head.
- 9. They will be teleported to an SCP if there are any alive, otherwise they'll lose 15 hp.
- 10. They will lose all but 1 hp.
- 11. Thye will receive a primed SCP-244.
- 12. They receive an SCP-173 tantrum.
- 13. A fake CASSIE is sent saying that SCP-173 was killed by a Tesla gate.
- 14. They will be forceclassed to a random SCP.
- 15. Their inventory will be reset.
- 16. Their role will be changed to the opposite one (class d - scientist, mtf - ci etc.)
- 17. An instantly exploding grenade will spawn on their head.
- 18. They will swap places with another player.
- 19. They will be kicked.
- 20. They will be replaced by a random spectator.
- 21. They will be teleported to a random tesla.
- 22. Their inventory will be swapped with another player's inventory.
- 23. They will be teleported to a random room.
- 24. They will be handcuffed and lose their items.
+ 7. A live flash grenade will spawn on their head.
+ 8. They will be teleported to an SCP if there are any alive, otherwise they'll lose 15 hp.
+ 9. They will lose all but 1 hp.
+ 10. Thye will receive a primed SCP-244.
+ 11. They receive an SCP-173 tantrum.
+ 12. A fake CASSIE is sent saying that SCP-173 was killed by a Tesla gate.
+ 13. They will be forceclassed to a random SCP.
+ 14. Their inventory will be reset.
+ 15. Their role will be changed to the opposite one (class d - scientist, mtf - ci etc.)
+ 16. An instantly exploding grenade will spawn on their head.
+ 17. They will swap places with another player.
+ 18. They will be kicked.
+ 19. They will be replaced by a random spectator.
+ 20. They will be teleported to a random tesla.
+ 21. Their inventory will be swapped with another player's inventory.
+ 22. They will be teleported to a random room.
+ 23. They will be handcuffed and lose their items.
 
 - The plugin will prevent the spawns of a specified amount of coins around the map.
 - The plugin will replace a specified amount of the chosen item (by default SCP-500) with a coin in the SCP pedestals.
