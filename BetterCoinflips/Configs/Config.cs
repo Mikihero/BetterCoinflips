@@ -160,7 +160,6 @@ namespace BetterCoinflips.Configs
         public int WarheadChance { get; set; } = 10;
         public int LightsOutChance { get; set; } = 20;
         public int LiveHeChance { get; set; } = 30;
-        public int TrollGunChance { get; set; } = 50;
         public int TrollFlashChance { get; set; } = 50;
         public int ScpTpChance { get; set; } = 20;
         public int OneHpLeftChance { get; set; } = 15;

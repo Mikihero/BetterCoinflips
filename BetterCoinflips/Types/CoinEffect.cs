@@ -142,7 +142,7 @@ namespace BetterCoinflips.Types
             //13
             new CoinFlipEffect(player =>
             {
-                player.Scale = new Vector3(1.3f, 0.5f, 1.3f);
+                player.Scale = new Vector3(1.13f, 0.5f, 1.13f);
             }, Translations.SizeChangeMessage),
             
             //14
@@ -207,20 +207,12 @@ namespace BetterCoinflips.Types
             //6
             new CoinFlipEffect(player =>
             {
-                Firearm gun = (Firearm)Item.Create(ItemType.ParticleDisruptor);
-                gun.Ammo = 0;
-                gun.CreatePickup(player.Position);
-            }, Translations.TrollGunMessage),
-            
-            //7
-            new CoinFlipEffect(player =>
-            {
                 FlashGrenade flash = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
                 flash.FuseTime = 1f;
                 flash.SpawnActive(player.Position);
             }, Translations.TrollFlashMessage),
             
-            //8
+            //7
             new CoinFlipEffect(player =>
             {
                 if (Player.Get(Side.Scp).Any())
@@ -236,7 +228,7 @@ namespace BetterCoinflips.Types
                 }
             }, Player.Get(Side.Scp).Any() ? Translations.TpToRandomScpMessage : Translations.SmallDamageMessage),
             
-            //9
+            //8
             new CoinFlipEffect(player =>
             {
                 if ((int)player.Health == 1)
@@ -245,7 +237,7 @@ namespace BetterCoinflips.Types
                     player.Health = 1;
             }, Translations.HugeDamageMessage),
             
-            //10
+            //9
             new CoinFlipEffect(player =>
             {
                 Scp244 vase = (Scp244)Item.Create(ItemType.SCP244a);
@@ -253,20 +245,20 @@ namespace BetterCoinflips.Types
                 vase.CreatePickup(player.Position);
             }, Translations.PrimedVaseMessage),
             
-            //11
+            //10
             new CoinFlipEffect(player =>
             {
                 player.PlaceTantrum();
             }, Translations.ShitPantsMessage),
             
-            //12
+            //11
             new CoinFlipEffect(player =>
             {
                 var scpName = _scpNames.ToList().RandomItem();
                 Cassie.MessageTranslated($"scp {scpName.Key} successfully terminated by automatic security system",$"{scpName.Value} successfully terminated by Automatic Security System.");
             }, Translations.FakeScpKillMessage),
             
-            //13
+            //12
             new CoinFlipEffect(player =>
             {
                 player.DropItems();
@@ -277,14 +269,14 @@ namespace BetterCoinflips.Types
                     player.EnableEffect(EffectType.PocketCorroding);   
             }, Translations.TurnIntoScpMessage),
             
-            //14
+            //13
             new CoinFlipEffect(player =>
             {
                 player.DropHeldItem();
                 player.ClearInventory();
             }, Translations.InventoryResetMessage),
             
-            //15
+            //14
             new CoinFlipEffect(player =>
             {
                 player.DropItems();
@@ -328,7 +320,7 @@ namespace BetterCoinflips.Types
                 }
             }, Translations.ClassSwapMessage),
             
-            //16
+            //15
             new CoinFlipEffect(player =>
             {
                 ExplosiveGrenade instaBoom = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
@@ -336,7 +328,7 @@ namespace BetterCoinflips.Types
                 instaBoom.SpawnActive(player.Position, player);
             }, Translations.InstantExplosionMessage),
             
-            //17
+            //16
             new CoinFlipEffect(player =>
             {
                 var playerList = Player.List.Where(x => !Cfg.IgnoredRoles.Contains(x.Role.Type)).ToList();
@@ -351,13 +343,13 @@ namespace BetterCoinflips.Types
                 player.Teleport(pos);
             }, Player.List.Where(x => x.Role.Type != RoleTypeId.Spectator).IsEmpty() ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage),
             
-            //18
+            //17
             new CoinFlipEffect(player =>
             {
                 Timing.CallDelayed(1f, () => player.Kick(Cfg.KickReason));
             }, Translations.KickMessage),
             
-            //19
+            //18
             new CoinFlipEffect(player =>
             {
                 var spectList = Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).ToList();
@@ -392,14 +384,14 @@ namespace BetterCoinflips.Types
                 EventHandlers.SendBroadcast(spect, Translations.SpectSwapSpectMessage);
             }, Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).IsEmpty() ? Translations.SpectSwapNoSpectsMessage : Translations.SpectSwapPlayerMessage),
             
-            //20
+            //19
             new CoinFlipEffect(player =>
             {
                 player.DropHeldItem();
                 player.Teleport(Exiled.API.Features.TeslaGate.List.ToList().RandomItem());
             }, Translations.TeslaTpMessage),
             
-            //21
+            //20
             new CoinFlipEffect(player =>
             {
                 var target = Player.List.Where(x => x != player).ToList().RandomItem();
@@ -447,7 +439,7 @@ namespace BetterCoinflips.Types
                 EventHandlers.SendBroadcast(target, Translations.InventorySwapMessage);
             }, Translations.InventorySwapMessage),
             
-            //22
+            //21
             new CoinFlipEffect(player =>
             {
                 if (Warhead.IsDetonated)
@@ -463,7 +455,7 @@ namespace BetterCoinflips.Types
                 
             }, Warhead.IsDetonated ? Translations.RandomTeleportWarheadDetonatedMessage : Translations.RandomTeleportMessage),
             
-            //23
+            //22
             new CoinFlipEffect(player =>
             {
                 player.Handcuff();

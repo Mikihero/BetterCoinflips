@@ -40,7 +40,6 @@ namespace BetterCoinflips.Configs
         public string WarheadStartMessage { get; set; } = "The warhead has been started.";
         public string LightsOutMessage { get; set; } = "Lights out.";
         public string LiveGrenadeMessage { get; set; } = "Watch your head!";
-        public string TrollGunMessage { get; set; } = "YOU GOT A WHAT!?";
         public string TrollFlashMessage { get; set; } = "You heard something?";
         public string TpToRandomScpMessage { get; set; } = "You were teleported to an SCP.";
         public string SmallDamageMessage { get; set; } = "You've lost 15hp.";
