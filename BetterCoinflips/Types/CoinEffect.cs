@@ -137,7 +137,7 @@ namespace BetterCoinflips.Types
             new CoinFlipEffect(player =>
             {
                 Respawn.ForceWave(Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox ? SpawnableTeamType.NineTailedFox : SpawnableTeamType.ChaosInsurgency, true);
-            }, Player.Get(RoleTypeId.Spectator).IsEmpty() ? Translations.ForceRespawnNoSpectsMessage : Translations.ForceRespawnMessage),
+            }, Translations.ForceRespawnMessage),
             
             //13
             new CoinFlipEffect(player =>
@@ -215,9 +215,9 @@ namespace BetterCoinflips.Types
             //7
             new CoinFlipEffect(player =>
             {
-                if (Player.Get(Side.Scp).Any())
+                if (Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079))
                 {
-                    Player scpPlayer = Player.Get(Side.Scp).Where(p => p.Role.Type != RoleTypeId.Scp079).ToList().RandomItem();
+                    Player scpPlayer = Player.Get(Side.Scp).ToList().RandomItem();
                     player.Position = scpPlayer.Position;
                 }
                 else
@@ -226,7 +226,7 @@ namespace BetterCoinflips.Types
                     if (player.Health < 0) 
                         player.Kill(DamageType.Unknown);
                 }
-            }, Player.Get(Side.Scp).Any() ? Translations.TpToRandomScpMessage : Translations.SmallDamageMessage),
+            }, Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079) ? Translations.TpToRandomScpMessage : Translations.SmallDamageMessage),
             
             //8
             new CoinFlipEffect(player =>
