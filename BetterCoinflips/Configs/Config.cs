@@ -106,6 +106,8 @@ namespace BetterCoinflips.Configs
             RoleTypeId.Spectator,
             RoleTypeId.Filmmaker,
             RoleTypeId.Overwatch,
+            RoleTypeId.Scp079,
+            RoleTypeId.Tutorial,
         };
 
         public HashSet<ItemType> ItemsToGive { get; set; } = new()

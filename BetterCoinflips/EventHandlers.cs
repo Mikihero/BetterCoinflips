@@ -13,8 +13,8 @@ namespace BetterCoinflips
 {
     public class EventHandlers
     {
-        private static readonly Config Cfg = Plugin.Instance.Config;
-        private readonly Configs.Translations _tr = Plugin.Instance.Translation;
+        private static Config Cfg => Plugin.Instance.Config;
+        private static Configs.Translations TR => Plugin.Instance.Translation;
         private readonly System.Random _rd = new();
         
         // ReSharper disable once FieldCanBeMadeReadOnly.Global
@@ -86,7 +86,7 @@ namespace BetterCoinflips
             if (flag)
             {
                 ev.IsAllowed = false;
-                SendBroadcast(ev.Player, _tr.TossOnCooldownMessage);
+                SendBroadcast(ev.Player, TR.TossOnCooldownMessage);
                 Log.Debug($"{ev.Player.Nickname} tried to throw a coin on cooldown.");
                 return;
             }
@@ -109,7 +109,7 @@ namespace BetterCoinflips
                     {
                         ev.Player.RemoveHeldItem();
                     }
-                    SendBroadcast(ev.Player, _tr.CoinNoUsesMessage);
+                    SendBroadcast(ev.Player, TR.CoinNoUsesMessage);
                     return;
                 }
             }
@@ -186,7 +186,7 @@ namespace BetterCoinflips
                 {
                     ev.Player.RemoveHeldItem();
                 }
-                message += _tr.CoinBreaksMessage;
+                message += TR.CoinBreaksMessage;
             }
 
             if (message != null)

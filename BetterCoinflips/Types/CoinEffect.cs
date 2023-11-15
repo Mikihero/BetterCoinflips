@@ -361,11 +361,7 @@ namespace BetterCoinflips.Types
                 spect.Role.Set(player.Role.Type, RoleSpawnFlags.None);
                 spect.Teleport(player);
                 spect.Health = player.Health;
-                List<ItemType> playerItems = new List<ItemType>();
-                foreach (var item in player.Items)
-                {
-                    playerItems.Add(item.Type);
-                }
+                List<ItemType> playerItems = player.Items.Select(item => item.Type).ToList();
 
                 foreach (var item in playerItems)
                 {
