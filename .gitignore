@@ -1,7 +1,8 @@
+TestCommand.cs
 bin/
 obj/
 packages.config
 .idea/
 .vs/
-*.sln.DotSettings.user
-TestCommand.cs
+*.sln.DotSettings.*
+packages/
