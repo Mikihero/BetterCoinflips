@@ -5,6 +5,7 @@ using BetterCoinflips.Configs;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
+using Exiled.API.Features.DamageHandlers;
 using Exiled.API.Features.Doors;
 using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
@@ -26,7 +27,7 @@ namespace BetterCoinflips.Types
         public Action<Player> Execute { get; set; }
         public string Message { get; set; }
 
-        public CoinFlipEffect(Action<Player> execute, string message)
+        public CoinFlipEffect(string message, Action<Player> execute)
         {
             Execute = execute;
             Message = message;
@@ -44,240 +45,251 @@ namespace BetterCoinflips.Types
         
         private static bool flag1 = Cfg.RedCardChance > Rd.Next(1, 101);
 
+        // GoodEffects list
         public static List<CoinFlipEffect> GoodEffects = new()
         {
-            //0
-            new CoinFlipEffect(player =>
+            // 0: Spawns a red keycard or containment enginner
+            new CoinFlipEffect(flag1 ? Translations.RedCardMessage : Translations.ContainmentEngineerCardMessage, player =>
             {
-                Pickup.CreateAndSpawn(flag1 ? ItemType.KeycardFacilityManager : ItemType.KeycardContainmentEngineer,
-                    player.Position, new Quaternion());
-            }, flag1 ? Translations.RedCardMessage : Translations.ContainmentEngineerCardMessage),
+                Pickup.CreateAndSpawn(flag1 ? ItemType.KeycardFacilityManager : ItemType.KeycardContainmentEngineer, player.Position, new Quaternion());
+            }),
 
-            //1
-            new CoinFlipEffect(player =>
+            // 1: Spawns a medkit and painkillers for the player.
+            new CoinFlipEffect(Translations.MediKitMessage, player =>
             {
                 Pickup.CreateAndSpawn(ItemType.Medkit, player.Position, new Quaternion());
                 Pickup.CreateAndSpawn(ItemType.Painkillers, player.Position, new Quaternion());
-            }, Translations.MediKitMessage),
+            }),
 
-            //2
-            new CoinFlipEffect(player =>
+            // 2: Teleports the player to the escape secondary door.
+            new CoinFlipEffect(Translations.TpToEscapeMessage, player =>
             {
                 player.Teleport(Door.Get(DoorType.EscapeSecondary));
-            }, Translations.TpToEscapeMessage),
+            }),
 
-            //3
-            new CoinFlipEffect(player =>
+            // 3: Heals the player by 25 health points.
+            new CoinFlipEffect(Translations.MagicHealMessage, player =>
             {
                 player.Heal(25);
-            }, Translations.MagicHealMessage),
+            }),
 
-            //4
-            new CoinFlipEffect(player =>
+            // 4: Increases the player's health by 10%.
+            new CoinFlipEffect(Translations.HealthIncreaseMessage, player =>
             {
                 player.Health *= 1.1f;
+            }),
 
-            }, Translations.HealthIncreaseMessage),
-
-            //5
-            new CoinFlipEffect(player =>
+            // 5: Spawns SCP-268 (Neat Hat) for the player.
+            new CoinFlipEffect(Translations.NeatHatMessage, player =>
             {
                 Pickup.CreateAndSpawn(ItemType.SCP268, player.Position, new Quaternion());
-            }, Translations.NeatHatMessage),
+            }),
 
-            //6
-            new CoinFlipEffect(player =>
+            // 6: Applies a random good effect to the player.
+            new CoinFlipEffect(Translations.RandomGoodEffectMessage, player =>
             {
                 var effect = Cfg.GoodEffects.ToList().RandomItem();
                 player.EnableEffect(effect, 5, true);
                 Log.Debug($"Chosen random effect: {effect}");
-            }, Translations.RandomGoodEffectMessage),
+            }),
 
-            //7
-            new CoinFlipEffect(player =>
+            // 7: Spawns a Logicer with one ammo for the player.
+            new CoinFlipEffect(Translations.OneAmmoLogicerMessage, player =>
             {
                 Firearm gun = (Firearm)Item.Create(ItemType.GunLogicer);
                 gun.Ammo = 1;
                 gun.CreatePickup(player.Position);
-            }, Translations.OneAmmoLogicerMessage),
+            }),
 
-            //8
-            new CoinFlipEffect(player =>
+            // 8: Spawns SCP-2176 (lightbulb) for the player.
+            new CoinFlipEffect(Translations.LightbulbMessage, player =>
             {
                 Pickup.CreateAndSpawn(ItemType.SCP2176, player.Position, new Quaternion());
-            }, Translations.LightbulbMessage),
+            }),
 
-            //9
-            new CoinFlipEffect(player =>
+            // 9: Spawns pink candy (SCP-330) for the player.
+            new CoinFlipEffect(Translations.PinkCandyMessage, player =>
             {
                 Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
                 candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
                 candy.CreatePickup(player.Position);
-            }, Translations.PinkCandyMessage),
+            }),
 
-            //10
-            new CoinFlipEffect(player =>
+            // 10: Spawns a customized revolver with attachments for the player.
+            new CoinFlipEffect(Translations.BadRevoMessage, player =>
             {
                 Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
                 revo.AddAttachment(new[]
-                    { AttachmentName.CylinderMag8, AttachmentName.ShortBarrel, AttachmentName.ScopeSight });
+                    {AttachmentName.CylinderMag8, AttachmentName.ShortBarrel, AttachmentName.ScopeSight});
                 revo.CreatePickup(player.Position);
-            }, Translations.BadRevoMessage),
+            }),
 
-            //11
-            new CoinFlipEffect(player =>
+            // 11: Spawns a MicroHID with no energy for the player.
+            new CoinFlipEffect(Translations.EmptyHidMessage, player =>
             {
                 MicroHIDPickup item = (MicroHIDPickup)Pickup.Create(ItemType.MicroHID);
                 item.Position = player.Position;
                 item.Spawn();
                 item.Energy = 0;
-            }, Translations.EmptyHidMessage),
-            
-            //12
-            new CoinFlipEffect(player =>
+            }),
+
+            // 12: Forces a respawn wave of the team that has more ticketes
+            new CoinFlipEffect(Translations.ForceRespawnMessage, player =>
             {
                 Respawn.ForceWave(Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox ? SpawnableTeamType.NineTailedFox : SpawnableTeamType.ChaosInsurgency, true);
-            }, Translations.ForceRespawnMessage),
-            
-            //13
-            new CoinFlipEffect(player =>
+            }),
+
+            // 13: Changes the player's size
+            new CoinFlipEffect(Translations.SizeChangeMessage, player =>
             {
                 player.Scale = new Vector3(1.13f, 0.5f, 1.13f);
-            }, Translations.SizeChangeMessage),
-            
-            //14
-            new CoinFlipEffect(player =>
+            }),
+
+            // 14: Spawns a random item for the player.
+            new CoinFlipEffect(Translations.RandomItemMessage, player =>
             {
                 Item.Create(Cfg.ItemsToGive.ToList().RandomItem()).CreatePickup(player.Position);
-            }, Translations.RandomItemMessage),
+            }),
         };
 
+
+        // BadEffects list
         public static List<CoinFlipEffect> BadEffects = new()
         {
-            //0
-            new CoinFlipEffect(player =>
+            // 0: Reduces player's health by 30%
+            new CoinFlipEffect(Translations.HpReductionMessage, player =>
             {
-                if ((int)player.Health == 1)
+                if ((int) player.Health == 1)
                     player.Kill(DamageType.CardiacArrest);
                 else
                     player.Health *= 0.7f;
-            }, Translations.HpReductionMessage),
-            
-            //1
-            new CoinFlipEffect(player =>
+            }),
+
+            // 1: Teleports the player to the class D cells.
+            new CoinFlipEffect(Warhead.IsDetonated ? Translations.TpToClassDCellsAfterWarheadMessage : Translations.TpToClassDCellsMessage, player =>
             {
+                player.DropHeldItem();
                 player.Teleport(Door.Get(DoorType.PrisonDoor));
 
-            }, Translations.TpToClassDCellsMessage),
-            
-            //2
-            new CoinFlipEffect(player =>
+                if (Warhead.IsDetonated)
+                {
+                    player.Kill(DamageType.Decontamination);
+                }
+            }),
+
+            // 2: Applies a random bad effect to the player.
+            new CoinFlipEffect(Translations.RandomBadEffectMessage, player =>
             {
                 var effect = Cfg.BadEffects.ToList().RandomItem();
+                
+                //prevents players from staying in PD infinitely
                 if (effect == EffectType.PocketCorroding)
                     player.EnableEffect(EffectType.PocketCorroding);
                 else
                     player.EnableEffect(effect, 5, true);
+                
                 Log.Debug($"Chosen random effect: {effect}");
-            }, Translations.RandomBadEffectMessage),
-            
-            //3
-            new CoinFlipEffect(player =>
+            }),
+
+            // 3: Starts or stops the warhead based on its state.
+            new CoinFlipEffect(Warhead.IsDetonated || !Warhead.IsInProgress ? Translations.WarheadStartMessage : Translations.WarheadStopMessage, player =>
             {
                 if (Warhead.IsDetonated || !Warhead.IsInProgress)
                     Warhead.Start();
                 else
                     Warhead.Stop();
-            }, Warhead.IsDetonated || !Warhead.IsInProgress ? Translations.WarheadStartMessage : Translations.WarheadStopMessage),
-            
-            //4
-            new CoinFlipEffect(player =>
+            }),
+
+            // 4: Turns off all lights
+            new CoinFlipEffect(Translations.LightsOutMessage, player =>
             {
                 Map.TurnOffAllLights(Cfg.MapBlackoutTime);
-            }, Translations.LightsOutMessage),
-            
-            //5
-            new CoinFlipEffect(player =>
+            }),
+
+            // 5: Spawns a live HE grenade
+            new CoinFlipEffect(Translations.LiveGrenadeMessage, player =>
             {
-                ExplosiveGrenade grenade = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
-                grenade.FuseTime = (float)Cfg.LiveGrenadeFuseTime;
+                ExplosiveGrenade grenade = (ExplosiveGrenade) Item.Create(ItemType.GrenadeHE);
+                grenade.FuseTime = (float) Cfg.LiveGrenadeFuseTime;
                 grenade.SpawnActive(player.Position + Vector3.up, player);
-            }, Translations.LiveGrenadeMessage),
-            
-            //6
-            new CoinFlipEffect(player =>
+            }),
+
+            // 6: Spawns a flash grenade with a short fuse time, sets the flash owner to the player so that it hopefully blinds people
+            new CoinFlipEffect(Translations.TrollFlashMessage, player =>
             {
-                FlashGrenade flash = (FlashGrenade)Item.Create(ItemType.GrenadeFlash);
+                FlashGrenade flash = (FlashGrenade) Item.Create(ItemType.GrenadeFlash, player);
                 flash.FuseTime = 1f;
                 flash.SpawnActive(player.Position);
-            }, Translations.TrollFlashMessage),
-            
-            //7
-            new CoinFlipEffect(player =>
+            }),
+
+            // 7: Teleports the player to a random SCP or inflicts damage if no SCPs exist.
+            new CoinFlipEffect(Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079) ? Translations.TpToRandomScpMessage : Translations.SmallDamageMessage, player =>
             {
                 if (Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079))
                 {
                     Player scpPlayer = Player.Get(Side.Scp).ToList().RandomItem();
                     player.Position = scpPlayer.Position;
+                    return;
                 }
-                else
-                {
-                    player.Health -= 15;
-                    if (player.Health < 0) 
-                        player.Kill(DamageType.Unknown);
-                }
-            }, Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079) ? Translations.TpToRandomScpMessage : Translations.SmallDamageMessage),
-            
-            //8
-            new CoinFlipEffect(player =>
+
+                player.Hurt(15);
+            }),
+
+            // 8: Sets player hp to 1 or kills if it was already 1
+            new CoinFlipEffect(Translations.HugeDamageMessage, player =>
             {
-                if ((int)player.Health == 1)
+                if ((int) player.Health == 1)
                     player.Kill(DamageType.CardiacArrest);
                 else
                     player.Health = 1;
-            }, Translations.HugeDamageMessage),
-            
-            //9
-            new CoinFlipEffect(player =>
+            }),
+
+            // 9: Spawns a primed SCP-244 vase for the player.
+            new CoinFlipEffect(Translations.PrimedVaseMessage, player =>
             {
                 Scp244 vase = (Scp244)Item.Create(ItemType.SCP244a);
                 vase.Primed = true;
                 vase.CreatePickup(player.Position);
-            }, Translations.PrimedVaseMessage),
-            
-            //10
-            new CoinFlipEffect(player =>
+            }),
+
+            // 10: Spawns a tantrum on the player Keywords: shit spawn create
+            new CoinFlipEffect(Translations.ShitPantsMessage, player =>
             {
                 player.PlaceTantrum();
-            }, Translations.ShitPantsMessage),
-            
-            //11
-            new CoinFlipEffect(player =>
+            }),
+
+            // 11: Broadcasts a fake SCP termination message.
+            new CoinFlipEffect(Translations.FakeScpKillMessage, player =>
             {
                 var scpName = _scpNames.ToList().RandomItem();
-                Cassie.MessageTranslated($"scp {scpName.Key} successfully terminated by automatic security system",$"{scpName.Value} successfully terminated by Automatic Security System.");
-            }, Translations.FakeScpKillMessage),
-            
-            //12
-            new CoinFlipEffect(player =>
+                
+                Cassie.MessageTranslated($"scp {scpName.Key} successfully terminated by automatic security system",
+                    $"{scpName.Value} successfully terminated by Automatic Security System.");
+            }),
+
+            // 12: Forceclass the player to a random scp from the list Keywords: scp fc forceclass
+            new CoinFlipEffect(Translations.TurnIntoScpMessage, player =>
             {
                 player.DropItems();
-                player.Scale = new(1, 1, 1);
+                player.Scale = new Vector3(1, 1, 1);
+                
                 var randomScp = Cfg.ValidScps.ToList().RandomItem();
                 player.Role.Set(randomScp, RoleSpawnFlags.AssignInventory);
+                
+                //prevents the player from staying in PD forever
                 if (player.CurrentRoom.Type == RoomType.Pocket)
-                    player.EnableEffect(EffectType.PocketCorroding);   
-            }, Translations.TurnIntoScpMessage),
+                    player.EnableEffect(EffectType.PocketCorroding);
+            }),
             
-            //13
-            new CoinFlipEffect(player =>
+            // 13: Resets player's inventory
+            new CoinFlipEffect(Translations.InventoryResetMessage, player =>
             {
                 player.DropHeldItem();
                 player.ClearInventory();
-            }, Translations.InventoryResetMessage),
-            
-            //14
-            new CoinFlipEffect(player =>
+            }),
+
+            // 14: Flips the players role to the opposite
+            new CoinFlipEffect(Translations.ClassSwapMessage, player =>
             {
                 player.DropItems();
                 switch (player.Role.Type)
@@ -314,97 +326,114 @@ namespace BetterCoinflips.Types
                         break;
                 }
 
+                //prevents the player from staying in PD forever
                 if (player.CurrentRoom.Type == RoomType.Pocket)
                 {
                     player.EnableEffect(EffectType.PocketCorroding);
                 }
-            }, Translations.ClassSwapMessage),
-            
-            //15
-            new CoinFlipEffect(player =>
+            }),
+
+            // 15: Spawns an HE grenade with a very short fuse time
+            new CoinFlipEffect(Translations.InstantExplosionMessage, player =>
             {
-                ExplosiveGrenade instaBoom = (ExplosiveGrenade)Item.Create(ItemType.GrenadeHE);
+                ExplosiveGrenade instaBoom = (ExplosiveGrenade) Item.Create(ItemType.GrenadeHE);
                 instaBoom.FuseTime = 0.1f;
                 instaBoom.SpawnActive(player.Position, player);
-            }, Translations.InstantExplosionMessage),
-            
-            //16
-            new CoinFlipEffect(player =>
+            }),
+
+            // 16: Swaps positions with another random player
+            new CoinFlipEffect(Player.List.Count(x => x.IsAlive && !Cfg.IgnoredRoles.Contains(x.Role.Type)) <= 1 ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage, player =>
             {
-                var playerList = Player.List.Where(x => !Cfg.IgnoredRoles.Contains(x.Role.Type)).ToList();
+                var playerList = Player.List.Where(x => x.IsAlive && !Cfg.IgnoredRoles.Contains(x.Role.Type)).ToList();
                 playerList.Remove(player);
+                
                 if (playerList.IsEmpty())
                 {
                     return;
                 }
+
                 var targetPlayer = playerList.RandomItem();
                 var pos = targetPlayer.Position;
+                
                 targetPlayer.Teleport(player.Position);
                 player.Teleport(pos);
-            }, Player.List.Where(x => x.Role.Type != RoleTypeId.Spectator).IsEmpty() ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage),
-            
-            //17
-            new CoinFlipEffect(player =>
+                
+                EventHandlers.SendBroadcast(targetPlayer, Translations.PlayerSwapMessage);
+            }),
+
+            // 17: kicks the player
+            new CoinFlipEffect(Translations.KickMessage, player =>
             {
+                //delay so the broadcast can be sent to the player and doesn't throw NRE
                 Timing.CallDelayed(1f, () => player.Kick(Cfg.KickReason));
-            }, Translations.KickMessage),
-            
-            //18
-            new CoinFlipEffect(player =>
+            }),
+
+            // 18: swap with a spectator
+            new CoinFlipEffect(Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).IsEmpty() ? Translations.SpectSwapNoSpectsMessage : Translations.SpectSwapPlayerMessage, player =>
             {
                 var spectList = Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).ToList();
+                
                 if (spectList.IsEmpty())
                 {
                     return;
                 }
+                
                 var spect = spectList.RandomItem();
+                
                 spect.Role.Set(player.Role.Type, RoleSpawnFlags.None);
                 spect.Teleport(player);
                 spect.Health = player.Health;
+                
                 List<ItemType> playerItems = player.Items.Select(item => item.Type).ToList();
 
                 foreach (var item in playerItems)
                 {
                     spect.AddItem(item);
                 }
-
+                
+                
+                //give spect the players ammo, has to be done before ClearInventory() or else ammo will fall on the floor
                 for (int i = 0; i < player.Ammo.Count; i++)
                 {
                     spect.AddAmmo(player.Ammo.ElementAt(i).Key.GetAmmoType(), player.Ammo.ElementAt(i).Value);
                     player.SetAmmo(player.Ammo.ElementAt(i).Key.GetAmmoType(), 0);
                 }
-
+                
                 player.ClearInventory();
                 player.Role.Set(RoleTypeId.Spectator);
-                
+
                 EventHandlers.SendBroadcast(spect, Translations.SpectSwapSpectMessage);
-            }, Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).IsEmpty() ? Translations.SpectSwapNoSpectsMessage : Translations.SpectSwapPlayerMessage),
-            
-            //19
-            new CoinFlipEffect(player =>
+            }),
+
+            // 19: Teleports to a random Tesla gate if warhead is not detonated
+            new CoinFlipEffect(Warhead.IsDetonated ? Translations.TeslaTpAfterWarheadMessage : Translations.TeslaTpMessage, player =>
             {
                 player.DropHeldItem();
+                
                 player.Teleport(Exiled.API.Features.TeslaGate.List.ToList().RandomItem());
-            }, Translations.TeslaTpMessage),
-            
-            //20
-            new CoinFlipEffect(player =>
+                
+                if (Warhead.IsDetonated)
+                {
+                    player.Kill(DamageType.Decontamination);
+                }
+            }),
+
+            // 20: Swaps inventory and ammo with another random player
+            new CoinFlipEffect(Player.List.Where(x => !Cfg.IgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1 ? Translations.InventorySwapOnePlayerMessage : Translations.InventorySwapMessage, player =>
             {
-                var target = Player.List.Where(x => x != player).ToList().RandomItem();
-                
-                //saving items
-                List<ItemType> items1 = new();
-                List<ItemType> items2 = new();
-                foreach (var item in player.Items)
+                if (Player.List.Where(x => !Cfg.IgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1)
                 {
-                    items1.Add(item.Type);
+                    player.Hurt(50);
+                    return;
                 }
-                foreach (var item in target.Items)
-                {
-                    items2.Add(item.Type);
-                }
-                
-                //saving ammo
+             
+                var target = Player.List.Where(x => x != player && !Cfg.IgnoredRoles.Contains(x.Role.Type)).ToList().RandomItem();
+
+                // Saving items
+                List<ItemType> items1 = player.Items.Select(item => item.Type).ToList();
+                List<ItemType> items2 = target.Items.Select(item => item.Type).ToList();
+
+                // Saving and removing ammo
                 Dictionary<AmmoType, ushort> ammo1 = new();
                 Dictionary<AmmoType, ushort> ammo2 = new();
                 for (int i = 0; i < player.Ammo.Count; i++)
@@ -418,11 +447,11 @@ namespace BetterCoinflips.Types
                     target.SetAmmo(ammo2.ElementAt(i).Key, 0);
                 }
 
-                //giving items
+                // setting items
                 target.ResetInventory(items1);
                 player.ResetInventory(items2);
-                
-                //giving ammo
+
+                // setting ammo
                 foreach (var ammo in ammo2)
                 {
                     player.SetAmmo(ammo.Key, ammo.Value);
@@ -431,32 +460,30 @@ namespace BetterCoinflips.Types
                 {
                     target.SetAmmo(ammo.Key, ammo.Value);
                 }
-                
+
                 EventHandlers.SendBroadcast(target, Translations.InventorySwapMessage);
-            }, Translations.InventorySwapMessage),
-            
-            //21
-            new CoinFlipEffect(player =>
+            }),
+
+            // 21: Spawns a red candy or teleports the player to a random room based on warhead state.
+            new CoinFlipEffect(Warhead.IsDetonated ? Translations.RandomTeleportWarheadDetonatedMessage : Translations.RandomTeleportMessage, player =>
             {
                 if (Warhead.IsDetonated)
                 {
                     Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
                     candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Red);
                     candy.CreatePickup(player.Position);
-                }
-                else
-                {
-                    player.RandomTeleport<Room>();
+                    return;
                 }
                 
-            }, Warhead.IsDetonated ? Translations.RandomTeleportWarheadDetonatedMessage : Translations.RandomTeleportMessage),
-            
-            //22
-            new CoinFlipEffect(player =>
+                player.RandomTeleport<Room>();
+            }),
+
+            // 22: Handcuffs the player and drops their items
+            new CoinFlipEffect(Translations.HandcuffMessage, player =>
             {
                 player.Handcuff();
                 player.DropItems();
-            }, Translations.HandcuffMessage),
+            }),
         };
     }
 }

@@ -100,7 +100,7 @@ namespace BetterCoinflips.Configs
             RoleTypeId.Scp939,
         };
 
-        [Description("List of ignored roles for the PlayerSwapEffect (#18)")]
+        [Description("List of ignored roles for the PlayerSwap effect (#17) and InventorySwap effect (#21)")]
         public HashSet<RoleTypeId> IgnoredRoles { get; set; } = new()
         {
             RoleTypeId.Spectator,

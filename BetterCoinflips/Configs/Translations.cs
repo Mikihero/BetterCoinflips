@@ -34,6 +34,7 @@ namespace BetterCoinflips.Configs
         [Description("Here you can set the message for each of these bad coin effects.")]
         public string HpReductionMessage { get; set; } = "Your hp got reduced by 30%.";
         public string TpToClassDCellsMessage { get; set; } = "You got teleported to Class D cells.";
+        public string TpToClassDCellsAfterWarheadMessage { get; set; } = "You were teleported into a radioactive zone.";
         public string RandomBadEffectMessage { get; set; } = "You got a random effect.";
         public string WarheadStopMessage { get; set; } = "The warhead has been stopped.";
         public string WarheadStartMessage { get; set; } = "The warhead has been started.";
@@ -50,15 +51,18 @@ namespace BetterCoinflips.Configs
         public string InventoryResetMessage { get; set; } = "You lost your stuff.";
         public string ClassSwapMessage { get; set; } = "That's what I call an UNO reverse card!";
         public string InstantExplosionMessage { get; set; } = "You got smoked.";
-        public string PlayerSwapMessage { get; set; } = "This could be a very awkward situation.";
+        public string PlayerSwapMessage { get; set; } = "Your inventory was swapped with a random player.";
         public string PlayerSwapIfOneAliveMessage { get; set; } = "You were supposed to switch places with someone but no one else is alive!";
         public string KickMessage { get; set; } = "Bye!";
         public string SpectSwapPlayerMessage { get; set; } = "You just made someone's round better!";
         public string SpectSwapSpectMessage { get; set; } = "You were chosen as a random spectator to replace this player!";
         public string SpectSwapNoSpectsMessage { get; set; } = "You got lucky cause there are no spectators to take your place.";
         public string TeslaTpMessage { get; set; } = "So you're a fan of electricity?";
+        public string TeslaTpAfterWarheadMessage { get; set; } = "You were teleported into a radioactive zone.";
+        
         [Description("This message will be broadcast to both players.")]
         public string InventorySwapMessage { get; set; } = "Your inventory was swapped with a random player.";
+        public string InventorySwapOnePlayerMessage { get; set; } = "You can't swap with anyone so you're losing health instead.";
         public string RandomTeleportMessage { get; set; } = "You were randomly teleported.";
         public string RandomTeleportWarheadDetonatedMessage { get; set; } = "Warhead is detonated so you only got a candy.";
         public string HandcuffMessage { get; set; } = "You were arrested for uhh commiting war crimes... or something.";
