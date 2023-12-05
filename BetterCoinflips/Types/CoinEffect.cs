@@ -20,7 +20,7 @@ namespace BetterCoinflips.Types
 {
     public class CoinFlipEffect
     {
-        private static Config Cfg => Plugin.Instance.Config;
+        private static Config Config => Plugin.Instance.Config;
         private static Configs.Translations Translations => Plugin.Instance.Translation;
         private static readonly System.Random Rd = new();
         
@@ -43,7 +43,7 @@ namespace BetterCoinflips.Types
             { "1 0 6", "SCP-106"}
         };
         
-        private static bool flag1 = Cfg.RedCardChance > Rd.Next(1, 101);
+        private static bool flag1 = Config.RedCardChance > Rd.Next(1, 101);
 
         // GoodEffects list
         public static List<CoinFlipEffect> GoodEffects = new()
@@ -88,7 +88,7 @@ namespace BetterCoinflips.Types
             // 6: Applies a random good effect to the player.
             new CoinFlipEffect(Translations.RandomGoodEffectMessage, player =>
             {
-                var effect = Cfg.GoodEffects.ToList().RandomItem();
+                var effect = Config.GoodEffects.ToList().RandomItem();
                 player.EnableEffect(effect, 5, true);
                 Log.Debug($"Chosen random effect: {effect}");
             }),
@@ -148,7 +148,7 @@ namespace BetterCoinflips.Types
             // 14: Spawns a random item for the player.
             new CoinFlipEffect(Translations.RandomItemMessage, player =>
             {
-                Item.Create(Cfg.ItemsToGive.ToList().RandomItem()).CreatePickup(player.Position);
+                Item.Create(Config.ItemsToGive.ToList().RandomItem()).CreatePickup(player.Position);
             }),
         };
 
@@ -180,7 +180,7 @@ namespace BetterCoinflips.Types
             // 2: Applies a random bad effect to the player.
             new CoinFlipEffect(Translations.RandomBadEffectMessage, player =>
             {
-                var effect = Cfg.BadEffects.ToList().RandomItem();
+                var effect = Config.BadEffects.ToList().RandomItem();
                 
                 //prevents players from staying in PD infinitely
                 if (effect == EffectType.PocketCorroding)
@@ -203,14 +203,14 @@ namespace BetterCoinflips.Types
             // 4: Turns off all lights
             new CoinFlipEffect(Translations.LightsOutMessage, player =>
             {
-                Map.TurnOffAllLights(Cfg.MapBlackoutTime);
+                Map.TurnOffAllLights(Config.MapBlackoutTime);
             }),
 
             // 5: Spawns a live HE grenade
             new CoinFlipEffect(Translations.LiveGrenadeMessage, player =>
             {
                 ExplosiveGrenade grenade = (ExplosiveGrenade) Item.Create(ItemType.GrenadeHE);
-                grenade.FuseTime = (float) Cfg.LiveGrenadeFuseTime;
+                grenade.FuseTime = (float) Config.LiveGrenadeFuseTime;
                 grenade.SpawnActive(player.Position + Vector3.up, player);
             }),
 
@@ -273,7 +273,7 @@ namespace BetterCoinflips.Types
                 player.DropItems();
                 player.Scale = new Vector3(1, 1, 1);
                 
-                var randomScp = Cfg.ValidScps.ToList().RandomItem();
+                var randomScp = Config.ValidScps.ToList().RandomItem();
                 player.Role.Set(randomScp, RoleSpawnFlags.AssignInventory);
                 
                 //prevents the player from staying in PD forever
@@ -342,9 +342,9 @@ namespace BetterCoinflips.Types
             }),
 
             // 16: Swaps positions with another random player
-            new CoinFlipEffect(Player.List.Count(x => x.IsAlive && !Cfg.IgnoredRoles.Contains(x.Role.Type)) <= 1 ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage, player =>
+            new CoinFlipEffect(Player.List.Count(x => x.IsAlive && !Config.IgnoredRoles.Contains(x.Role.Type)) <= 1 ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage, player =>
             {
-                var playerList = Player.List.Where(x => x.IsAlive && !Cfg.IgnoredRoles.Contains(x.Role.Type)).ToList();
+                var playerList = Player.List.Where(x => x.IsAlive && !Config.IgnoredRoles.Contains(x.Role.Type)).ToList();
                 playerList.Remove(player);
                 
                 if (playerList.IsEmpty())
@@ -365,7 +365,7 @@ namespace BetterCoinflips.Types
             new CoinFlipEffect(Translations.KickMessage, player =>
             {
                 //delay so the broadcast can be sent to the player and doesn't throw NRE
-                Timing.CallDelayed(1f, () => player.Kick(Cfg.KickReason));
+                Timing.CallDelayed(1f, () => player.Kick(Config.KickReason));
             }),
 
             // 18: swap with a spectator
@@ -419,15 +419,15 @@ namespace BetterCoinflips.Types
             }),
 
             // 20: Swaps inventory and ammo with another random player
-            new CoinFlipEffect(Player.List.Where(x => !Cfg.IgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1 ? Translations.InventorySwapOnePlayerMessage : Translations.InventorySwapMessage, player =>
+            new CoinFlipEffect(Player.List.Where(x => !Config.IgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1 ? Translations.InventorySwapOnePlayerMessage : Translations.InventorySwapMessage, player =>
             {
-                if (Player.List.Where(x => !Cfg.IgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1)
+                if (Player.List.Where(x => !Config.IgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1)
                 {
                     player.Hurt(50);
                     return;
                 }
              
-                var target = Player.List.Where(x => x != player && !Cfg.IgnoredRoles.Contains(x.Role.Type)).ToList().RandomItem();
+                var target = Player.List.Where(x => x != player && !Config.IgnoredRoles.Contains(x.Role.Type)).ToList().RandomItem();
 
                 // Saving items
                 List<ItemType> items1 = player.Items.Select(item => item.Type).ToList();
@@ -475,7 +475,7 @@ namespace BetterCoinflips.Types
                     return;
                 }
                 
-                player.RandomTeleport<Room>();
+                player.Teleport(Room.Get(Config.RoomsToTeleport.GetRandomValue()));
             }),
 
             // 22: Handcuffs the player and drops their items

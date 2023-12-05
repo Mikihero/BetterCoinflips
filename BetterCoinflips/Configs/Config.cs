@@ -137,8 +137,30 @@ namespace BetterCoinflips.Configs
             ItemType.GunFSP9,
             ItemType.GunFRMG0,
         };
-        
-        [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
+
+        public HashSet<RoomType> RoomsToTeleport { get; set; } = new()
+        {
+            RoomType.Hcz049,
+            RoomType.Hcz079,
+            RoomType.Hcz096,
+            RoomType.Hcz939,
+            RoomType.Lcz173,
+            RoomType.Lcz330,
+            RoomType.Lcz914,
+            RoomType.Surface,
+            RoomType.EzCafeteria,
+            RoomType.EzConference,
+            RoomType.EzCrossing,
+            RoomType.EzCurve,
+            RoomType.EzIntercom,
+            RoomType.EzPcs,
+            RoomType.EzStraight,
+            RoomType.EzVent,
+            RoomType.HczArmory,
+            RoomType.HczCrossing,
+        };
+
+            [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
         public int KeycardChance { get; set; } = 20;
         public int MedicalKitChance { get; set; } = 35;
         public int TpToEscapeChance { get; set; } = 5;
