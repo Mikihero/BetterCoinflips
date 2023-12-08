@@ -342,9 +342,9 @@ namespace BetterCoinflips.Types
             }),
 
             // 16: Swaps positions with another random player
-            new CoinFlipEffect(Player.List.Count(x => x.IsAlive && !Config.IgnoredRoles.Contains(x.Role.Type)) <= 1 ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage, player =>
+            new CoinFlipEffect(Player.List.Count(x => x.IsAlive && !Config.PlayerSwapIgnoredRoles.Contains(x.Role.Type)) <= 1 ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage, player =>
             {
-                var playerList = Player.List.Where(x => x.IsAlive && !Config.IgnoredRoles.Contains(x.Role.Type)).ToList();
+                var playerList = Player.List.Where(x => x.IsAlive && !Config.PlayerSwapIgnoredRoles.Contains(x.Role.Type)).ToList();
                 playerList.Remove(player);
                 
                 if (playerList.IsEmpty())
@@ -419,15 +419,17 @@ namespace BetterCoinflips.Types
             }),
 
             // 20: Swaps inventory and ammo with another random player
-            new CoinFlipEffect(Player.List.Where(x => !Config.IgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1 ? Translations.InventorySwapOnePlayerMessage : Translations.InventorySwapMessage, player =>
+            new CoinFlipEffect(Player.List.Where(x => !Config.InventorySwapIgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1 ? Translations.InventorySwapOnePlayerMessage : Translations.InventorySwapMessage, player =>
             {
-                if (Player.List.Where(x => !Config.IgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1)
+                List<Player> playerList = Player.List.Where(x => x != player && !Config.InventorySwapIgnoredRoles.Contains(x.Role.Type)).ToList();
+                
+                if (playerList.Count(x => x.IsAlive) <= 1)
                 {
                     player.Hurt(50);
                     return;
                 }
              
-                var target = Player.List.Where(x => x != player && !Config.IgnoredRoles.Contains(x.Role.Type)).ToList().RandomItem();
+                var target = playerList.Where(x => x != player).ToList().RandomItem();
 
                 // Saving items
                 List<ItemType> items1 = player.Items.Select(item => item.Type).ToList();

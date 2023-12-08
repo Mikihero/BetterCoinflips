@@ -35,6 +35,9 @@ namespace BetterCoinflips.Configs
 
         [Description("The duration of the broadcast informing you about your 'reward'. Default: 3")]
         public ushort BroadcastTime { get; set; } = 3;
+        
+        [Description("The duration of the hint telling you if you got heads or tails. Set to 0 or less to disable.")]
+        public float HintDuration { get; set; } = 3;
 
         [Description("The duration of the map blackout. Default: 10")]
         public float MapBlackoutTime { get; set; } = 10;
@@ -100,8 +103,8 @@ namespace BetterCoinflips.Configs
             RoleTypeId.Scp939,
         };
 
-        [Description("List of ignored roles for the PlayerSwap effect (#17) and InventorySwap effect (#21)")]
-        public HashSet<RoleTypeId> IgnoredRoles { get; set; } = new()
+        [Description("List of ignored roles for the PlayerSwap effect (#17)")]
+        public HashSet<RoleTypeId> PlayerSwapIgnoredRoles { get; set; } = new()
         {
             RoleTypeId.Spectator,
             RoleTypeId.Filmmaker,
@@ -110,6 +113,24 @@ namespace BetterCoinflips.Configs
             RoleTypeId.Tutorial,
         };
 
+        [Description("List of ignored roles for the InventorySwap effect (#17)")]
+        public HashSet<RoleTypeId> InventorySwapIgnoredRoles { get; set; } = new()
+        {
+            RoleTypeId.Spectator,
+            RoleTypeId.Filmmaker,
+            RoleTypeId.Overwatch,
+            RoleTypeId.Scp079,
+            RoleTypeId.Tutorial,
+            RoleTypeId.Scp049,
+            RoleTypeId.Scp079,
+            RoleTypeId.Scp096,
+            RoleTypeId.Scp106,
+            RoleTypeId.Scp173,
+            RoleTypeId.Scp0492,
+            RoleTypeId.Scp939,
+            RoleTypeId.Scp3114,
+        };
+        
         public HashSet<ItemType> ItemsToGive { get; set; } = new()
         {
             ItemType.Adrenaline,
@@ -140,27 +161,60 @@ namespace BetterCoinflips.Configs
 
         public HashSet<RoomType> RoomsToTeleport { get; set; } = new()
         {
-            RoomType.Hcz049,
-            RoomType.Hcz079,
-            RoomType.Hcz096,
-            RoomType.Hcz939,
-            RoomType.Lcz173,
-            RoomType.Lcz330,
-            RoomType.Lcz914,
-            RoomType.Surface,
             RoomType.EzCafeteria,
+            RoomType.EzCheckpointHallway,
+            RoomType.EzCollapsedTunnel,
             RoomType.EzConference,
             RoomType.EzCrossing,
             RoomType.EzCurve,
+            RoomType.EzDownstairsPcs,
+            RoomType.EzGateA,
+            RoomType.EzGateB,
             RoomType.EzIntercom,
             RoomType.EzPcs,
             RoomType.EzStraight,
+            RoomType.EzTCross,
+            RoomType.EzUpstairsPcs,
             RoomType.EzVent,
+            RoomType.Hcz049,
+            RoomType.Hcz079,
+            RoomType.Hcz096,
+            RoomType.Hcz106,
+            RoomType.Hcz939,
             RoomType.HczArmory,
             RoomType.HczCrossing,
+            RoomType.HczCurve,
+            RoomType.HczElevatorA,
+            RoomType.HczElevatorB,
+            RoomType.HczEzCheckpointA,
+            RoomType.HczEzCheckpointB,
+            RoomType.HczHid,
+            RoomType.HczNuke,
+            RoomType.HczServers,
+            RoomType.HczStraight,
+            RoomType.HczTCross,
+            RoomType.HczTesla,
+            RoomType.HczTestRoom,
+            RoomType.Lcz173,
+            RoomType.Lcz330,
+            RoomType.Lcz914,
+            RoomType.LczAirlock,
+            RoomType.LczArmory,
+            RoomType.LczCafe,
+            RoomType.LczCheckpointA,
+            RoomType.LczCheckpointB,
+            RoomType.LczClassDSpawn,
+            RoomType.LczCrossing,
+            RoomType.LczCurve,
+            RoomType.LczGlassBox,
+            RoomType.LczPlants,
+            RoomType.LczStraight,
+            RoomType.LczTCross,
+            RoomType.LczToilets,
+            RoomType.Surface,
         };
 
-            [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
+        [Description("The chance of these good effects happening. It's a proportional chance not a % chance.")]
         public int KeycardChance { get; set; } = 20;
         public int MedicalKitChance { get; set; } = 35;
         public int TpToEscapeChance { get; set; } = 5;
