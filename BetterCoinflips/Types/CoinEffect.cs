@@ -227,16 +227,10 @@ namespace BetterCoinflips.Types
             {
                 if (Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079))
                 {
-                    Player scpPlayer = Player.Get(Side.Scp).ToList().RandomItem();
-                    if (scpPlayer.Role != RoleTypeId.Scp079)
-                    {
-                        player.Position = scpPlayer.Position;
-                        return;
-                    }
-                    player.Hurt(15);
+                    Player scpPlayer = Player.Get(Side.Scp).Where(x => x.Role.Type != RoleTypeId.Scp079).ToList().RandomItem();
+                    player.Position = scpPlayer.Position;
                     return;
                 }
-
                 player.Hurt(15);
             }),
 
