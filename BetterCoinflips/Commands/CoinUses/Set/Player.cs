@@ -81,8 +81,7 @@ namespace BetterCoinflips.Commands.CoinUses.Set
 
         private Item GetCoinByPlayer(Exiled.API.Features.Player pl)
         {
-            // ReSharper disable once MergeIntoPattern
-            return pl.CurrentItem != null && pl.CurrentItem.Type == ItemType.Coin ? pl.CurrentItem : null;
+            return pl.CurrentItem is { Type: ItemType.Coin } ? pl.CurrentItem : null;
         }
     }
 }
