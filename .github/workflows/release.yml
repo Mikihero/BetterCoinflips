@@ -5,8 +5,7 @@ env:
   NET_FRAMEWORK_VERSION: "net48"
   PROJECT_NAME: "/BetterCoinflips"
   ASSEMBLY_NAME: "BetterCoinflips.dll"
-  SL_REFERENCES: "${{ github.workspace }}/References"
-  UNITY_REFERENCES: "${{ github.workspace }}/References"
+  EXILED_REFERENCES: "${{ github.workspace }}/References"
 jobs:
   build:
     runs-on: ubuntu-latest
