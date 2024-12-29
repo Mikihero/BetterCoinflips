@@ -5,14 +5,15 @@ using BetterCoinflips.Configs;
 using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
-using Exiled.API.Features.DamageHandlers;
 using Exiled.API.Features.Doors;
 using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
+using Exiled.API.Features.Waves;
 using InventorySystem.Items.Firearms.Attachments;
 using MEC;
 using PlayerRoles;
 using Respawning;
+using Respawning.Waves;
 using UnityEngine;
 using Player = Exiled.API.Features.Player;
 
@@ -97,7 +98,7 @@ namespace BetterCoinflips.Types
             new CoinFlipEffect(Translations.OneAmmoLogicerMessage, player =>
             {
                 Firearm gun = (Firearm)Item.Create(ItemType.GunLogicer);
-                gun.Ammo = 1;
+                gun.BarrelAmmo = 1;
                 gun.CreatePickup(player.Position);
             }),
 
@@ -120,7 +121,7 @@ namespace BetterCoinflips.Types
             {
                 Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
                 revo.AddAttachment(new[]
-                    {AttachmentName.CylinderMag8, AttachmentName.ShortBarrel, AttachmentName.ScopeSight});
+                    {AttachmentName.CylinderMag7, AttachmentName.ShortBarrel, AttachmentName.ScopeSight});
                 revo.CreatePickup(player.Position);
             }),
 
@@ -136,7 +137,7 @@ namespace BetterCoinflips.Types
             // 12: Forces a respawn wave of the team that has more ticketes
             new CoinFlipEffect(Translations.ForceRespawnMessage, player =>
             {
-                Respawn.ForceWave(Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox ? SpawnableTeamType.NineTailedFox : SpawnableTeamType.ChaosInsurgency, true);
+                Respawn.ForceWave(WaveManager.Waves.RandomItem());
             }),
 
             // 13: Changes the player's size
