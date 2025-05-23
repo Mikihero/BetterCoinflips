@@ -18,13 +18,13 @@ namespace BetterCoinflips.Configs
             "Your coin landed on heads."
         };
         
-        [Description("Here you can set the message for each of these good coin effects.")]
         public string TossOnCooldownMessage { get; set; } = "You can't throw the coin yet.";
-        public string RedCardMessage { get; set; } = "You acquired a Facility Manager keycard!";
-        public string ContainmentEngineerCardMessage { get; set; } = "You acquired a Containment Engineer keycard!";
+        
+        [Description("Here you can set the message for each of these good coin effects.")]
+        public string RandomKeycardMessage { get; set; } = "You acquired a %keycard%!";
         public string MediKitMessage { get; set; } = "You received a Medical Kit!";
         public string TpToEscapeMessage { get; set; } = "You can now escape! That's what you wanted right?";
-        public string MagicHealMessage { get; set; } = "You've been magically healed!";
+        public string Heal25Message { get; set; } = "You've been magically healed!";
         public string HealthIncreaseMessage { get; set; } = "You received 10% more hp!";
         public string NeatHatMessage { get; set; } = "You got a neat hat!";
         public string RandomGoodEffectMessage { get; set; } = "You got a random effect.";

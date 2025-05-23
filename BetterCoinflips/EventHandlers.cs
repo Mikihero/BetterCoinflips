@@ -156,7 +156,7 @@ namespace BetterCoinflips
                 Log.Debug($"headsEvent = {headsEvent}");
 
                 //use headsevent to choose the effect and execute it
-                var effect = CoinFlipEffect.GoodEffects[headsEvent];
+                var effect = CoinEffect.GoodEffects[headsEvent];
                 effect.Execute(ev.Player);
                 message = effect.Message;
             }
@@ -182,7 +182,7 @@ namespace BetterCoinflips
                 Log.Debug($"tailsEvent = {tailsEvent}");
 
                 //use tailsevent to choose the effect and execute it
-                var effect = CoinFlipEffect.BadEffects[tailsEvent];
+                var effect = CoinEffect.BadEffects[tailsEvent];
                 effect.Execute(ev.Player);
                 message = effect.Message;
             }

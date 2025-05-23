@@ -8,31 +8,25 @@ using Exiled.API.Features;
 using Exiled.API.Features.Doors;
 using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
-using Exiled.API.Features.Waves;
 using InventorySystem.Items.Firearms.Attachments;
 using MEC;
 using PlayerRoles;
 using Respawning;
-using Respawning.Waves;
 using UnityEngine;
 using Player = Exiled.API.Features.Player;
 
 namespace BetterCoinflips.Types
 {
-    public class CoinFlipEffect
+    public abstract class CoinEffect
     {
-        private static Config Config => Plugin.Instance.Config;
-        private static Configs.Translations Translations => Plugin.Instance.Translation;
-        private static readonly System.Random Rd = new();
-        
-        public Action<Player> Execute { get; set; }
-        public string Message { get; set; }
+        public abstract List<(Func<bool>, string)> ConditionalMessages { get; set; }
 
-        public CoinFlipEffect(string message, Action<Player> execute)
-        {
-            Execute = execute;
-            Message = message;
-        }
+        public abstract EffectType EffectType { get; set; }
+        
+        public abstract void OnExecute(Player player);
+
+
+
 
         private static readonly Dictionary<string, string> _scpNames = new()
         {
@@ -47,47 +41,47 @@ namespace BetterCoinflips.Types
         private static bool flag1 = Config.RedCardChance > Rd.Next(1, 101);
 
         // GoodEffects list
-        public static List<CoinFlipEffect> GoodEffects = new()
+        public static List<CoinEffect> GoodEffects = new()
         {
             // 0: Spawns a red keycard or containment enginner
-            new CoinFlipEffect(flag1 ? Translations.RedCardMessage : Translations.ContainmentEngineerCardMessage, player =>
+            new CoinEffect(flag1 ? Translations.RedCardMessage : Translations.ContainmentEngineerCardMessage, player =>
             {
                 Pickup.CreateAndSpawn(flag1 ? ItemType.KeycardFacilityManager : ItemType.KeycardContainmentEngineer, player.Position, new Quaternion());
             }),
 
             // 1: Spawns a medkit and painkillers for the player.
-            new CoinFlipEffect(Translations.MediKitMessage, player =>
+            new CoinEffect(Translations.MediKitMessage, player =>
             {
                 Pickup.CreateAndSpawn(ItemType.Medkit, player.Position, new Quaternion());
                 Pickup.CreateAndSpawn(ItemType.Painkillers, player.Position, new Quaternion());
             }),
 
             // 2: Teleports the player to the escape secondary door.
-            new CoinFlipEffect(Translations.TpToEscapeMessage, player =>
+            new CoinEffect(Translations.TpToEscapeMessage, player =>
             {
                 player.Teleport(Door.Get(DoorType.EscapeSecondary));
             }),
 
             // 3: Heals the player by 25 health points.
-            new CoinFlipEffect(Translations.MagicHealMessage, player =>
+            new CoinEffect(Translations.MagicHealMessage, player =>
             {
                 player.Heal(25);
             }),
 
             // 4: Increases the player's health by 10%.
-            new CoinFlipEffect(Translations.HealthIncreaseMessage, player =>
+            new CoinEffect(Translations.HealthIncreaseMessage, player =>
             {
                 player.Health *= 1.1f;
             }),
 
             // 5: Spawns SCP-268 (Neat Hat) for the player.
-            new CoinFlipEffect(Translations.NeatHatMessage, player =>
+            new CoinEffect(Translations.NeatHatMessage, player =>
             {
                 Pickup.CreateAndSpawn(ItemType.SCP268, player.Position, new Quaternion());
             }),
 
             // 6: Applies a random good effect to the player.
-            new CoinFlipEffect(Translations.RandomGoodEffectMessage, player =>
+            new CoinEffect(Translations.RandomGoodEffectMessage, player =>
             {
                 var effect = Config.GoodEffects.ToList().RandomItem();
                 player.EnableEffect(effect, 5, true);
@@ -95,7 +89,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 7: Spawns a Logicer with one ammo for the player.
-            new CoinFlipEffect(Translations.OneAmmoLogicerMessage, player =>
+            new CoinEffect(Translations.OneAmmoLogicerMessage, player =>
             {
                 Firearm gun = (Firearm)Item.Create(ItemType.GunLogicer);
                 gun.BarrelAmmo = 1;
@@ -103,13 +97,13 @@ namespace BetterCoinflips.Types
             }),
 
             // 8: Spawns SCP-2176 (lightbulb) for the player.
-            new CoinFlipEffect(Translations.LightbulbMessage, player =>
+            new CoinEffect(Translations.LightbulbMessage, player =>
             {
                 Pickup.CreateAndSpawn(ItemType.SCP2176, player.Position, new Quaternion());
             }),
 
             // 9: Spawns pink candy (SCP-330) for the player.
-            new CoinFlipEffect(Translations.PinkCandyMessage, player =>
+            new CoinEffect(Translations.PinkCandyMessage, player =>
             {
                 Scp330 candy = (Scp330)Item.Create(ItemType.SCP330);
                 candy.AddCandy(InventorySystem.Items.Usables.Scp330.CandyKindID.Pink);
@@ -117,7 +111,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 10: Spawns a customized revolver with attachments for the player.
-            new CoinFlipEffect(Translations.BadRevoMessage, player =>
+            new CoinEffect(Translations.BadRevoMessage, player =>
             {
                 Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
                 revo.AddAttachment(new[]
@@ -126,7 +120,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 11: Spawns a MicroHID with no energy for the player.
-            new CoinFlipEffect(Translations.EmptyHidMessage, player =>
+            new CoinEffect(Translations.EmptyHidMessage, player =>
             {
                 MicroHIDPickup item = (MicroHIDPickup)Pickup.Create(ItemType.MicroHID);
                 item.Position = player.Position;
@@ -135,19 +129,19 @@ namespace BetterCoinflips.Types
             }),
 
             // 12: Forces a respawn wave of the team that has more ticketes
-            new CoinFlipEffect(Translations.ForceRespawnMessage, player =>
+            new CoinEffect(Translations.ForceRespawnMessage, player =>
             {
                 Respawn.ForceWave(WaveManager.Waves.RandomItem());
             }),
 
             // 13: Changes the player's size
-            new CoinFlipEffect(Translations.SizeChangeMessage, player =>
+            new CoinEffect(Translations.SizeChangeMessage, player =>
             {
                 player.Scale = new Vector3(1.13f, 0.5f, 1.13f);
             }),
 
             // 14: Spawns a random item for the player.
-            new CoinFlipEffect(Translations.RandomItemMessage, player =>
+            new CoinEffect(Translations.RandomItemMessage, player =>
             {
                 Item.Create(Config.ItemsToGive.ToList().RandomItem()).CreatePickup(player.Position);
             }),
@@ -155,10 +149,10 @@ namespace BetterCoinflips.Types
 
 
         // BadEffects list
-        public static List<CoinFlipEffect> BadEffects = new()
+        public static List<CoinEffect> BadEffects = new()
         {
             // 0: Reduces player's health by 30%
-            new CoinFlipEffect(Translations.HpReductionMessage, player =>
+            new CoinEffect(Translations.HpReductionMessage, player =>
             {
                 if ((int) player.Health == 1)
                     player.Kill(DamageType.CardiacArrest);
@@ -167,7 +161,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 1: Teleports the player to the class D cells.
-            new CoinFlipEffect(Warhead.IsDetonated ? Translations.TpToClassDCellsAfterWarheadMessage : Translations.TpToClassDCellsMessage, player =>
+            new CoinEffect(Warhead.IsDetonated ? Translations.TpToClassDCellsAfterWarheadMessage : Translations.TpToClassDCellsMessage, player =>
             {
                 player.DropHeldItem();
                 player.Teleport(Door.Get(DoorType.PrisonDoor));
@@ -179,7 +173,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 2: Applies a random bad effect to the player.
-            new CoinFlipEffect(Translations.RandomBadEffectMessage, player =>
+            new CoinEffect(Translations.RandomBadEffectMessage, player =>
             {
                 var effect = Config.BadEffects.ToList().RandomItem();
                 
@@ -193,7 +187,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 3: Starts or stops the warhead based on its state.
-            new CoinFlipEffect(Warhead.IsDetonated || !Warhead.IsInProgress ? Translations.WarheadStartMessage : Translations.WarheadStopMessage, player =>
+            new CoinEffect(Warhead.IsDetonated || !Warhead.IsInProgress ? Translations.WarheadStartMessage : Translations.WarheadStopMessage, player =>
             {
                 if (Warhead.IsDetonated || !Warhead.IsInProgress)
                     Warhead.Start();
@@ -202,13 +196,13 @@ namespace BetterCoinflips.Types
             }),
 
             // 4: Turns off all lights
-            new CoinFlipEffect(Translations.LightsOutMessage, player =>
+            new CoinEffect(Translations.LightsOutMessage, player =>
             {
                 Map.TurnOffAllLights(Config.MapBlackoutTime);
             }),
 
             // 5: Spawns a live HE grenade
-            new CoinFlipEffect(Translations.LiveGrenadeMessage, player =>
+            new CoinEffect(Translations.LiveGrenadeMessage, player =>
             {
                 ExplosiveGrenade grenade = (ExplosiveGrenade) Item.Create(ItemType.GrenadeHE);
                 grenade.FuseTime = (float) Config.LiveGrenadeFuseTime;
@@ -216,7 +210,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 6: Spawns a flash grenade with a short fuse time, sets the flash owner to the player so that it hopefully blinds people
-            new CoinFlipEffect(Translations.TrollFlashMessage, player =>
+            new CoinEffect(Translations.TrollFlashMessage, player =>
             {
                 FlashGrenade flash = (FlashGrenade) Item.Create(ItemType.GrenadeFlash, player);
                 flash.FuseTime = 1f;
@@ -224,7 +218,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 7: Teleports the player to a random SCP or inflicts damage if no SCPs exist.
-            new CoinFlipEffect(Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079) ? Translations.TpToRandomScpMessage : Translations.SmallDamageMessage, player =>
+            new CoinEffect(Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079) ? Translations.TpToRandomScpMessage : Translations.SmallDamageMessage, player =>
             {
                 if (Player.Get(Side.Scp).Any(x => x.Role.Type != RoleTypeId.Scp079))
                 {
@@ -236,7 +230,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 8: Sets player hp to 1 or kills if it was already 1
-            new CoinFlipEffect(Translations.HugeDamageMessage, player =>
+            new CoinEffect(Translations.HugeDamageMessage, player =>
             {
                 if ((int) player.Health == 1)
                     player.Kill(DamageType.CardiacArrest);
@@ -245,7 +239,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 9: Spawns a primed SCP-244 vase for the player.
-            new CoinFlipEffect(Translations.PrimedVaseMessage, player =>
+            new CoinEffect(Translations.PrimedVaseMessage, player =>
             {
                 Scp244 vase = (Scp244)Item.Create(ItemType.SCP244a);
                 vase.Primed = true;
@@ -253,13 +247,13 @@ namespace BetterCoinflips.Types
             }),
 
             // 10: Spawns a tantrum on the player Keywords: shit spawn create
-            new CoinFlipEffect(Translations.ShitPantsMessage, player =>
+            new CoinEffect(Translations.ShitPantsMessage, player =>
             {
                 player.PlaceTantrum();
             }),
 
             // 11: Broadcasts a fake SCP termination message.
-            new CoinFlipEffect(Translations.FakeScpKillMessage, player =>
+            new CoinEffect(Translations.FakeScpKillMessage, player =>
             {
                 var scpName = _scpNames.ToList().RandomItem();
                 
@@ -268,7 +262,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 12: Forceclass the player to a random scp from the list Keywords: scp fc forceclass
-            new CoinFlipEffect(Translations.TurnIntoScpMessage, player =>
+            new CoinEffect(Translations.TurnIntoScpMessage, player =>
             {
                 player.DropItems();
                 player.Scale = new Vector3(1, 1, 1);
@@ -282,14 +276,14 @@ namespace BetterCoinflips.Types
             }),
             
             // 13: Resets player's inventory
-            new CoinFlipEffect(Translations.InventoryResetMessage, player =>
+            new CoinEffect(Translations.InventoryResetMessage, player =>
             {
                 player.DropHeldItem();
                 player.ClearInventory();
             }),
 
             // 14: Flips the players role to the opposite
-            new CoinFlipEffect(Translations.ClassSwapMessage, player =>
+            new CoinEffect(Translations.ClassSwapMessage, player =>
             {
                 player.DropItems();
                 switch (player.Role.Type)
@@ -334,7 +328,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 15: Spawns an HE grenade with a very short fuse time
-            new CoinFlipEffect(Translations.InstantExplosionMessage, player =>
+            new CoinEffect(Translations.InstantExplosionMessage, player =>
             {
                 ExplosiveGrenade instaBoom = (ExplosiveGrenade) Item.Create(ItemType.GrenadeHE);
                 instaBoom.FuseTime = 0.1f;
@@ -342,7 +336,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 16: Swaps positions with another random player
-            new CoinFlipEffect(Player.List.Count(x => x.IsAlive && !Config.PlayerSwapIgnoredRoles.Contains(x.Role.Type)) <= 1 ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage, player =>
+            new CoinEffect(Player.List.Count(x => x.IsAlive && !Config.PlayerSwapIgnoredRoles.Contains(x.Role.Type)) <= 1 ? Translations.PlayerSwapIfOneAliveMessage : Translations.PlayerSwapMessage, player =>
             {
                 var playerList = Player.List.Where(x => x.IsAlive && !Config.PlayerSwapIgnoredRoles.Contains(x.Role.Type)).ToList();
                 playerList.Remove(player);
@@ -362,14 +356,14 @@ namespace BetterCoinflips.Types
             }),
 
             // 17: kicks the player
-            new CoinFlipEffect(Translations.KickMessage, player =>
+            new CoinEffect(Translations.KickMessage, player =>
             {
                 //delay so the broadcast can be sent to the player and doesn't throw NRE
                 Timing.CallDelayed(1f, () => player.Kick(Config.KickReason));
             }),
 
             // 18: swap with a spectator
-            new CoinFlipEffect(Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).IsEmpty() ? Translations.SpectSwapNoSpectsMessage : Translations.SpectSwapPlayerMessage, player =>
+            new CoinEffect(Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).IsEmpty() ? Translations.SpectSwapNoSpectsMessage : Translations.SpectSwapPlayerMessage, player =>
             {
                 var spectList = Player.List.Where(x => x.Role.Type == RoleTypeId.Spectator).ToList();
                 
@@ -406,7 +400,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 19: Teleports to a random Tesla gate if warhead is not detonated
-            new CoinFlipEffect(Warhead.IsDetonated ? Translations.TeslaTpAfterWarheadMessage : Translations.TeslaTpMessage, player =>
+            new CoinEffect(Warhead.IsDetonated ? Translations.TeslaTpAfterWarheadMessage : Translations.TeslaTpMessage, player =>
             {
                 player.DropHeldItem();
                 
@@ -419,7 +413,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 20: Swaps inventory and ammo with another random player
-            new CoinFlipEffect(Player.List.Where(x => !Config.InventorySwapIgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1 ? Translations.InventorySwapOnePlayerMessage : Translations.InventorySwapMessage, player =>
+            new CoinEffect(Player.List.Where(x => !Config.InventorySwapIgnoredRoles.Contains(x.Role.Type)).Count(x => x.IsAlive) <= 1 ? Translations.InventorySwapOnePlayerMessage : Translations.InventorySwapMessage, player =>
             {
                 List<Player> playerList = Player.List.Where(x => x != player && !Config.InventorySwapIgnoredRoles.Contains(x.Role.Type)).ToList();
                 
@@ -467,7 +461,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 21: Spawns a red candy or teleports the player to a random room based on warhead state.
-            new CoinFlipEffect(Warhead.IsDetonated ? Translations.RandomTeleportWarheadDetonatedMessage : Translations.RandomTeleportMessage, player =>
+            new CoinEffect(Warhead.IsDetonated ? Translations.RandomTeleportWarheadDetonatedMessage : Translations.RandomTeleportMessage, player =>
             {
                 if (Warhead.IsDetonated)
                 {
@@ -481,7 +475,7 @@ namespace BetterCoinflips.Types
             }),
 
             // 22: Handcuffs the player and drops their items
-            new CoinFlipEffect(Translations.HandcuffMessage, player =>
+            new CoinEffect(Translations.HandcuffMessage, player =>
             {
                 player.Handcuff();
                 player.DropItems();

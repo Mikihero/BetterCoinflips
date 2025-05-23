@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using BetterCoinflips.Commands.CoinUses.Get;
 using Exiled.API.Enums;
 using Exiled.API.Interfaces;
 using PlayerRoles;
@@ -38,6 +39,13 @@ namespace BetterCoinflips.Configs
         
         [Description("The duration of the hint telling you if you got heads or tails. Set to 0 or less to disable.")]
         public float HintDuration { get; set; } = 3;
+
+        public List<ItemType> RandomKeycardsList { get; set; } = new()
+        {
+            ItemType.KeycardGuard,
+            ItemType.KeycardJanitor,
+            ItemType.ArmorHeavy
+        };
 
         [Description("The duration of the map blackout. Default: 10")]
         public float MapBlackoutTime { get; set; } = 10;
