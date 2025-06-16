@@ -59,7 +59,7 @@ namespace BetterCoinflips.Configs
         public string InventoryResetMessage { get; set; } = "You lost your stuff.";
         public string ClassSwapMessage { get; set; } = "That's what I call an UNO reverse card!";
         public string InstantExplosionMessage { get; set; } = "You got smoked.";
-        public string PlayerSwapMessage { get; set; } = "Your inventory was swapped with a random player.";
+        public string PlayerSwapMessage { get; set; } = "You were swapped with another player.";
         public string PlayerSwapIfOneAliveMessage { get; set; } = "You were supposed to switch places with someone but no one else is alive!";
         public string KickMessage { get; set; } = "Bye!";
         public string SpectSwapPlayerMessage { get; set; } = "You just made someone's round better!";

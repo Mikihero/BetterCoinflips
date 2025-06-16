@@ -98,7 +98,7 @@ namespace BetterCoinflips.Types
             new CoinFlipEffect(Translations.OneAmmoLogicerMessage, player =>
             {
                 Firearm gun = (Firearm)Item.Create(ItemType.GunLogicer);
-                gun.BarrelAmmo = 1;
+                gun.MagazineAmmo = 1;
                 gun.CreatePickup(player.Position);
             }),
 
@@ -122,6 +122,7 @@ namespace BetterCoinflips.Types
                 Firearm revo = (Firearm)Item.Create(ItemType.GunRevolver);
                 revo.AddAttachment(new[]
                     {AttachmentName.CylinderMag7, AttachmentName.ShortBarrel, AttachmentName.ScopeSight});
+                revo.MagazineAmmo = revo.MaxMagazineAmmo;
                 revo.CreatePickup(player.Position);
             }),
 
@@ -149,7 +150,13 @@ namespace BetterCoinflips.Types
             // 14: Spawns a random item for the player.
             new CoinFlipEffect(Translations.RandomItemMessage, player =>
             {
-                Item.Create(Config.ItemsToGive.ToList().RandomItem()).CreatePickup(player.Position);
+                var itemType = Config.ItemsToGive.ToList().RandomItem();
+                var item = Item.Create(itemType);
+
+                if (item is Firearm firearm)
+                    firearm.MagazineAmmo = firearm.MaxMagazineAmmo;
+
+                item.CreatePickup(player.Position);
             }),
         };
 
@@ -409,9 +416,9 @@ namespace BetterCoinflips.Types
             new CoinFlipEffect(Warhead.IsDetonated ? Translations.TeslaTpAfterWarheadMessage : Translations.TeslaTpMessage, player =>
             {
                 player.DropHeldItem();
-                
-                player.Teleport(Exiled.API.Features.TeslaGate.List.ToList().RandomItem());
-                
+
+                player.Teleport(Room.Get(r => r.Type == RoomType.HczTesla).GetRandomValue());
+
                 if (Warhead.IsDetonated)
                 {
                     player.Kill(DamageType.Decontamination);
