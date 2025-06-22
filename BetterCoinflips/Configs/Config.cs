@@ -192,7 +192,6 @@ namespace BetterCoinflips.Configs
             RoomType.HczHid,
             RoomType.HczNuke,
             RoomType.HczStraight,
-            RoomType.HczTesla,
             RoomType.HczTestRoom,
             RoomType.Lcz173,
             RoomType.Lcz330,
